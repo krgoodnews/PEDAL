@@ -1,6 +1,6 @@
-# photo-list Analysis Report (v0.3)
+# photo-list Analysis Report (v0.4)
 
-> **Analysis Type**: Gap Analysis (Post-Iteration)
+> **Analysis Type**: Gap Analysis (Final Verification)
 >
 > **Project**: pedal
 > **Version**: 1.0.0
@@ -10,7 +10,7 @@
 
 ### 1. Analysis Overview
 
-본 보고서는 1차 분석에서 발견된 Critical(테스트 환경) 및 Warning(재시도 UI) 이슈를 보완하고, API 소스 변경(DummyJSON)이 설계대로 반영되었는지 검증합니다.
+본 보고서는 API 응답 이미지 사용 로직으로의 복귀 및 Rate Limit(429) 대응 설계가 최종 구현물에 정확히 반영되었는지 검증합니다.
 
 ---
 
@@ -20,17 +20,17 @@
 
 | Requirement | Implementation | Status | Notes |
 | ----------- | -------------- | ------ | ----- |
-| API 교체    | DummyJSON 연동  | ✅ Pass | 이미지 로딩 문제 해결됨 |
-| 이미지 URL  | Custom Icon URL| ✅ Pass | `product_{id}/500` 형식 준수 |
+| API 응답 이미지 사용| `product.thumbnail`, `product.images[0]` 사용 | ✅ Pass | 의도대로 원본 이미지 표시 |
+| Rate Limit 대응| `fetchWithRetry` (3회 재시도, 지연 포함) | ✅ Pass | 429 에러 발생 시 자동 복구 |
 
-### 2.2 Engineering Match
+### 2.2 Engineering Match (v0.5)
 
 | Item | Engineering Spec | Implementation | Status |
 | ---- | ---------------- | -------------- | ------ |
-| API Limit | `limit=100` | `?limit=100` | ✅ Match |
-| Error UI | Retry Button | List/Detail 반영 | ✅ Match |
-| Component | `PhotoInfo` 분리 | src/components/ | ✅ Match |
-| Test Env | Vitest/Happy-dom| vitest/config 설정 | ✅ Match |
+| Image Logic | `thumbnail`, `images[0]` | `src/lib/api.ts` 반영 | ✅ Match |
+| Retry Strategy | Max 3, Delay (Header/5s) | `fetchWithRetry` 구현 | ✅ Match |
+| Error UI | 429 전용 메시지 및 Retry 버튼 | `ListPage`, `DetailPage` | ✅ Match |
+| Test Env | Happy-dom + vitest/config | `vite.config.ts` 반영 | ✅ Match |
 
 ### 2.3 Match Rate Summary
 
@@ -38,7 +38,7 @@
 ┌─────────────────────────────────────────────┐
 │  Overall Match Rate: 100%                    │
 ├─────────────────────────────────────────────┤
-│  ✅ Match:          22 items (100%)          │
+│  ✅ Match:          24 items (100%)          │
 │  ⚠️ Minor Gap:       0 item (0%)              │
 │  ❌ Not implemented:  0 item (0%)            │
 └─────────────────────────────────────────────┘
@@ -46,41 +46,32 @@
 
 ---
 
-## 3. Code Quality & Security
+## 3. Code Quality & Performance
 
-- **Security**: `.env`를 통한 `VITE_API_URL` 관리 정상.
-- **Complexity**: 컴포넌트 분리(`PhotoInfo`)를 통해 가독성 향상.
+- **Code Quality**: `fetchWithRetry` 추상화로 API 호출 로직이 견고해짐. `PhotoInfo` 분리로 컴포넌트 구조 명확화.
+- **Performance**: 100개 상품 로드 및 이미지 Lazy Loading 정상 동작 확인.
 
 ---
 
 ## 4. Test Coverage
 
-- **Environment**: Vitest + happy-dom 연동 완료 (`npm test` 실행 가능).
-- **Unit Test**: `PhotoCard.test.tsx` 작성 및 통과 (1 passed).
+- **Unit Test**: `PhotoCard.test.tsx` (1 passed).
+- **Environment**: Vitest + happy-dom 연동 완료.
 
 ---
 
 ## 5. Severity-Weighted Match Rate
 
-### 5.1 Issue Summary by Severity
-
-| Severity    | Count | Weight | Weighted Score |
-| ----------- | :---: | :----: | :------------: |
-| 🔴 Critical | 0     | x3     | 0              |
-| 🟡 Warning  | 0     | x2     | 0              |
-| 🟢 Info     | 0     | x1     | 0              |
-| **Total**   | 0     |        | 0              |
-
-### 5.2 Weighted Match Rate
+### 5.1 Weighted Match Rate
 
 ```
-Total checked items:    22
-Max possible score:     66
+Total checked items:    24
+Max possible score:     72
 Weighted issue score:   0
 Weighted Match Rate:    100%
 ```
 
-### 5.3 Iterate Decision
+### 5.2 Iterate Decision
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -88,7 +79,7 @@ Weighted Match Rate:    100%
 │  🔴 Critical Issues:  0                           │
 │                                                   │
 │  Decision: ✅ PASS                                │
-│  Reason:   Critical issue resolved, MatchRate=100%│
+│  Reason:   Final implementation matches spec v0.5.│
 └──────────────────────────────────────────────────┘
 ```
 
@@ -100,4 +91,5 @@ Weighted Match Rate:    100%
 | ------- | ---------- | ---------------- | ---------- |
 | 0.1     | 2026-04-06 | Initial analysis | Gemini CLI |
 | 0.2     | 2026-04-06 | 리뷰어 피드백 반영 | Gemini CLI |
-| 0.3     | 2026-04-06 | Iterate 보완 완료 후 2차 분석 보고서 (PASS) | Gemini CLI |
+| 0.3     | 2026-04-06 | 1차 Iterate 후 분석| Gemini CLI |
+| 0.4     | 2026-04-06 | 최종 이미지 로직 및 Rate Limit 보완 후 최종 분석 (PASS) | Gemini CLI |
