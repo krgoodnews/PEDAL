@@ -1,0 +1,35 @@
+---
+description: PEDAL workflow (Plan, Engineering, Do, Analyze, Learn) for structured feature delivery
+alwaysApply: true
+---
+
+# PEDAL (Cursor)
+
+When the user works on features, planning, design/engineering docs, gap analysis, iteration, or completion reports, follow the **PEDAL** workflow defined in the repository.
+
+## Canonical spec
+
+Read and apply: **[.pedal/PEDAL.md](.pedal/PEDAL.md)**
+
+It covers phases, directory layout, severity-weighted scoring, `.pedal-status.json`, templates under `.pedal/templates/`, and general rules (document language = user’s prompt language, git conventions).
+
+## How to invoke (natural language)
+
+Map user intent to phases (same as PEDAL.md):
+
+- Plan / planning / requirements → **plan**
+- Engineering / design / spec / architecture doc → **engineering**
+- Implement / build / code → **do** (code only; no separate PEDAL doc)
+- Gap analysis / verify vs spec → **analyze**
+- Auto-fix / iterate / improve until thresholds → **iterate**
+- Wiki + report / close cycle / PR → **learn**
+- Archive finished docs → **archive**
+
+## Cursor-specific
+
+- Do **not** auto-switch to “Plan Mode” or similar isolated modes when writing the Plan; stay in normal agent mode and report progress (see PEDAL.md **plan** section).
+- Prefer reading `.pedal/PEDAL.md` at the start of a multi-step PEDAL task so steps stay aligned with the single source of truth.
+
+## Gemini CLI
+
+Slash-command syntax for the same workflow lives in **[GEMINI.md](GEMINI.md)** (Gemini only).
