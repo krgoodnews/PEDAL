@@ -36,37 +36,41 @@ Use natural language or your tool's command style. Conceptually:
 ### plan (Plan)
 
 1. Sync main branch and create a feature branch `feature/{feature}` or `fix/{feature}` when appropriate.
-2. Ensure `docs/01-plan/features/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
-3. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
-4. Critically evaluate the review; accept valid points, reject with justification.
-5. Optional task label: `[Plan] {feature}`
+2. **Create prompt log**: write `docs/01-plan/features/{feature}.prompt.md` with the user's original request (see Prompt Log below).
+3. Ensure `docs/01-plan/features/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
+4. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
+5. Critically evaluate the review; accept valid points, reject with justification.
+6. Optional task label: `[Plan] {feature}`
 
 > **Important:** Do not enter a special "plan-only" mode that blocks normal work. Write the Plan in normal interaction and report progress to the user.
 
 ### engineering (Engineering)
 
 1. Require an approved Plan document.
-2. Create `docs/02-engineering/features/{feature}.engineering.md` from `templates/engineering.template.md`.
-3. Include ASCII art for expected UI where relevant.
-4. **Cross-review**: invoke the reviewer agent to produce `{feature}.engineering.review.md`.
-5. Critically evaluate the review; accept valid points, reject with justification.
-6. Optional task label: `[Engineering] {feature}` (depends on Plan)
+2. **Append to prompt log** if the user provided new direction or scope changes.
+3. Create `docs/02-engineering/features/{feature}.engineering.md` from `templates/engineering.template.md`.
+4. Include ASCII art for expected UI where relevant.
+5. **Cross-review**: invoke the reviewer agent to produce `{feature}.engineering.review.md`.
+6. Critically evaluate the review; accept valid points, reject with justification.
+7. Optional task label: `[Engineering] {feature}` (depends on Plan)
 
 ### do (Do)
 
 Do produces **code**, not a PEDAL document. Follow the Engineering document.
 
 1. Require Engineering document.
-2. Implement per Engineering (architecture, data model, API, etc.).
-3. Complete **Self-Review Checklist** (Section 12 in `engineering.template.md`) before Analyze.
-4. Optional task label: `[Do] {feature}` (depends on Engineering)
+2. **Append to prompt log** if the user provided new direction or scope changes.
+3. Implement per Engineering (architecture, data model, API, etc.).
+4. Complete **Self-Review Checklist** (Section 12 in `engineering.template.md`) before Analyze.
+5. Optional task label: `[Do] {feature}` (depends on Engineering)
 
 > No cross-review for Do -- code quality is validated in the Analyze phase.
 
 ### analyze (Analyze)
 
-1. Run gap / quality analysis (e.g. gap-detector pattern).
-2. Compare Engineering document vs implementation.
+1. **Append to prompt log** if the user provided new direction or scope changes.
+2. Run gap / quality analysis (e.g. gap-detector pattern).
+3. Compare Engineering document vs implementation.
 3. Compute **severity-weighted match rate** (see below).
 4. Any **Critical** issue forces iterate regardless of aggregate match rate.
 5. **Cross-review**: invoke the reviewer agent to produce `{feature}.analysis.review.md`.
@@ -77,15 +81,17 @@ Do produces **code**, not a PEDAL document. Follow the Engineering document.
 
 Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/iterate.template.md` for Evaluator-Optimizer details.
 
-1. Trigger when match rate < 90% **or** any Critical issue remains.
-2. Apply fixes and re-verify.
-3. Default max 5 iterations (10 if only Critical items); stop if no improvement for 3 consecutive rounds.
+1. **Append to prompt log** if the user provided new direction or scope changes.
+2. Trigger when match rate < 90% **or** any Critical issue remains.
+3. Apply fixes and re-verify.
+4. Default max 5 iterations (10 if only Critical items); stop if no improvement for 3 consecutive rounds.
 
 > No cross-review for Iterate -- it is a remediation loop, not a document phase.
 
 ### learn (Wiki + completion report)
 
-1. Require Analyze: match rate >= 90% and **zero** Critical issues.
+1. **Append to prompt log** if the user provided new direction or scope changes.
+2. Require Analyze: match rate >= 90% and **zero** Critical issues.
 2. Update `docs/wiki/{feature}.wiki.md` with verified facts, agent-friendly structure, and ASCII layouts for UI surfaces.
 3. Write `docs/04-learn/{feature}.report.md` using `templates/learn.template.md`.
 4. **Cross-review**: invoke the reviewer agent to produce `{feature}.report.review.md`.
@@ -98,14 +104,67 @@ Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/
 2. Move PEDAL artifacts: plan, engineering, analysis, report (and wiki copy if you version it).
 3. **Remove** review files (`*.review.md`) and other non-PEDAL noise.
 4. Set feature to `archived` in `.pedal-status.json`.
-5. Example commit message: `chore: 🗃️ Archive {feature} PEDAL documents`
+5. Move prompt log together with other artifacts; it becomes part of the historical record.
+6. Example commit message: `chore: 🗃️ Archive {feature} PEDAL documents`
+
+## Prompt Log
+
+Each feature has a **single append-only** file `docs/01-plan/features/{feature}.prompt.md` that records user prompts throughout the PEDAL cycle.
+
+### Purpose
+
+```
+User prompt ──→ Main agent interprets ──→ PEDAL document
+                       ↑
+         Reviewer needs the original to verify this transformation
+```
+
+Without the raw prompt, the reviewer can only judge the document on its own merits but cannot verify whether the main agent **correctly interpreted** the user's intent.
+
+### Rules
+
+| Rule | Detail |
+|---|---|
+| **Create** | At the start of the Plan phase, before writing `plan.md`. |
+| **Append** | At any phase, when the user gives a prompt that changes direction, scope, or constraints. |
+| **Skip** | Trivial prompts ("proceed", "looks good", "continue") are NOT recorded. |
+| **Immutable entries** | Once an entry is written, it must never be edited or deleted. Append only. |
+| **Archive** | Moved together with other PEDAL artifacts during the archive phase. |
+
+### Format
+
+```markdown
+# Prompt Log: {feature}
+
+## [Plan] {ISO timestamp}
+
+{verbatim user prompt}
+
+## [Engineering] {ISO timestamp}
+
+{verbatim user prompt — only if the user changed direction/scope}
+
+## [Iterate] {ISO timestamp}
+
+{verbatim user prompt — e.g. "focus on security issues first"}
+```
+
+- Section heading = `## [{phase}] {ISO 8601 timestamp}`
+- Body = the user's prompt, copied verbatim (no interpretation, no summarization).
+- Multiple entries per phase are allowed (e.g. two `[Do]` entries if the user changed scope twice).
+
+### Reviewer access
+
+When invoking the reviewer, always include the prompt log in the review command so the reviewer can compare user intent vs document output. (See [REVIEW.md](REVIEW.md) for details.)
 
 ## Directory structure
 
 ```
 docs/
 ├── 01-plan/
-│   └── features/{feature}.plan.md
+│   └── features/
+│       ├── {feature}.prompt.md   ← prompt log (append-only)
+│       └── {feature}.plan.md
 ├── 02-engineering/
 │   └── features/{feature}.engineering.md
 ├── 03-analysis/

@@ -36,6 +36,7 @@ The reviewer is a **critical auditor**, not a co-author. Its job:
 
 ### What the reviewer checks
 
+- **Intent fidelity** -- (When prompt log exists) Does the document faithfully reflect the user's original request and subsequent scope changes?
 - **Completeness** -- Are all required template sections filled? Any placeholder left?
 - **Consistency** -- Does the document contradict the Plan, Engineering doc, or existing code?
 - **Feasibility** -- Are the proposed approaches realistic given the project constraints?
@@ -96,12 +97,25 @@ The main agent must **not** blindly accept the review. Instead:
 5. **Update** the original document with accepted changes.
 6. **Proceed** to the next phase only after addressing all Critical items (accept or reject-with-reason).
 
+## Prompt log reference
+
+The reviewer must also read the **prompt log** (`docs/01-plan/features/{feature}.prompt.md`) to verify that the document faithfully reflects the user's original intent and any subsequent scope changes.
+
+When the prompt log exists, the reviewer should check:
+
+- **Intent fidelity** -- Does the document address what the user actually asked for?
+- **Scope drift** -- Has the main agent introduced concerns the user never mentioned, or dropped ones they did?
+- **Chronological consistency** -- If the user changed direction mid-cycle, does the latest document reflect the latest prompt?
+
+> If no prompt log exists (e.g. legacy features), the reviewer falls back to reviewing the document on its own merits only.
+
 ## Review prompt template
 
 The main agent should invoke the reviewer with a prompt like:
 
 ```
 Review the file {path_to_document}.
+Also read {path_to_prompt_log} for the user's original intent.
 You are a critical reviewer. Follow the protocol in .pedal/REVIEW.md.
 Write your review to {path_to_review_output}.
 ```
