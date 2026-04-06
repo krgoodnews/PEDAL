@@ -46,7 +46,7 @@ export const getPhotos = async (): Promise<Photo[]> => {
     description: product.description,
     price: product.price,
     url: product.images[0],
-    thumbnailUrl: `https://dummyjson.com/icon/product_${product.id}/500`
+    thumbnailUrl: product.thumbnail // API 제공 썸네일 사용
   }));
 };
 
@@ -58,7 +58,7 @@ export const getPhotoById = async (id: number): Promise<Photo> => {
     title: product.title,
     description: product.description,
     price: product.price,
-    url: product.images[0],
-    thumbnailUrl: `https://dummyjson.com/icon/product_${product.id}/500`
+    url: product.images[0], // API 제공 원본 이미지 사용
+    thumbnailUrl: product.thumbnail
   };
 };
