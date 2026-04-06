@@ -6,21 +6,21 @@
 
 The reviewer must be a **different model/tool** from the main agent. This prevents echo-chamber bias where the same model validates its own reasoning.
 
-| Main agent (author) | Reviewer agent | Review command |
-| -------------------- | -------------- | -------------- |
-| Gemini CLI           | Cursor CLI     | `cursor -p "{prompt}" --model "composer 2"` |
-| Cursor               | Gemini CLI     | `gemini -p "{prompt}" -m flash` |
+| Main agent (author) | Reviewer agent | Review command                             |
+| ------------------- | -------------- | ------------------------------------------ |
+| Gemini CLI          | Cursor CLI     | `agent -p "{prompt}" --model "composer 2"` |
+| Cursor              | Gemini CLI     | `gemini -p "{prompt}" -m flash`            |
 
 ## When to review
 
 Review occurs on every phase that produces a **PEDAL document**:
 
-| Phase       | Document to review                             | Review output                              |
-| ----------- | ---------------------------------------------- | ------------------------------------------ |
-| Plan        | `{feature}.plan.md`                            | `{feature}.plan.review.md`                 |
-| Engineering | `{feature}.engineering.md`                     | `{feature}.engineering.review.md`          |
-| Analyze     | `{feature}.analysis.md`                        | `{feature}.analysis.review.md`             |
-| Learn       | `{feature}.report.md`                          | `{feature}.report.review.md`               |
+| Phase       | Document to review         | Review output                     |
+| ----------- | -------------------------- | --------------------------------- |
+| Plan        | `{feature}.plan.md`        | `{feature}.plan.review.md`        |
+| Engineering | `{feature}.engineering.md` | `{feature}.engineering.review.md` |
+| Analyze     | `{feature}.analysis.md`    | `{feature}.analysis.review.md`    |
+| Learn       | `{feature}.report.md`      | `{feature}.report.review.md`      |
 
 **Do** and **Iterate** produce code, not PEDAL documents, so they skip document review. (Code quality is covered by the Analyze phase.)
 
@@ -80,11 +80,11 @@ The reviewer writes `{feature}.{action}.review.md` in the same directory as the 
 
 ### Severity definitions (for review findings)
 
-| Severity     | Meaning | Main agent action |
-| ------------ | ------- | ----------------- |
-| **Critical** | Factual error, security flaw, or missing requirement that blocks progress | Must address before proceeding |
-| **Warning**  | Suboptimal choice, incomplete reasoning, or moderate risk | Should address; justify if skipping |
-| **Info**     | Style preference, minor improvement, or optional enhancement | Consider; safe to skip |
+| Severity     | Meaning                                                                   | Main agent action                   |
+| ------------ | ------------------------------------------------------------------------- | ----------------------------------- |
+| **Critical** | Factual error, security flaw, or missing requirement that blocks progress | Must address before proceeding      |
+| **Warning**  | Suboptimal choice, incomplete reasoning, or moderate risk                 | Should address; justify if skipping |
+| **Info**     | Style preference, minor improvement, or optional enhancement              | Consider; safe to skip              |
 
 ## Main agent response to review
 
