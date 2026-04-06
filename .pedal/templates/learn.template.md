@@ -1,7 +1,7 @@
 ---
 template: learn
 version: 1.0
-description: PEDAL Act phase document template (completion report and learn)
+description: PEDAL Learn phase document template (completion report and wiki update)
 variables:
   - feature: Feature name
   - date: Creation date (YYYY-MM-DD)
@@ -18,7 +18,7 @@ variables:
 > **Version**: {version}
 > **Author**: {author}
 > **Completion Date**: {date}
-> **PDCA Cycle**: #{cycle_number}
+> **PEDAL Cycle**: #{cycle_number}
 
 ---
 
@@ -51,10 +51,10 @@ variables:
 
 | Phase  | Document                                                         | Status       |
 | ------ | ---------------------------------------------------------------- | ------------ |
-| Plan   | [{feature}.plan.md](../01-plan/features/{feature}.plan.md)       | ✅ Finalized |
-| Design | [{feature}.design.md](../02-design/features/{feature}.design.md) | ✅ Finalized |
-| Check  | [{feature}.analysis.md](../03-analysis/{feature}.analysis.md)    | ✅ Complete  |
-| Act    | Current document                                                 | 🔄 Writing   |
+| Plan        | [{feature}.plan.md](../01-plan/features/{feature}.plan.md)                | ✅ Finalized |
+| Engineering | [{feature}.engineering.md](../02-engineering/features/{feature}.engineering.md) | ✅ Finalized |
+| Analyze     | [{feature}.analysis.md](../03-analysis/{feature}.analysis.md)             | ✅ Complete  |
+| Learn       | Current document                                                          | 🔄 Writing   |
 
 ---
 
@@ -107,11 +107,11 @@ variables:
 
 ## 5. Quality Metrics
 
-### 5.1 Final Analysis Results
+### 5.1 Final Analyze Results
 
 | Metric             | Target     | Final | Change |
 | ------------------ | ---------- | ----- | ------ |
-| Design Match Rate  | 90%        | 95%   | +20%   |
+| Engineering Match Rate | 90%        | 95%   | +20%   |
 | Code Quality Score | 70         | 85    | +15    |
 | Test Coverage      | 80%        | 82%   | +12%   |
 | Security Issues    | 0 Critical | 0     | ✅     |
@@ -126,11 +126,40 @@ variables:
 
 ---
 
-## 6. Lessons Learned & Retrospective
+## 6. Wiki Update
+
+> Update `docs/wiki/{feature}.wiki.md` with verified facts from this PEDAL cycle.
+
+### 6.1 Wiki Checklist
+
+- [ ] Feature overview matches current implementation
+- [ ] Architecture decisions documented
+- [ ] Key implementation details recorded
+- [ ] Screen layouts included as ASCII Art (for UI-bearing features)
+- [ ] API reference documented (if applicable)
+- [ ] Configuration and setup notes added
+- [ ] File locations and module structure documented
+
+### 6.2 Wiki Guidelines
+
+- Document only **verified facts** that match the current project state.
+- Write in a format useful for both **humans reading guides** and **AI agents performing future tasks**.
+- For mobile or web features, include **ASCII Art** depicting screen layouts and component hierarchy.
+- Keep the wiki as the **single source of truth** for feature knowledge.
+
+### 6.3 Wiki Location
+
+```
+docs/wiki/{feature}.wiki.md
+```
+
+---
+
+## 7. Lessons Learned & Retrospective
 
 ### 6.1 What Went Well (Keep)
 
-- {Positive 1: e.g., Design documentation improved implementation efficiency}
+- {Positive 1: e.g., Engineering documentation improved implementation efficiency}
 - {Positive 2: e.g., Early code review caught bugs proactively}
 - {Positive 3}
 
@@ -148,18 +177,18 @@ variables:
 
 ---
 
-## 7. Process Improvement Suggestions
+## 8. Process Improvement Suggestions
 
-### 7.1 PDCA Process
+### 8.1 PEDAL Process
 
-| Phase  | Current                            | Improvement Suggestion     |
-| ------ | ---------------------------------- | -------------------------- |
-| Plan   | Insufficient requirement gathering | Add user interviews        |
-| Design | -                                  | -                          |
-| Do     | Poor design reference              | Introduce design checklist |
-| Check  | Manual analysis                    | Introduce automation tools |
+| Phase       | Current                                | Improvement Suggestion          |
+| ----------- | -------------------------------------- | ------------------------------- |
+| Plan        | Insufficient requirement gathering     | Add user interviews             |
+| Engineering | -                                      | -                               |
+| Do          | Poor engineering document reference    | Introduce engineering checklist  |
+| Analyze     | Manual analysis                        | Introduce automation tools      |
 
-### 7.2 Tools/Environment
+### 8.2 Tools/Environment
 
 | Area    | Improvement Suggestion | Expected Benefit        |
 | ------- | ---------------------- | ----------------------- |
@@ -168,15 +197,15 @@ variables:
 
 ---
 
-## 8. Next Steps
+## 9. Next Steps
 
-### 8.1 Immediate
+### 9.1 Immediate
 
 - [ ] Production deployment
 - [ ] Monitoring setup
 - [ ] User guide creation
 
-### 8.2 Next PDCA Cycle
+### 9.2 Next PEDAL Cycle
 
 | Item             | Priority | Expected Start |
 | ---------------- | -------- | -------------- |
@@ -185,7 +214,7 @@ variables:
 
 ---
 
-## 9. Changelog
+## 10. Changelog
 
 ### v1.0.0 ({date})
 

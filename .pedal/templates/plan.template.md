@@ -1,7 +1,7 @@
 ---
 template: plan
 version: 1.0
-description: PDCA Plan phase document template with Architecture and Convention considerations
+description: PEDAL Plan phase document template with Architecture and Convention considerations
 variables:
   - feature: Feature name
   - date: Creation date (YYYY-MM-DD)
@@ -111,14 +111,14 @@ variables:
 
 ### 6.2 Key Architectural Decisions
 
-| Decision         | Options                                    | Selected   | Rationale |
-| ---------------- | ------------------------------------------ | ---------- | --------- |
-| Framework        | Next.js / React / Vue                      | {selected} | {reason}  |
-| State Management | Context / Zustand / Redux / Jotai          | {selected} | {reason}  |
-| API Client       | fetch / axios / react-query                | {selected} | {reason}  |
-| Form Handling    | react-hook-form / formik / native          | {selected} | {reason}  |
-| Styling          | Tailwind / CSS Modules / styled-components | {selected} | {reason}  |
-| Testing          | Jest / Vitest / Playwright                 | {selected} | {reason}  |
+| Decision         | Options                         | Selected   | Rationale |
+| ---------------- | ------------------------------- | ---------- | --------- |
+| Language         | {List project-relevant options} | {selected} | {reason}  |
+| Framework        | {List project-relevant options} | {selected} | {reason}  |
+| State Management | {List project-relevant options} | {selected} | {reason}  |
+| Data Storage     | {List project-relevant options} | {selected} | {reason}  |
+| Styling          | {List project-relevant options} | {selected} | {reason}  |
+| Testing          | {List project-relevant options} | {selected} | {reason}  |
 
 ### 6.3 Clean Architecture Approach
 
@@ -128,15 +128,14 @@ Selected Level: {Starter/Dynamic/Enterprise}
 Folder Structure Preview:
 ┌─────────────────────────────────────────────────────┐
 │ Starter:                                            │
-│   src/components/, src/lib/, src/types/             │
+│   Simple flat structure with minimal separation     │
 ├─────────────────────────────────────────────────────┤
 │ Dynamic:                                            │
-│   src/components/, src/features/, src/services/,    │
-│   src/types/, src/lib/                              │
+│   Feature-based modules with services layer         │
 ├─────────────────────────────────────────────────────┤
 │ Enterprise:                                         │
-│   src/presentation/, src/application/,              │
-│   src/domain/, src/infrastructure/                  │
+│   Strict layer separation (presentation,            │
+│   application, domain, infrastructure)              │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -148,12 +147,12 @@ Folder Structure Preview:
 
 Check which conventions already exist in the project:
 
-- [ ] `GEMINI.md` has coding conventions section
-- [ ] `docs/01-plan/conventions.md` exists (Phase 2 output)
+- [ ] Project config file has coding conventions section
+- [ ] `docs/01-plan/conventions.md` exists
 - [ ] `CONVENTIONS.md` exists at project root
-- [ ] ESLint configuration (`.eslintrc.*`)
-- [ ] Prettier configuration (`.prettierrc`)
-- [ ] TypeScript configuration (`tsconfig.json`)
+- [ ] Linter configuration exists
+- [ ] Formatter configuration exists
+- [ ] Language-specific configuration exists
 
 ### 7.2 Conventions to Define/Verify
 
@@ -167,45 +166,17 @@ Check which conventions already exist in the project:
 
 ### 7.3 Environment Variables Needed
 
-| Variable              | Purpose         | Scope   | To Be Created |
-| --------------------- | --------------- | ------- | :-----------: |
-| `NEXT_PUBLIC_API_URL` | API endpoint    | Client  |       ☐       |
-| `DATABASE_URL`        | DB connection   | Server  |       ☐       |
-| `AUTH_SECRET`         | Auth secret key | Server  |       ☐       |
-| {variable}            | {purpose}       | {scope} |       ☐       |
-
-### 7.4 Pipeline Integration
-
-If using 9-phase Development Pipeline, check the following:
-
-| Phase                | Status | Document Location             | Command                      |
-| -------------------- | :----: | ----------------------------- | ---------------------------- |
-| Phase 1 (Schema)     |   ☐    | `docs/01-plan/schema.md`      | `/development-pipeline next` |
-| Phase 2 (Convention) |   ☐    | `docs/01-plan/conventions.md` | `/development-pipeline next` |
-
-**Pipeline Templates Available:**
-
-- `templates/pipeline/phase-1-schema.template.md`
-- `templates/pipeline/phase-2-convention.template.md`
-
-**Quick Start:**
-
-```bash
-# Check pipeline status
-/development-pipeline status
-
-# Start pipeline from Phase 1
-/development-pipeline start
-
-# Go to next phase
-/development-pipeline next
-```
+| Variable     | Purpose         | Scope         | To Be Created |
+| ------------ | --------------- | ------------- | :-----------: |
+| {variable}   | {purpose}       | Client/Server |       ☐       |
+| {variable}   | {purpose}       | Client/Server |       ☐       |
+| {variable}   | {purpose}       | Client/Server |       ☐       |
 
 ---
 
 ## 8. Next Steps
 
-1. [ ] Write design document (`{feature}.design.md`)
+1. [ ] Write engineering document (`{feature}.engineering.md`)
 2. [ ] Team review and approval
 3. [ ] Start implementation
 
