@@ -6,30 +6,37 @@
 
 ## Critical
 
-- **테스트 관련 서술과 만점 배점이 사실·논리와 충돌한다.** §5에서는 Vitest로 “상세 케이스 추가 필요”라고 하면서 §8에서는 Testing 항목을 **5/5 만점**으로 집계했다. 동일 보고서 안에서 “부족함”과 “만점”은 함께 성립하지 않으며, Analyze 단계에서 요구하는 “gap 점수·심각도의 정당성”(`.pedal/REVIEW.md`)을 훼손한다.
-
-- **「기본 Vitest 환경 구성 완료」는 현재 리포지토리 상태와 맞지 않는다.** `package.json`에 `test` 스크립트가 없고, `vite.config.ts`에 Vitest 설정이 없으며, `*.test.*` / `*.spec.*` 테스트 파일이 없다. devDependency로 `vitest`가 선언된 것과 “환경 구성 완료”는 다르다. Vitest 통합은 공식 가이드상 설정·실행 경로가 명시되는 것이 통례다. — [Vitest 구성 가이드](https://vitest.dev/config/)
+- 해당 없음. (구현이 프롬프트의 핵심 요구—DummyJSON 전환, 아이콘 URL, 목록/상세 흐름—를 충족하지 못한다는 식의 **차단급 갭**은 코드·문서 대조만으로는 확인되지 않음. 다만 아래 Warning은 분석 보고서의 **정확성·재현성**과 직결됨.)
 
 ## Warning
 
-- **프롬프트 로그 대비 의도 충실도(intent fidelity) 검증이 빠져 있다.** `photo-list.prompt.md`의 요구(3열 그리드·세로 스크롤·클릭 시 상세)를 **체크리스트 형태로 구현과 대조**하지 않았다. Engineering 대비 구현 위주라, `.pedal/REVIEW.md`가 요구하는 “사용자가 실제로 요청한 것”과의 정합성은 독자가 추론에 의존해야 한다.
+- **엔지니어링 명세 vs 테스트 환경 표기 불일치**: `photo-list.engineering.md` §8.1은 `vite.config.ts`의 테스트 환경을 **`environment: 'jsdom'`**으로 기술하고 있으나, 저장소의 `vite.config.ts`는 **`happy-dom`**을 사용합니다. 분석 보고서 §2.2는 Engineering Spec 열에 `Vitest/Happy-dom`을 적어 **엔지니어링 원문과 다른 기준**을 Match로 처리한 형태입니다. 갭 분석으로서는 (1) 엔지니어링 문서를 구현에 맞게 수정하거나, (2) ⚠️ 문서 드리프트로 명시해야 합니다. 현재 표기는 **일관성(Engineering ↔ Analysis)** 측면에서 오해의 소지가 큽니다. — [Vitest — `test.environment`](https://vitest.dev/config/#environment)
 
-- **성능(§4.1)은 측정 근거 없이 목표치 대비 ✅로 단정한다.** 초기 로드 1초 미만 여부는 네트워크·기기·캐시 조건에 좌우되는데, Lighthouse/Chrome DevTools 등 **재현 가능한 측정**이나 샘플 수가 없다. 성능 주장을 감사 가능하게 하려면 방법·환경을 명시해야 한다. — [Chrome DevTools Performance](https://developer.chrome.com/docs/devtools/performance)
+- **`total_checked_items = 22`의 근거 부재**: §5.2는 `Max possible score: 66`(= 22×3)을 전제로 가중치 100%를 산출하지만, 보고서 본문에 **22개 점검 항목의 목록·출처(엔지니어링 섹션·플랜 ID 등)**가 없어 제3자가 점수를 검증할 수 없습니다. PEDAL의 가중치 공식은 `total_checked_items`에 민감하므로, 부록 표나 §2에 항목별 체크리스트를 두는 것이 필요합니다. — [.pedal/PEDAL.md — Severity-weighted scoring](../../.pedal/PEDAL.md) (동 저장소 규격)
 
-- **엔지니어링 문서 §6.1(에러 처리)와 구현의 차이가 분석에서 다뤄지지 않았다.** Engineering은 네트워크 오류 시 “재시도 버튼”을 명시하지만, `ListPage.tsx`는 메시지 표시만 하고 재시도 UI가 없다. 상세 페이지의 404·네트워크 구분도 Engineering 표와 완전히 일치하지 않는다. “전체 100% 일치”(§11) 같은 표현은 이런 세부 항목을 포함하지 않으면 과장으로 읽힌다.
+- **의도 충실도(프롬프트) 표의 범위**: `photo-list.prompt.md` 초기 요구에는 **3열 그리드·세로 스크롤·썸네일 클릭 시 상세 이동** 등이 포함됩니다. §2.1은 API 교체·이미지 URL 위주만 표로 남기고, 상기 UX·라우팅 요구가 **명시적으로 Pass/Fail로 추적**되지 않습니다. 이후 회귀 시 “프롬프트 대비 무엇을 검증했는지”가 불명확해질 수 있습니다.
 
-- **§9의 `total_checked_items: 20`은 산출 근거가 보고서에 드러나지 않는다.** PEDAL 공식 `maxPossibleScore = total_checked_items × 3`은 타당하나(`.pedal/PEDAL.md`), 어떤 20개 항목인지 목록이 없으면 **재검증·감사**가 어렵다. — [PEDAL severity-weighted scoring](../../.pedal/PEDAL.md#severity-weighted-scoring)
-
-- **컴포넌트 다이어그램과 구현의 이름 불일치가 언급되지 않았다.** Engineering §2.1에는 `PhotoInfo`가 있으나 §5.3 컴포넌트 목록에는 없고, 구현은 `DetailPage` 내부 마크업으로 상세를 처리한다. “구조 일치” 판단 시 다이어그램 수준의 차이를 한 줄이라도 짚는 편이 Analyze 문서의 신뢰도에 유리하다.
+- **`.env`와 버전 관리**: 분석 §3은 `.env`의 `VITE_API_URL` 사용을 “정상”으로만 서술합니다. 프로젝트 `.gitignore`에는 **`.env` 제외 규칙이 없어**, 저장소 정책에 따라 환경 파일이 추적될 경우 실수로 민감값이 커밋될 위험이 있습니다(현재 값이 공개 URL이라도 **관행** 차원의 갭). 분석 또는 학습 단계에서 `.env.example` + `.gitignore` 권장을 한 줄이라도 남기는 편이 안전합니다. — [Vite — Env Variables and Modes](https://vitejs.dev/guide/env-and-mode.html)
 
 ## Info / Suggestions
 
-- **관련 문서 표에 Plan 링크는 있으나 본문에서 Plan 요구와의 교차검증은 생략**되어 있다. Plan이 Engineering과 동일 범위라면 “Plan ↔ 코드” 한 단락만 추가해도 완성도가 올라간다.
+- **분석 템플릿 대비 축약**: `.pedal/templates/analysis.template.md`의 Related Documents(Plan·Conventions), 코드 스멜/컨벤션/아키텍처 절은 생략·압축되어 있습니다. 소규모 기능이라도 **Plan 교차 링크·conventions.md 존재 시 준수 여부** 한 줄이 있으면 Analyze 단계 완결성이 좋아집니다.
 
-- **§3.1 복잡도 표가 두 페이지의 fetch 함수만 다룬다.** “코드 품질 분석”으로서는 API 모듈·라우팅·접근성 등 우선순위가 낮더라도 범위를 한정해 적어 두면 과대 주장을 피할 수 있다.
+- **`src/lib/api.ts`의 `product: any`**: 타입 안전성·유지보수 관점에서 DummyJSON 응답용 최소 타입 또는 스키마를 두는지 여부는 Info 수준의 개선 제안입니다.
+
+- **`product.images[0]`**: 상품에 `images`가 비어 있으면 상세/목록의 `url`이 `undefined`가 될 수 있습니다. DummyJSON 샘플에서는 드물 수 있으나, 분석의 “엣지 케이스” 절이 없다면 향후 Info/Warning 후보입니다.
+
+- **테스트 범위**: `PhotoCard.test.tsx` 단일 케이스 통과는 사실이나, Retry·fetch 실패 경로·라우팅은 자동 검증에서 다루지 않습니다. PASS 판정이 “기능 완성”이 아니라 “문서화된 갭 없음”에 한정된다는 한 줄이 있으면 Learn 단계와 기대치가 맞습니다.
 
 ## Verdict
 
 **REVISE_REQUIRED**
 
-Testing 서술·만점 배점의 모순과 Vitest “구성 완료”에 대한 사실 오류는 Analyze 산출물의 신뢰를 직접적으로 깨뜨리므로, 본 문서는 수정 없이 Learn 단계로 넘기기 어렵다. 에러 처리·프롬프트 대비 검증·성능 근거는 Critical은 아니나, 수정 시 함께 보강하는 것이 좋다.
+가중치 산식 자체(이슈 0건일 때 100%)는 PEDAL 정의와 합치하나, **22항목의 감사 가능한 나열**과 **엔지니어링 문서(jsdom) 대 실제 설정(happy-dom) 불일치에 대한 정직한 갭 또는 문서 정정**이 빠져 있어, 분석 보고서를 **그대로 최종 감사 증적**으로 쓰기에는 부족합니다. 위 Warning을 반영하거나, 의도적으로 수용하지 않는 항목은 **거절 근거**를 분석 문서에 남긴 뒤 Learn으로 진행하는 것이 좋습니다.
+
+---
+
+## Intent fidelity (prompt log 대비)
+
+- **[Iterate] DummyJSON·아이콘 URL**: 구현(`api.ts`)과 §2.1 서술이 대체로 일치합니다.
+- **초기 [Plan]의 그리드·스크롤·상세 이동**: 코드 상 `PhotoGrid`·CSS 3열·라우터 사용으로 충족되는 것으로 보이나, **분석 본문의 표에는 반영되지 않음** — 위 Warning 참고.

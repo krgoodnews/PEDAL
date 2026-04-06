@@ -16,8 +16,12 @@ const ListPage: React.FC = () => {
     try {
       const data = await getPhotos();
       setPhotos(data);
-    } catch (err) {
-      setError("데이터를 불러오는데 실패했습니다.");
+    } catch (err: any) {
+      if (err.message === "RATE_LIMIT_EXCEEDED") {
+        setError("요청이 너무 많아 일시적으로 차단되었습니다. 잠시 후 다시 시도해 주세요.");
+      } else {
+        setError("데이터를 불러오는데 실패했습니다. 네트워크 상태를 확인해 주세요.");
+      }
       console.error(err);
     } finally {
       setLoading(false);
@@ -30,7 +34,7 @@ const ListPage: React.FC = () => {
 
   return (
     <Layout>
-      {loading && <p>Loading...</p>}
+      {loading && <p>Loading Products...</p>}
       {error && (
         <div className="error-message">
           <p>{error}</p>

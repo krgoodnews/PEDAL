@@ -3,14 +3,43 @@ import type { Photo } from "../types/photo";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "https://dummyjson.com";
 
-export const getPhotos = async (): Promise<Photo[]> => {
-  const response = await fetch(`${API_BASE_URL}/products?limit=100`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch products");
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const fetchWithRetry = async (url: string, retries = 3): Promise<any> => {
+  try {
+    const response = await fetch(url);
+    
+    if (response.status === 429) {
+      if (retries > 0) {
+        const retryAfter = response.headers.get("Retry-After");
+        const delay = retryAfter ? parseInt(retryAfter) * 1000 : 5000;
+        console.warn(`Rate limit hit. Retrying after ${delay}ms...`);
+        await sleep(delay);
+        return fetchWithRetry(url, retries - 1);
+      }
+      throw new Error("RATE_LIMIT_EXCEEDED");
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP_ERROR_${response.status}`);
+    }
+
+    return response.json();
+  } catch (error: any) {
+    if (error.message === "RATE_LIMIT_EXCEEDED" || error.message.startsWith("HTTP_ERROR_")) {
+      throw error;
+    }
+    if (retries > 0) {
+      await sleep(2000);
+      return fetchWithRetry(url, retries - 1);
+    }
+    throw error;
   }
-  const data = await response.json();
+};
+
+export const getPhotos = async (): Promise<Photo[]> => {
+  const data = await fetchWithRetry(`${API_BASE_URL}/products?limit=100`);
   
-  // DummyJSON 상품 데이터를 Photo 인터페이스로 매핑
   return data.products.map((product: any) => ({
     id: product.id,
     title: product.title,
@@ -22,11 +51,7 @@ export const getPhotos = async (): Promise<Photo[]> => {
 };
 
 export const getPhotoById = async (id: number): Promise<Photo> => {
-  const response = await fetch(`${API_BASE_URL}/products/${id}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch product detail");
-  }
-  const product = await response.json();
+  const product = await fetchWithRetry(`${API_BASE_URL}/products/${id}`);
   
   return {
     id: product.id,
