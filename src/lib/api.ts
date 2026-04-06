@@ -1,20 +1,39 @@
 // src/lib/api.ts
 import type { Photo } from "../types/photo";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://jsonplaceholder.typicode.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://dummyjson.com";
 
 export const getPhotos = async (): Promise<Photo[]> => {
-  const response = await fetch(`${API_BASE_URL}/photos?_limit=100`);
+  const response = await fetch(`${API_BASE_URL}/products?limit=100`);
   if (!response.ok) {
-    throw new Error("Failed to fetch photos");
+    throw new Error("Failed to fetch products");
   }
-  return response.json();
+  const data = await response.json();
+  
+  // DummyJSON 상품 데이터를 Photo 인터페이스로 매핑
+  return data.products.map((product: any) => ({
+    id: product.id,
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    url: product.images[0],
+    thumbnailUrl: `https://dummyjson.com/icon/product_${product.id}/500`
+  }));
 };
 
 export const getPhotoById = async (id: number): Promise<Photo> => {
-  const response = await fetch(`${API_BASE_URL}/photos/${id}`);
+  const response = await fetch(`${API_BASE_URL}/products/${id}`);
   if (!response.ok) {
-    throw new Error("Failed to fetch photo detail");
+    throw new Error("Failed to fetch product detail");
   }
-  return response.json();
+  const product = await response.json();
+  
+  return {
+    id: product.id,
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    url: product.images[0],
+    thumbnailUrl: `https://dummyjson.com/icon/product_${product.id}/500`
+  };
 };
