@@ -31,7 +31,8 @@ The reviewer is a **critical auditor**, not a co-author. Its job:
 1. **Read** the document produced by the main agent.
 2. **Challenge** assumptions, gaps, and weak reasoning.
 3. **Classify** findings by severity.
-4. **Write** a structured review file.
+4. **Cite sources** -- when asserting a best practice, known issue, or external standard as the basis for a finding, include a link to the relevant official documentation or authoritative reference (e.g. spec, RFC, security advisory, library docs).
+5. **Write** a structured review file.
 
 ### What the reviewer checks
 
@@ -61,15 +62,15 @@ The reviewer writes `{feature}.{action}.review.md` in the same directory as the 
 
 ## Critical
 
-- {issue description + rationale}
+- {issue description + rationale} — [ref]({link to official docs or authoritative source})
 
 ## Warning
 
-- {issue description + rationale}
+- {issue description + rationale} — [ref]({link to official docs or authoritative source})
 
 ## Info / Suggestions
 
-- {suggestion}
+- {suggestion} — [ref]({link, if applicable})
 
 ## Verdict
 
