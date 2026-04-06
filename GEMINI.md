@@ -9,9 +9,6 @@ description: |
   Use proactively when user mentions PDCA cycle, planning, design documents,
   gap analysis, iteration, or completion reports.
 
-  Triggers: pedal, pdca, plan, engineering, design, analyze, check, learn, report, status, next, iterate,
-  계획, 설계, 분석, 검증, 보고서, 반복, 개선,
-
   Do NOT use for: simple one-line fixes, non-development tasks
 
 argument-hint: "[plan|engineering|do|analyze|iterate|learn|archive|status|next] [feature]"
@@ -29,43 +26,34 @@ allowed-tools:
   - web_fetch
 
 imports:
-  - templates/plan.template.md
-  - templates/design.template.md
-  - templates/analysis.template.md
-  - templates/report.template.md
-
-agents:
-  analyze: gap-detector
-  iterate: pdca-iterator
-  report: report-generator
-
-context: session
-memory: project
-pdca-phase: all
+  - .pedal/templates/plan.template.md
+  - .pedal/templates/engineering.template.md
+  - .pedal/templates/analysis.template.md
+  - .pedal/templates/learn.template.md
 
 task-template:
-  subject: "PDCA {action} - {feature}"
-  description: "Execute PDCA {action} phase for feature '{feature}'"
-  activeForm: "Executing PDCA {action}"
+  subject: "PEDAL {action} - {feature}"
+  description: "Execute PEDAL {action} phase for feature '{feature}'"
+  activeForm: "Executing PEDAL {action}"
 ---
 
-# PDCA Skill
+# PEDAL Skill
 
-> Unified Skill for managing PDCA cycle. Supports the entire Plan → Design → Do → Check → Act flow.
+> Unified Skill for managing PEDAL cycle. Supports the entire Plan → Engineering → Do → Analyze → Learn flow.
 
 ## Arguments
 
-| Argument            | Description                | Example                   |
-| ------------------- | -------------------------- | ------------------------- |
-| `plan [feature]`    | Create Plan document       | `/pdca plan user-auth`    |
-| `design [feature]`  | Create Design document     | `/pdca design user-auth`  |
-| `do [feature]`      | Do phase guide             | `/pdca do user-auth`      |
-| `analyze [feature]` | Run Gap analysis (Check)   | `/pdca analyze user-auth` |
-| `iterate [feature]` | Auto improvement (Act)     | `/pdca iterate user-auth` |
-| `report [feature]`  | Generate completion report | `/pdca report user-auth`  |
-| `archive [feature]` | Archive PDCA documents     | `/pdca archive user-auth` |
-| `status`            | Show current status        | `/pdca status`            |
-| `next`              | Guide to next phase        | `/pdca next`              |
+| Argument                | Description                               | Example                        |
+| ----------------------- | ----------------------------------------- | ------------------------------ |
+| `plan [feature]`        | Create Plan document                      | `/pedal plan user-auth`        |
+| `engineering [feature]` | Create Engineering document               | `/pedal engineering user-auth` |
+| `do [feature]`          | Do phase guide                            | `/pedal do user-auth`          |
+| `analyze [feature]`     | Run Gap analysis (Check)                  | `/pedal analyze user-auth`     |
+| `iterate [feature]`     | Auto improvement (Act)                    | `/pedal iterate user-auth`     |
+| `learn [feature]`       | Write Wiki and generate completion report | `/pedal learn user-auth`       |
+| `archive [feature]`     | Archive PEDAL documents                   | `/pedal archive user-auth`     |
+| `status`                | Show current status                       | `/pedal status`                |
+| `next`                  | Guide to next phase                       | `/pedal next`                  |
 
 ## Action Details
 
@@ -97,21 +85,20 @@ task-template:
 ### iterate (Act Phase)
 
 1. Check results (when matchRate < 90%)
-2. Call pdca-iterator agent
-3. Auto-fix and re-verify
-4. Max 5 iterations
+2. Auto-fix and re-verify
+3. Max 5 iterations
 
-### report (Completion Report)
+### learn (wiki and report)
 
 1. Verify Check >= 90%
-2. Call report-generator agent
+2. 이번 PEDAL 사이클에서 진행한 내용을 바탕으로 프로젝트의 Wiki를 업데이트 하세요.
 3. Create completion report
 4. Push & Create PR (PR의 내용은 report.md의 내용을 기반으로 작성)
 
-## PDCA Flow
+## PEDAL Flow
 
 ```
-[Plan] ✅ → [Design] ✅ → [Do] ✅ → [Check] 🔄 → [Act] ⏳ → [Report] 📋
+[Plan] → [Engineering] → [Do] → [Analyze] → [Iterate] → [Learn]
                                        ↑_________|
                                     (if < 90%)
 ```
@@ -123,23 +110,23 @@ task-template:
 
 ## References
 
-- `${extensionPath}/templates/plan.template.md`
-- `${extensionPath}/templates/design.template.md`
-- `${extensionPath}/templates/analysis.template.md`
-- `${extensionPath}/templates/report.template.md`
+- .pedal/templates/plan.template.md
+- .pedal/templates/engineering.template.md
+- .pedal/templates/analysis.template.md
+- .pedal/templates/learn.template.md
 
 ## Gemini Added Memories
 
-- When executing the `/pdca design` phase, always include an ASCII Art visualization of the expected user interface in the generated markdown document.
-- [PDCA Git Workflow Automation]: When executing `/pdca plan`, first git pull origin main, then create and checkout a new branch from main named `feature/{feature_name}` or `fix/{error_name}`. For every PDCA step, automatically commit changes.
-- [Worktree-Centric Parallelism]: To prevent Working Directory pollution during parallel PDCA cycles, prefer using `git worktree add ../{project_name}-{feature_name} feature/{feature_name}` for each new feature. This allows multiple agents or tasks to run in physically separate directories without interfering with each other's Git Index or file state. Maintain the existing strategy of creating branches at the `plan` phase for clear isolation.
-- When updating .pdca-status.json or writing any PDCA timestamps, ALWAYS use the actual current system timestamp (e.g., $(date -u +"%Y-%m-%dT%H:%M:%SZ")) instead of hardcoded or sequential arbitrary times.
+- When executing the `/pedal design` phase, always include an ASCII Art visualization of the expected user interface in the generated markdown document.
+- [PEDAL Git Workflow Automation]: When executing `/pedal plan`, first git pull origin main, then create and checkout a new branch from main named `feature/{feature_name}` or `fix/{error_name}`. For every PEDAL step, automatically commit changes.
+- [Worktree-Centric Parallelism]: To prevent Working Directory pollution during parallel PEDAL cycles, prefer using `git worktree add ../{project_name}-{feature_name} feature/{feature_name}` for each new feature. This allows multiple agents or tasks to run in physically separate directories without interfering with each other's Git Index or file state. Maintain the existing strategy of creating branches at the `plan` phase for clear isolation.
+- When updating .pedal-status.json or writing any PEDAL timestamps, ALWAYS use the actual current system timestamp (e.g., $(date -u +"%Y-%m-%dT%H:%M:%SZ")) instead of hardcoded or sequential arbitrary times.
 - [Git Commit Message Format]: When committing changes, use the format: `[type]: [gitmoji] [description]` starting with a lowercase letter for the type. Example: `feature: ✨ Implement web-canvas-preview logic and simulator UI` instead of `✨ Feature: ...`. Types can be feature, fix, docs, chore, style, refactor, etc.
 - [Git Commit Message Format]: When committing changes, use the format: `[type]: [gitmoji] [description]` starting with a lowercase letter for the type. Use `feat` instead of `feature`. Example: `feat: ✨ Implement web-canvas-preview logic and simulator UI`. Types: feat, fix, docs, chore, style, refactor, etc.
-- Always write PDCA markdown documents (Plan, Design, Analysis, Report) in natural Korean.
+- Always write PEDAL markdown documents (Plan, Design, Analysis, Report) in natural Korean.
 - When creating a Pull Request (PR) title, ALWAYS include the appropriate Gitmoji at the beginning, matching the format and position used in the commit messages (e.g., 'feat: ✨ 기능 이름').
 - 작업 완료 또는 사용자 승인 후에는 항상 osascript를 사용하여 macOS 알림을 보냅니다. 예: osascript -e 'display notification "작업이 완료되었습니다!" with title "Gemini CLI"'
 - 작업 완료 시 ./scripts/bkit-notify.sh를 사용하여 알림을 보냅니다. 이 스크립트는 현재 사용 중인 터미널 앱으로 포커스를 유도합니다.
-- [PDCA Workflow Automation]: `/pdca report` 단계가 완료되면 자동으로 `git push`를 수행하고, 생성된 `{feature}.report.md` 파일의 내용을 본문으로 사용하여 GitHub Pull Request(`gh pr create`)를 생성한다. PR 제목에는 적절한 Gitmoji를 포함한다.
-- [PDCA Workflow Automation]: `/pdca report` 단계가 완료되어 `gh pr create`로 PR이 생성되면, 출력된 PR URL을 `open` 명령어를 사용하여 브라우저에서 즉시 연다. 이 과정은 별도의 사용자 요청 없이 자동으로 수행된다.
-- [Strict Workflow Mandate]: `/pdca plan` 명령을 수행할 때 절대로 스스로(Automatically) 'Plan Mode'로 전환하지 않는다. 계획(Plan) 문서는 일반 모드(Normal Mode)에서 작성하며, 사용자에게 직접적인 진행 상황을 보고한다. 이 규칙은 최우선순위(Highest Priority)로 적용된다.
+- [PEDAL Workflow Automation]: `/pedal report` 단계가 완료되면 자동으로 `git push`를 수행하고, 생성된 `{feature}.report.md` 파일의 내용을 본문으로 사용하여 GitHub Pull Request(`gh pr create`)를 생성한다. PR 제목에는 적절한 Gitmoji를 포함한다.
+- [PEDAL Workflow Automation]: `/pedal report` 단계가 완료되어 `gh pr create`로 PR이 생성되면, 출력된 PR URL을 `open` 명령어를 사용하여 브라우저에서 즉시 연다. 이 과정은 별도의 사용자 요청 없이 자동으로 수행된다.
+- [Strict Workflow Mandate]: `/pedal plan` 명령을 수행할 때 절대로 스스로(Automatically) 'Plan Mode'로 전환하지 않는다 (PEDAL Cycle를 진행할 때 'enter_plan_mode' Tool 호출 금지). 계획(Plan) 문서는 일반 모드(Normal Mode)에서 작성하며, 사용자에게 직접적인 진행 상황을 보고한다.
