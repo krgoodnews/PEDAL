@@ -126,7 +126,36 @@ variables:
 
 ---
 
-## 6. Lessons Learned & Retrospective
+## 6. Wiki Update
+
+> Update `docs/wiki/{feature}.wiki.md` with verified facts from this PEDAL cycle.
+
+### 6.1 Wiki Checklist
+
+- [ ] Feature overview matches current implementation
+- [ ] Architecture decisions documented
+- [ ] Key implementation details recorded
+- [ ] Screen layouts included as ASCII Art (for UI-bearing features)
+- [ ] API reference documented (if applicable)
+- [ ] Configuration and setup notes added
+- [ ] File locations and module structure documented
+
+### 6.2 Wiki Guidelines
+
+- Document only **verified facts** that match the current project state.
+- Write in a format useful for both **humans reading guides** and **AI agents performing future tasks**.
+- For mobile or web features, include **ASCII Art** depicting screen layouts and component hierarchy.
+- Keep the wiki as the **single source of truth** for feature knowledge.
+
+### 6.3 Wiki Location
+
+```
+docs/wiki/{feature}.wiki.md
+```
+
+---
+
+## 7. Lessons Learned & Retrospective
 
 ### 6.1 What Went Well (Keep)
 
@@ -148,9 +177,9 @@ variables:
 
 ---
 
-## 7. Process Improvement Suggestions
+## 8. Process Improvement Suggestions
 
-### 7.1 PEDAL Process
+### 8.1 PEDAL Process
 
 | Phase       | Current                                | Improvement Suggestion          |
 | ----------- | -------------------------------------- | ------------------------------- |
@@ -159,7 +188,7 @@ variables:
 | Do          | Poor engineering document reference    | Introduce engineering checklist  |
 | Analyze     | Manual analysis                        | Introduce automation tools      |
 
-### 7.2 Tools/Environment
+### 8.2 Tools/Environment
 
 | Area    | Improvement Suggestion | Expected Benefit        |
 | ------- | ---------------------- | ----------------------- |
@@ -168,15 +197,15 @@ variables:
 
 ---
 
-## 8. Next Steps
+## 9. Next Steps
 
-### 8.1 Immediate
+### 9.1 Immediate
 
 - [ ] Production deployment
 - [ ] Monitoring setup
 - [ ] User guide creation
 
-### 8.2 Next PEDAL Cycle
+### 9.2 Next PEDAL Cycle
 
 | Item             | Priority | Expected Start |
 | ---------------- | -------- | -------------- |
@@ -185,7 +214,7 @@ variables:
 
 ---
 
-## 9. Changelog
+## 10. Changelog
 
 ### v1.0.0 ({date})
 

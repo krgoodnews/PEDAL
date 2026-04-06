@@ -21,16 +21,12 @@ variables:
 > **Status**: Draft
 > **Planning Doc**: [{feature}.plan.md](../01-plan/features/{feature}.plan.md)
 
-### Pipeline References (if applicable)
+### Related Documents
 
-| Phase   | Document                                        | Status    |
-| ------- | ----------------------------------------------- | --------- |
-| Phase 1 | [Schema Definition](../01-plan/schema.md)       | ✅/❌/N/A |
-| Phase 2 | [Coding Conventions](../01-plan/conventions.md) | ✅/❌/N/A |
-| Phase 3 | [Mockup](../02-engineering/mockup/{feature}.md)      | ✅/❌/N/A |
-| Phase 4 | [API Spec](../02-engineering/api/{feature}.md)       | ✅/❌/N/A |
-
-> **Note**: If Pipeline documents exist, reference them in the relevant sections below.
+| Document                                        | Status    |
+| ----------------------------------------------- | --------- |
+| [Plan](../01-plan/features/{feature}.plan.md)   | ✅/❌/N/A |
+| [Conventions](../01-plan/conventions.md)         | ✅/❌/N/A |
 
 ---
 
@@ -77,15 +73,15 @@ User Input → Validation → Business Logic → Data Storage → Response
 
 ### 3.1 Entity Definition
 
-```typescript
-// {Entity name}
-interface {Entity} {
-  id: string;           // Unique identifier
-  createdAt: Date;      // Creation timestamp
-  updatedAt: Date;      // Last update timestamp
-  // Additional fields...
-}
 ```
+{Entity name}
+- id: unique identifier
+- createdAt: creation timestamp
+- updatedAt: last update timestamp
+- {additional fields...}
+```
+
+> Provide type definitions in the project's primary language.
 
 ### 3.2 Entity Relationships
 
@@ -220,11 +216,11 @@ Home → Login → Dashboard → Use Feature → View Results
 
 ### 8.1 Test Scope
 
-| Type             | Target         | Tool        |
-| ---------------- | -------------- | ----------- |
-| Unit Test        | Business logic | Jest/Vitest |
-| Integration Test | API endpoints  | Supertest   |
-| E2E Test         | User scenarios | Playwright  |
+| Type             | Target         | Tool          |
+| ---------------- | -------------- | ------------- |
+| Unit Test        | Business logic | {test runner} |
+| Integration Test | API endpoints  | {test tool}   |
+| E2E Test         | User scenarios | {e2e tool}    |
 
 ### 8.2 Test Cases (Key)
 
@@ -234,18 +230,18 @@ Home → Login → Dashboard → Use Feature → View Results
 
 ---
 
-## 9. Clean Architecture
+## 9. Architecture
 
-> Reference: `docs/01-plan/conventions.md` or Phase 2 Pipeline output
+> Reference: `docs/01-plan/conventions.md` if available
 
 ### 9.1 Layer Structure
 
-| Layer              | Responsibility                                    | Location                                    |
-| ------------------ | ------------------------------------------------- | ------------------------------------------- |
-| **Presentation**   | UI components, hooks, pages                       | `src/components/`, `src/hooks/`, `src/app/` |
-| **Application**    | Use cases, services, business logic orchestration | `src/services/`, `src/features/*/hooks/`    |
-| **Domain**         | Entities, types, core business rules              | `src/types/`, `src/domain/`                 |
-| **Infrastructure** | API clients, DB, external services                | `src/lib/`, `src/api/`                      |
+| Layer              | Responsibility                                    | Location        |
+| ------------------ | ------------------------------------------------- | --------------- |
+| **Presentation**   | UI, views, user-facing components                 | {project paths} |
+| **Application**    | Use cases, services, business logic orchestration | {project paths} |
+| **Domain**         | Entities, types, core business rules              | {project paths} |
+| **Infrastructure** | API clients, DB, external services                | {project paths} |
 
 ### 9.2 Dependency Rules
 
@@ -264,77 +260,34 @@ Home → Login → Dashboard → Use Feature → View Results
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 9.3 File Import Rules
+### 9.3 This Feature's Layer Assignment
 
-| From           | Can Import                          | Cannot Import             |
-| -------------- | ----------------------------------- | ------------------------- |
-| Presentation   | Application, Domain                 | Infrastructure directly   |
-| Application    | Domain, Infrastructure              | Presentation              |
-| Domain         | Nothing external (pure types/logic) | All external layers       |
-| Infrastructure | Domain only                         | Application, Presentation |
-
-### 9.4 This Feature's Layer Assignment
-
-| Component    | Layer          | Location                    |
-| ------------ | -------------- | --------------------------- |
-| {ComponentA} | Presentation   | `src/components/{feature}/` |
-| {ServiceA}   | Application    | `src/services/{feature}.ts` |
-| {TypeA}      | Domain         | `src/types/{feature}.ts`    |
-| {ApiClient}  | Infrastructure | `src/lib/api/{feature}.ts`  |
+| Component  | Layer          | Location          |
+| ---------- | -------------- | ----------------- |
+| {module_a} | Presentation   | {path}            |
+| {module_b} | Application    | {path}            |
+| {module_c} | Domain         | {path}            |
+| {module_d} | Infrastructure | {path}            |
 
 ---
 
 ## 10. Coding Convention Reference
 
-> Reference: `docs/01-plan/conventions.md` or Phase 2 Pipeline output
+> Reference: `docs/01-plan/conventions.md` if available. Adapt to the project's language and framework.
 
 ### 10.1 Naming Conventions
 
-| Target            | Rule             | Example                           |
-| ----------------- | ---------------- | --------------------------------- |
-| Components        | PascalCase       | `UserProfile`, `LoginForm`        |
-| Functions         | camelCase        | `getUserById()`, `handleSubmit()` |
-| Constants         | UPPER_SNAKE_CASE | `MAX_RETRY_COUNT`, `API_BASE_URL` |
-| Types/Interfaces  | PascalCase       | `UserProfile`, `ApiResponse`      |
-| Files (component) | PascalCase.tsx   | `UserProfile.tsx`                 |
-| Files (utility)   | camelCase.ts     | `formatDate.ts`                   |
-| Folders           | kebab-case       | `user-profile/`, `auth-provider/` |
+| Target     | Rule       | Example          |
+| ---------- | ---------- | ---------------- |
+| {category} | {rule}     | {example}        |
+| {category} | {rule}     | {example}        |
+| {category} | {rule}     | {example}        |
 
-### 10.2 Import Order
-
-```typescript
-// 1. External libraries
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-
-// 2. Internal absolute imports
-import { Button } from "@/components/ui";
-import { userService } from "@/services/user";
-
-// 3. Relative imports
-import { useLocalState } from "./hooks";
-
-// 4. Type imports
-import type { User } from "@/types";
-
-// 5. Styles
-import "./styles.css";
-```
-
-### 10.3 Environment Variables
-
-| Prefix         | Purpose                | Scope       | Example                         |
-| -------------- | ---------------------- | ----------- | ------------------------------- |
-| `NEXT_PUBLIC_` | Client-side accessible | Browser     | `NEXT_PUBLIC_API_URL`           |
-| `DB_`          | Database connections   | Server only | `DB_HOST`, `DB_PASSWORD`        |
-| `API_`         | External API keys      | Server only | `API_STRIPE_SECRET`             |
-| `AUTH_`        | Authentication secrets | Server only | `AUTH_SECRET`, `AUTH_GOOGLE_ID` |
-
-### 10.4 This Feature's Conventions
+### 10.2 This Feature's Conventions
 
 | Item              | Convention Applied |
 | ----------------- | ------------------ |
-| Component naming  | {convention used}  |
+| Naming            | {convention used}  |
 | File organization | {convention used}  |
 | State management  | {convention used}  |
 | Error handling    | {convention used}  |
@@ -346,20 +299,49 @@ import "./styles.css";
 ### 11.1 File Structure
 
 ```
-src/
-├── features/{feature}/
-│   ├── components/
-│   ├── hooks/
-│   ├── api/
-│   └── types/
+{project root}/
+├── {feature module}/
+│   ├── {sub-module}/
+│   └── {sub-module}/
 ```
 
 ### 11.2 Implementation Order
 
 1. [ ] Define data model
-2. [ ] Implement API
-3. [ ] Implement UI components
+2. [ ] Implement core logic / API
+3. [ ] Implement UI / presentation
 4. [ ] Integration and testing
+
+---
+
+## 12. Self-Review Checklist (Do → Analyze Gate)
+
+> Complete this checklist after implementation, before running `/pedal analyze {feature}`.
+
+### 12.1 Implementation Completeness
+
+- [ ] All engineering requirements implemented
+- [ ] Types / data models properly defined
+- [ ] Error handling complete
+
+### 12.2 Code Quality
+
+- [ ] No compiler / type errors
+- [ ] No linter warnings
+- [ ] No hardcoded values (use constants/config)
+- [ ] No debug logging in production code
+
+### 12.3 Security
+
+- [ ] All user input validated
+- [ ] Secrets stored securely (env vars, not hardcoded)
+- [ ] Proper authorization enforced
+
+### 12.4 Ready for Analyze
+
+```bash
+/pedal analyze {feature}
+```
 
 ---
 

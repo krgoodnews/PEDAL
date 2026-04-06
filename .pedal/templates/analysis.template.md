@@ -20,14 +20,13 @@ variables:
 > **Date**: {date}
 > **Engineering Doc**: [{feature}.engineering.md](../02-engineering/features/{feature}.engineering.md)
 
-### Pipeline References (for verification)
+### Related Documents (for verification)
 
-| Phase   | Document                                  | Verification Target            |
-| ------- | ----------------------------------------- | ------------------------------ |
-| Phase 1 | [Schema](../01-plan/schema.md)            | Terminology consistency        |
-| Phase 2 | [Conventions](../01-plan/conventions.md)  | Convention compliance          |
-| Phase 4 | [API Spec](../02-engineering/api/{feature}.md) | API implementation match       |
-| Phase 8 | [Review Checklist](./phase-8-review.md)   | Architecture/Convention review |
+| Document                                                        | Verification Target   |
+| --------------------------------------------------------------- | --------------------- |
+| [Plan](../01-plan/features/{feature}.plan.md)                   | Requirements match    |
+| [Engineering](../02-engineering/features/{feature}.engineering.md) | Implementation match  |
+| [Conventions](../01-plan/conventions.md)                        | Convention compliance |
 
 ---
 
@@ -69,7 +68,7 @@ variables:
 
 | Engineering Component | Implementation File             | Status             |
 | ---------------- | ------------------------------- | ------------------ |
-| {ComponentA}     | src/components/{ComponentA}.tsx | ✅ Match           |
+| {ComponentA}     | {actual path}                   | ✅ Match           |
 | {ComponentB}     | -                               | ❌ Not implemented |
 
 ### 2.4 Match Rate Summary
@@ -144,14 +143,14 @@ variables:
 
 ### 5.2 Uncovered Areas
 
-- `src/features/{feature}/handlers/errorHandler.ts`
-- `src/features/{feature}/utils/parser.ts`
+- {uncovered file 1}
+- {uncovered file 2}
 
 ---
 
-## 6. Clean Architecture Compliance
+## 6. Architecture Compliance
 
-> Reference: `docs/02-engineering/{feature}.engineering.md` Section 9 (Clean Architecture)
+> Reference: Engineering document Architecture section
 
 ### 6.1 Layer Dependency Verification
 
@@ -164,30 +163,28 @@ variables:
 
 ### 6.2 Dependency Violations
 
-| File                      | Layer        | Violation                     | Recommendation           |
-| ------------------------- | ------------ | ----------------------------- | ------------------------ |
-| `components/UserList.tsx` | Presentation | Imports `@/lib/api` directly  | Use service hook instead |
-| `services/user.ts`        | Application  | Imports `@/components/Button` | Remove UI dependency     |
-| -                         | -            | -                             | -                        |
+| File   | Layer   | Violation     | Severity    | Recommendation |
+| ------ | ------- | ------------- | ----------- | -------------- |
+| {file} | {layer} | {violation}   | 🔴/🟡/🟢   | {fix}          |
 
 ### 6.3 Layer Assignment Verification
 
-| Component    | Engineered Layer | Actual Location             | Status |
-| ------------ | -------------- | --------------------------- | ------ |
-| {ComponentA} | Presentation   | `src/components/{feature}/` | ✅     |
-| {ServiceA}   | Application    | `src/services/{feature}.ts` | ✅     |
-| {TypeA}      | Domain         | `src/types/{feature}.ts`    | ✅     |
-| {ApiClient}  | Infrastructure | `src/lib/api/{feature}.ts`  | ✅     |
+| Component  | Engineered Layer | Actual Location | Status |
+| ---------- | ---------------- | --------------- | ------ |
+| {module_a} | Presentation     | {actual path}   | ✅/❌  |
+| {module_b} | Application      | {actual path}   | ✅/❌  |
+| {module_c} | Domain           | {actual path}   | ✅/❌  |
+| {module_d} | Infrastructure   | {actual path}   | ✅/❌  |
 
 ### 6.4 Architecture Score
 
 ```
 ┌─────────────────────────────────────────────┐
-│  Architecture Compliance: 85%                │
+│  Architecture Compliance: {score}%           │
 ├─────────────────────────────────────────────┤
-│  ✅ Correct layer placement: 17/20 files     │
-│  ⚠️ Dependency violations:   2 files         │
-│  ❌ Wrong layer:              1 file         │
+│  ✅ Correct layer placement: {n}/{total}     │
+│  ⚠️ Dependency violations:   {n} files       │
+│  ❌ Wrong layer:              {n} files       │
 └─────────────────────────────────────────────┘
 ```
 
@@ -195,60 +192,30 @@ variables:
 
 ## 7. Convention Compliance
 
-> Reference: `docs/01-plan/conventions.md` or Phase 2 Pipeline output
+> Reference: `docs/01-plan/conventions.md` if available
 
 ### 7.1 Naming Convention Check
 
-| Category          | Convention       | Files Checked | Compliance | Violations                            |
-| ----------------- | ---------------- | :-----------: | :--------: | ------------------------------------- |
-| Components        | PascalCase       |      15       |    100%    | -                                     |
-| Functions         | camelCase        |      42       |    98%     | `GetUser` → `getUser`                 |
-| Constants         | UPPER_SNAKE_CASE |       8       |    100%    | -                                     |
-| Files (component) | PascalCase.tsx   |      15       |    93%     | `userProfile.tsx` → `UserProfile.tsx` |
-| Files (utility)   | camelCase.ts     |      12       |    100%    | -                                     |
-| Folders           | kebab-case       |      10       |    90%     | `userProfile/` → `user-profile/`      |
+| Category   | Convention | Files Checked | Compliance | Violations |
+| ---------- | ---------- | :-----------: | :--------: | ---------- |
+| {category} | {rule}     |    {count}    |   {pct}%   | {details}  |
+| {category} | {rule}     |    {count}    |   {pct}%   | {details}  |
 
 ### 7.2 Folder Structure Check
 
-| Expected Path             | Exists | Contents Correct | Notes                      |
-| ------------------------- | :----: | :--------------: | -------------------------- |
-| `src/components/`         |   ✅   |        ✅        |                            |
-| `src/features/{feature}/` |   ✅   |        ✅        |                            |
-| `src/services/`           |   ✅   |        ⚠️        | Some services in features/ |
-| `src/types/`              |   ✅   |        ✅        |                            |
-| `src/lib/`                |   ✅   |        ✅        |                            |
+| Expected Path | Exists | Contents Correct | Notes     |
+| ------------- | :----: | :--------------: | --------- |
+| {path}        |  ✅/❌ |      ✅/⚠️/❌    | {notes}   |
 
-### 7.3 Import Order Check
-
-- [x] External libraries first
-- [x] Internal absolute imports second (`@/...`)
-- [ ] Relative imports third (`./...`)
-- [x] Type imports fourth (`import type`)
-- [x] Styles last
-
-**Violations Found:**
-| File | Issue | Line |
-|------|-------|------|
-| `components/Header.tsx` | Type import before relative import | L5-6 |
-
-### 7.4 Environment Variable Check
-
-| Variable    | Convention            | Actual                | Status          |
-| ----------- | --------------------- | --------------------- | --------------- |
-| API URL     | `NEXT_PUBLIC_API_URL` | `NEXT_PUBLIC_API_URL` | ✅              |
-| DB Host     | `DB_HOST`             | `DATABASE_HOST`       | ⚠️ Non-standard |
-| Auth Secret | `AUTH_SECRET`         | `AUTH_SECRET`         | ✅              |
-
-### 7.5 Convention Score
+### 7.3 Convention Score
 
 ```
 ┌─────────────────────────────────────────────┐
-│  Convention Compliance: 92%                  │
+│  Convention Compliance: {score}%             │
 ├─────────────────────────────────────────────┤
-│  Naming:          95%                        │
-│  Folder Structure: 90%                       │
-│  Import Order:     88%                       │
-│  Env Variables:    95%                       │
+│  Naming:           {score}%                  │
+│  Folder Structure: {score}%                  │
+│  Other:            {score}%                  │
 └─────────────────────────────────────────────┘
 ```
 
@@ -258,37 +225,75 @@ variables:
 
 ```
 ┌─────────────────────────────────────────────┐
-│  Overall Score: 78/100                       │
+│  Overall Score: {score}/100                  │
 ├─────────────────────────────────────────────┤
-│  Engineering Match:   75 points              │
-│  Code Quality:        70 points              │
-│  Security:            65 points              │
-│  Testing:             70 points              │
-│  Performance:         80 points              │
-│  Architecture:        85 points (New)        │
-│  Convention:          92 points (New)        │
+│  Engineering Match:   {score} points         │
+│  Code Quality:        {score} points         │
+│  Security:            {score} points         │
+│  Testing:             {score} points         │
+│  Performance:         {score} points         │
+│  Architecture:        {score} points         │
+│  Convention:          {score} points         │
 └─────────────────────────────────────────────┘
 ```
 
 ---
 
-## 9. Recommended Actions
+## 9. Severity-Weighted Match Rate
 
-### 9.1 Immediate (within 24 hours)
+Issues are weighted by severity per PEDAL rules. 🔴 Critical issues **force iterate** regardless of overall matchRate.
+
+### 9.1 Issue Summary by Severity
+
+| Severity    | Count | Weight | Weighted Score |
+| ----------- | :---: | :----: | :------------: |
+| 🔴 Critical |  {n}  |   x3   |   {n × 3}     |
+| 🟡 Warning  |  {n}  |   x2   |   {n × 2}     |
+| 🟢 Info     |  {n}  |   x1   |   {n × 1}     |
+| **Total**   |       |        |   {total}      |
+
+### 9.2 Weighted Match Rate
+
+```
+Total checked items:    {total_items}
+Max possible score:     {total_items × 3}
+Weighted issue score:   {weighted_score}
+Weighted Match Rate:    {(1 - weighted_score / max_possible) × 100}%
+```
+
+### 9.3 Iterate Decision
+
+```
+┌──────────────────────────────────────────────────┐
+│  Weighted Match Rate: {rate}%                     │
+│  🔴 Critical Issues:  {count}                     │
+│                                                   │
+│  Decision: ✅ PASS / ❌ ITERATE REQUIRED          │
+│  Reason:   {matchRate >= 90% AND 0 critical}     │
+│            {OR matchRate < 90%}                   │
+│            {OR critical > 0 → FORCE ITERATE}      │
+└──────────────────────────────────────────────────┘
+```
+
+---
+
+## 10. Recommended Actions
+
+### 10.1 Immediate (within 24 hours)
 
 | Priority | Item                    | File       | Assignee |
 | -------- | ----------------------- | ---------- | -------- |
 | 🔴 1     | Remove hardcoded secret | auth.ts:42 | -        |
 | 🔴 2     | Add input validation    | api.ts:15  | -        |
 
-### 9.2 Short-term (within 1 week)
+### 10.2 Short-term (within 1 week)
 
 | Priority | Item           | File          | Expected Impact             |
 | -------- | -------------- | ------------- | --------------------------- |
 | 🟡 1     | Fix N+1 query  | repository.ts | 60% response time reduction |
 | 🟡 2     | Split function | service.ts    | Improved maintainability    |
 
-### 9.3 Long-term (backlog)
+### 10.3 Long-term (backlog)
 
 | Item          | File   | Notes                   |
 | ------------- | ------ | ----------------------- |
@@ -297,7 +302,7 @@ variables:
 
 ---
 
-## 10. Engineering Document Updates Needed
+## 11. Engineering Document Updates Needed
 
 The following items require engineering document updates to match implementation:
 
@@ -307,7 +312,7 @@ The following items require engineering document updates to match implementation
 
 ---
 
-## 11. Next Steps
+## 12. Next Steps
 
 - [ ] Fix Critical issues
 - [ ] Update engineering document
