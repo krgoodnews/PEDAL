@@ -1,6 +1,6 @@
 # PEDAL Workflow
 
-> **Tool-agnostic specification.** Use this document from any AI assistant or CLI (e.g. Gemini CLI, Cursor).  
+> **Tool-agnostic specification.** Use this document from any AI assistant or CLI (e.g. Gemini CLI, Cursor).
 > Gemini-specific slash commands and hooks live in [GEMINI.md](../GEMINI.md).
 
 ## What is PEDAL?
@@ -17,9 +17,11 @@
 
 **Iterate** is a remediation loop between Analyze and Do (not a separate letter). **Archive** stores completed PEDAL artifacts for a feature.
 
+Every phase that produces a PEDAL document goes through **cross-review** by a different AI agent. See [REVIEW.md](REVIEW.md) for the full protocol.
+
 ## Phases (actions)
 
-Use natural language or your tool’s command style. Conceptually:
+Use natural language or your tool's command style. Conceptually:
 
 | Phase | Purpose | Primary output |
 | ----- | ------- | -------------- |
@@ -35,16 +37,20 @@ Use natural language or your tool’s command style. Conceptually:
 
 1. Sync main branch and create a feature branch `feature/{feature}` or `fix/{feature}` when appropriate.
 2. Ensure `docs/01-plan/features/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
-3. Optional task label: `[Plan] {feature}`
+3. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
+4. Critically evaluate the review; accept valid points, reject with justification.
+5. Optional task label: `[Plan] {feature}`
 
-> **Important:** Do not enter a special “plan-only” mode that blocks normal work. Write the Plan in normal interaction and report progress to the user.
+> **Important:** Do not enter a special "plan-only" mode that blocks normal work. Write the Plan in normal interaction and report progress to the user.
 
 ### engineering (Engineering)
 
 1. Require an approved Plan document.
 2. Create `docs/02-engineering/features/{feature}.engineering.md` from `templates/engineering.template.md`.
 3. Include ASCII art for expected UI where relevant.
-4. Optional task label: `[Engineering] {feature}` (depends on Plan)
+4. **Cross-review**: invoke the reviewer agent to produce `{feature}.engineering.review.md`.
+5. Critically evaluate the review; accept valid points, reject with justification.
+6. Optional task label: `[Engineering] {feature}` (depends on Plan)
 
 ### do (Do)
 
@@ -55,34 +61,42 @@ Do produces **code**, not a PEDAL document. Follow the Engineering document.
 3. Complete **Self-Review Checklist** (Section 12 in `engineering.template.md`) before Analyze.
 4. Optional task label: `[Do] {feature}` (depends on Engineering)
 
+> No cross-review for Do -- code quality is validated in the Analyze phase.
+
 ### analyze (Analyze)
 
 1. Run gap / quality analysis (e.g. gap-detector pattern).
 2. Compare Engineering document vs implementation.
 3. Compute **severity-weighted match rate** (see below).
 4. Any **Critical** issue forces iterate regardless of aggregate match rate.
-5. Optional task label: `[Analyze] {feature}`
+5. **Cross-review**: invoke the reviewer agent to produce `{feature}.analysis.review.md`.
+6. Critically evaluate the review; accept valid points, reject with justification.
+7. Optional task label: `[Analyze] {feature}`
 
 ### iterate (Improvement loop)
 
-Not a standalone PEDAL “letter”; it sits between Analyze and Do. See `templates/iterate.template.md` for Evaluator–Optimizer details.
+Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/iterate.template.md` for Evaluator-Optimizer details.
 
-1. Trigger when match rate &lt; 90% **or** any Critical issue remains.
+1. Trigger when match rate < 90% **or** any Critical issue remains.
 2. Apply fixes and re-verify.
 3. Default max 5 iterations (10 if only Critical items); stop if no improvement for 3 consecutive rounds.
 
+> No cross-review for Iterate -- it is a remediation loop, not a document phase.
+
 ### learn (Wiki + completion report)
 
-1. Require Analyze: match rate ≥ 90% and **zero** Critical issues.
+1. Require Analyze: match rate >= 90% and **zero** Critical issues.
 2. Update `docs/wiki/{feature}.wiki.md` with verified facts, agent-friendly structure, and ASCII layouts for UI surfaces.
 3. Write `docs/04-learn/{feature}.report.md` using `templates/learn.template.md`.
-4. Typical close-out: `git push`, open PR with report as body (e.g. `gh pr create`), PR title with Gitmoji, open PR URL when applicable.
+4. **Cross-review**: invoke the reviewer agent to produce `{feature}.report.review.md`.
+5. Critically evaluate the review; accept valid points, reject with justification.
+6. Typical close-out: `git push`, open PR with report as body (e.g. `gh pr create`), PR title with Gitmoji, open PR URL when applicable.
 
 ### archive (Archive)
 
 1. Create `docs/archived/{feature}/`.
 2. Move PEDAL artifacts: plan, engineering, analysis, report (and wiki copy if you version it).
-3. Remove non-PEDAL noise (ad-hoc review files, temp outputs).
+3. **Remove** review files (`*.review.md`) and other non-PEDAL noise.
 4. Set feature to `archived` in `.pedal-status.json`.
 5. Example commit message: `chore: 🗃️ Archive {feature} PEDAL documents`
 
@@ -111,21 +125,34 @@ docs/
 ## PEDAL flow
 
 ```
-[Plan] → [Engineering] → [Do] → [Analyze] ──→ [Learn] → [Archive]
-                                    │    ↑
-                                    ↓    │
-                                 [Iterate]
-                           (matchRate < 90%
-                            OR Critical)
+[Plan] → [Review] → [Engineering] → [Review] → [Do] → [Analyze] → [Review] ──→ [Learn] → [Review] → [Archive]
+                                                           │    ↑
+                                                           ↓    │
+                                                        [Iterate]
+                                                  (matchRate < 90%
+                                                   OR Critical)
 ```
+
+## Cross-review
+
+Each document-producing phase invokes a **different AI agent** as reviewer. The reviewer writes a `*.review.md` file with findings classified as Critical / Warning / Info.
+
+The main agent must **not** blindly accept the review:
+- **Accept** valid findings and update the document.
+- **Reject with justification** findings that are incorrect or out of scope.
+- **All Critical items** from the review must be addressed (accepted or rejected with reason) before proceeding.
+
+Full protocol, reviewer role definition, output format, and severity table: [REVIEW.md](REVIEW.md).
+
+Tool-specific reviewer commands are in [GEMINI.md](../GEMINI.md) and [.cursor/rules/pedal.mdc](../.cursor/rules/pedal.mdc).
 
 ## Severity-weighted scoring
 
 | Severity   | Weight | Iterate trigger |
 | ---------- | :----: | ---------------- |
-| Critical   | x3     | Always (even if ≥ 90%) |
-| Warning    | x2     | If match rate &lt; 90% |
-| Info       | x1     | If match rate &lt; 90% |
+| Critical   | x3     | Always (even if >= 90%) |
+| Warning    | x2     | If match rate < 90% |
+| Info       | x1     | If match rate < 90% |
 
 ```
 weightedScore = Σ(issue_severity_weight × issue_count)
@@ -133,7 +160,7 @@ maxPossibleScore = total_checked_items × 3
 weightedMatchRate = (1 - weightedScore / maxPossibleScore) × 100
 ```
 
-Any **Critical** issue → iterate is **mandatory**, regardless of match rate threshold.
+Any **Critical** issue -> iterate is **mandatory**, regardless of match rate threshold.
 
 ## `.pedal-status.json` schema
 
@@ -190,12 +217,12 @@ Any **Critical** issue → iterate is **mandatory**, regardless of match rate th
 
 ### Document language
 
-PEDAL markdown (Plan, Engineering, Analysis, Report, Wiki) must use the **same language as the user’s prompt**, unless the project mandates otherwise.
+PEDAL markdown (Plan, Engineering, Analysis, Report, Wiki) must use the **same language as the user's prompt**, unless the project mandates otherwise.
 
 ### Git workflow
 
 - Commit at meaningful phase boundaries.
-- Commit messages: `[type]: [gitmoji] [description]` with lowercase type (`feat`, `fix`, `docs`, `chore`, `style`, `refactor`, …).
+- Commit messages: `[type]: [gitmoji] [description]` with lowercase type (`feat`, `fix`, `docs`, `chore`, `style`, `refactor`, ...).
 - PR titles follow the same Gitmoji convention when opening PRs.
 - For parallel features, prefer isolated branches/worktrees.
 - Timestamps in `.pedal-status.json`: use real system time (e.g. `date -u +"%Y-%m-%dT%H:%M:%SZ"`), not fake sequences.
@@ -213,3 +240,4 @@ Relative to this file:
 - `templates/iterate.template.md`
 - `templates/analysis.template.md`
 - `templates/learn.template.md`
+- `REVIEW.md` (cross-review protocol)
