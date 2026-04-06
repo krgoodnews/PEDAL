@@ -1,7 +1,7 @@
 ---
 template: plan
 version: 1.0
-description: PDCA Plan phase document template with Architecture and Convention considerations
+description: PEDAL Plan phase document template with Architecture and Convention considerations
 variables:
   - feature: Feature name
   - date: Creation date (YYYY-MM-DD)
@@ -205,7 +205,7 @@ If using 9-phase Development Pipeline, check the following:
 
 ## 8. Next Steps
 
-1. [ ] Write design document (`{feature}.design.md`)
+1. [ ] Write engineering document (`{feature}.engineering.md`)
 2. [ ] Team review and approval
 3. [ ] Start implementation
 

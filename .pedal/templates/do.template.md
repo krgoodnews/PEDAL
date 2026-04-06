@@ -1,7 +1,7 @@
 ---
 template: do
 version: 1.0
-description: PDCA Do phase implementation guide template
+description: PEDAL - Do phase implementation guide template
 variables:
   - feature: Feature name
   - date: Creation date (YYYY-MM-DD)
@@ -19,7 +19,7 @@ variables:
 > **Author**: {author}
 > **Date**: {date}
 > **Status**: In Progress
-> **Design Doc**: [{feature}.design.md](../02-design/features/{feature}.design.md)
+> **Engineering Doc**: [{feature}.engineering.md](../02-engineering/features/{feature}.engineering.md)
 
 ---
 
@@ -28,7 +28,7 @@ variables:
 ### 1.1 Documents Verified
 
 - [ ] Plan document reviewed: `docs/01-plan/features/{feature}.plan.md`
-- [ ] Design document reviewed: `docs/02-design/features/{feature}.design.md`
+- [ ] Engineering document reviewed: `docs/02-engineering/features/{feature}.engineering.md`
 - [ ] Conventions understood: `CONVENTIONS.md` or `docs/01-plan/conventions.md`
 
 ### 1.2 Environment Ready
@@ -42,7 +42,7 @@ variables:
 
 ## 2. Implementation Order
 
-> Follow this order based on Design document specifications.
+> Follow this order based on Engineering document specifications.
 
 ### 2.1 Phase 1: Data Layer
 
@@ -120,9 +120,9 @@ npm install -D {dev-package1} {dev-package2}
 
 ## 5. Implementation Notes
 
-### 5.1 Design Decisions Reference
+### 5.1 Engineering Decisions Reference
 
-> Key decisions from Design document to follow during implementation.
+> Key decisions from Engineering document to follow during implementation.
 
 | Decision         | Choice   | Rationale |
 | ---------------- | -------- | --------- |
@@ -245,19 +245,19 @@ npm install -D {dev-package1} {dev-package2}
 
 ### 8.1 Self-Review Checklist
 
-- [ ] All design requirements implemented
+- [ ] All engineering requirements implemented
 - [ ] Code follows conventions
 - [ ] No hardcoded values
 - [ ] Error handling complete
 - [ ] Types properly defined
 
-### 8.2 Ready for Check Phase
+### 8.2 Ready for Analyze Phase
 
 When all items above are complete:
 
 ```bash
 # Run Gap Analysis
-/pdca analyze {feature}
+/pedal analyze {feature}
 ```
 
 ---

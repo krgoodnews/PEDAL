@@ -1,7 +1,7 @@
 ---
-template: design
+template: engineering
 version: 1.0
-description: PDCA Design phase document template (between Plan and Do) with Clean Architecture and Convention support
+description: PEDAL Engineering phase document template (between Plan and Do) with Clean Architecture and Convention support
 variables:
   - feature: Feature name
   - date: Creation date (YYYY-MM-DD)
@@ -10,7 +10,7 @@ variables:
   - version: Project version (from package.json)
 ---
 
-# {feature} Design Document
+# {feature} Engineering Document
 
 > **Summary**: {One-line description}
 >
@@ -27,8 +27,8 @@ variables:
 | ------- | ----------------------------------------------- | --------- |
 | Phase 1 | [Schema Definition](../01-plan/schema.md)       | ✅/❌/N/A |
 | Phase 2 | [Coding Conventions](../01-plan/conventions.md) | ✅/❌/N/A |
-| Phase 3 | [Mockup](../02-design/mockup/{feature}.md)      | ✅/❌/N/A |
-| Phase 4 | [API Spec](../02-design/api/{feature}.md)       | ✅/❌/N/A |
+| Phase 3 | [Mockup](../02-engineering/mockup/{feature}.md)      | ✅/❌/N/A |
+| Phase 4 | [API Spec](../02-engineering/api/{feature}.md)       | ✅/❌/N/A |
 
 > **Note**: If Pipeline documents exist, reference them in the relevant sections below.
 
@@ -36,11 +36,11 @@ variables:
 
 ## 1. Overview
 
-### 1.1 Design Goals
+### 1.1 Engineering Goals
 
-{Technical goals this design aims to achieve}
+{Technical goals this engineering phase aims to achieve}
 
-### 1.2 Design Principles
+### 1.2 Engineering Principles
 
 - {Principle 1: e.g., Single Responsibility Principle}
 - {Principle 2: e.g., Extensible architecture}

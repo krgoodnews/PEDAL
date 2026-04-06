@@ -1,7 +1,7 @@
 ---
 template: analysis
 version: 1.0
-description: PEDAL Check phase document template with Clean Architecture and Convention compliance checks
+description: PEDAL Analyze phase document template with Clean Architecture and Convention compliance checks
 variables:
   - feature: Feature name
   - date: Creation date (YYYY-MM-DD)
@@ -18,7 +18,7 @@ variables:
 > **Version**: {version}
 > **Analyst**: {author}
 > **Date**: {date}
-> **Design Doc**: [{feature}.design.md](../02-design/features/{feature}.design.md)
+> **Engineering Doc**: [{feature}.engineering.md](../02-engineering/features/{feature}.engineering.md)
 
 ### Pipeline References (for verification)
 
@@ -26,7 +26,7 @@ variables:
 | ------- | ----------------------------------------- | ------------------------------ |
 | Phase 1 | [Schema](../01-plan/schema.md)            | Terminology consistency        |
 | Phase 2 | [Conventions](../01-plan/conventions.md)  | Convention compliance          |
-| Phase 4 | [API Spec](../02-design/api/{feature}.md) | API implementation match       |
+| Phase 4 | [API Spec](../02-engineering/api/{feature}.md) | API implementation match       |
 | Phase 8 | [Review Checklist](./phase-8-review.md)   | Architecture/Convention review |
 
 ---
@@ -39,35 +39,35 @@ variables:
 
 ### 1.2 Analysis Scope
 
-- **Design Document**: `docs/02-design/features/{feature}.design.md`
+- **Engineering Document**: `docs/02-engineering/features/{feature}.engineering.md`
 - **Implementation Path**: `src/features/{feature}/`
 - **Analysis Date**: {date}
 
 ---
 
-## 2. Gap Analysis (Design vs Implementation)
+## 2. Gap Analysis (Engineering vs Implementation)
 
 ### 2.1 API Endpoints
 
-| Design                     | Implementation            | Status               | Notes         |
-| -------------------------- | ------------------------- | -------------------- | ------------- |
-| POST /api/{resource}       | POST /api/{resource}      | ✅ Match             |               |
-| GET /api/{resource}/:id    | GET /api/{resource}/:id   | ✅ Match             |               |
-| -                          | POST /api/{resource}/bulk | ⚠️ Missing in design | Added in impl |
-| DELETE /api/{resource}/:id | -                         | ❌ Not implemented   | Needs impl    |
+| Engineering                | Implementation            | Status                    | Notes         |
+| -------------------------- | ------------------------- | ------------------------- | ------------- |
+| POST /api/{resource}       | POST /api/{resource}      | ✅ Match                  |               |
+| GET /api/{resource}/:id    | GET /api/{resource}/:id   | ✅ Match                  |               |
+| -                          | POST /api/{resource}/bulk | ⚠️ Missing in engineering | Added in impl |
+| DELETE /api/{resource}/:id | -                         | ❌ Not implemented        | Needs impl    |
 
 ### 2.2 Data Model
 
-| Field     | Design Type | Impl Type | Status               |
-| --------- | ----------- | --------- | -------------------- |
-| id        | string      | string    | ✅                   |
-| email     | string      | string    | ✅                   |
-| createdAt | Date        | Date      | ✅                   |
-| metadata  | -           | object    | ⚠️ Missing in design |
+| Field     | Engineering Type | Impl Type | Status                    |
+| --------- | ---------------- | --------- | ------------------------- |
+| id        | string           | string    | ✅                        |
+| email     | string           | string    | ✅                        |
+| createdAt | Date             | Date      | ✅                        |
+| metadata  | -                | object    | ⚠️ Missing in engineering |
 
 ### 2.3 Component Structure
 
-| Design Component | Implementation File             | Status             |
+| Engineering Component | Implementation File             | Status             |
 | ---------------- | ------------------------------- | ------------------ |
 | {ComponentA}     | src/components/{ComponentA}.tsx | ✅ Match           |
 | {ComponentB}     | -                               | ❌ Not implemented |
@@ -79,7 +79,7 @@ variables:
 │  Overall Match Rate: 75%                     │
 ├─────────────────────────────────────────────┤
 │  ✅ Match:          12 items (60%)           │
-│  ⚠️ Missing design:  4 items (20%)           │
+│  ⚠️ Missing engineering: 4 items (20%)        │
 │  ❌ Not implemented:  4 items (20%)           │
 └─────────────────────────────────────────────┘
 ```
@@ -151,7 +151,7 @@ variables:
 
 ## 6. Clean Architecture Compliance
 
-> Reference: `docs/02-design/{feature}.design.md` Section 9 (Clean Architecture)
+> Reference: `docs/02-engineering/{feature}.engineering.md` Section 9 (Clean Architecture)
 
 ### 6.1 Layer Dependency Verification
 
@@ -172,7 +172,7 @@ variables:
 
 ### 6.3 Layer Assignment Verification
 
-| Component    | Designed Layer | Actual Location             | Status |
+| Component    | Engineered Layer | Actual Location             | Status |
 | ------------ | -------------- | --------------------------- | ------ |
 | {ComponentA} | Presentation   | `src/components/{feature}/` | ✅     |
 | {ServiceA}   | Application    | `src/services/{feature}.ts` | ✅     |
@@ -260,7 +260,7 @@ variables:
 ┌─────────────────────────────────────────────┐
 │  Overall Score: 78/100                       │
 ├─────────────────────────────────────────────┤
-│  Design Match:        75 points              │
+│  Engineering Match:   75 points              │
 │  Code Quality:        70 points              │
 │  Security:            65 points              │
 │  Testing:             70 points              │
@@ -297,9 +297,9 @@ variables:
 
 ---
 
-## 10. Design Document Updates Needed
+## 10. Engineering Document Updates Needed
 
-The following items require design document updates to match implementation:
+The following items require engineering document updates to match implementation:
 
 - [ ] Add POST /api/{resource}/bulk endpoint
 - [ ] Add metadata field to data model
@@ -310,7 +310,7 @@ The following items require design document updates to match implementation:
 ## 11. Next Steps
 
 - [ ] Fix Critical issues
-- [ ] Update design document
+- [ ] Update engineering document
 - [ ] Write completion report (`{feature}.report.md`)
 
 ---
