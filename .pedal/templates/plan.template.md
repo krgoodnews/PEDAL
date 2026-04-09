@@ -82,12 +82,6 @@ variables:
 - [ ] Code review completed
 - [ ] Documentation completed
 
-### 4.2 Quality Criteria
-
-- [ ] Test coverage above 80%
-- [ ] Zero lint errors
-- [ ] Build succeeds
-
 ---
 
 ## 5. Risks and Mitigation
@@ -101,13 +95,13 @@ variables:
 
 ## 6. Architecture Considerations
 
-### 6.1 Project Level Selection
+### 6.1 Architectural Approach
 
-| Level          | Characteristics                                    | Recommended For                             | Selected |
-| -------------- | -------------------------------------------------- | ------------------------------------------- | :------: |
-| **Starter**    | Simple structure (`components/`, `lib/`, `types/`) | Static sites, portfolios, landing pages     |    ☐     |
-| **Dynamic**    | Feature-based modules, services layer              | Web apps with backend, SaaS MVPs            |    ☐     |
-| **Enterprise** | Strict layer separation, DI, microservices         | High-traffic systems, complex architectures |    ☐     |
+The project follows a strict layer separation approach. Key characteristics include:
+
+- Strict separation of concerns (e.g., Presentation, Application, Domain, Infrastructure layers)
+- Dependency Injection (DI) and decoupled modules
+- Scalable architecture suitable for complex systems
 
 ### 6.2 Key Architectural Decisions
 
@@ -120,22 +114,17 @@ variables:
 | Styling          | {List project-relevant options} | {selected} | {reason}  |
 | Testing          | {List project-relevant options} | {selected} | {reason}  |
 
-### 6.3 Clean Architecture Approach
+### 6.3 Clean Architecture Target Structure
 
-```
-Selected Level: {Starter/Dynamic/Enterprise}
-
+```text
 Folder Structure Preview:
 ┌─────────────────────────────────────────────────────┐
-│ Starter:                                            │
-│   Simple flat structure with minimal separation     │
-├─────────────────────────────────────────────────────┤
-│ Dynamic:                                            │
-│   Feature-based modules with services layer         │
-├─────────────────────────────────────────────────────┤
-│ Enterprise:                                         │
-│   Strict layer separation (presentation,            │
-│   application, domain, infrastructure)              │
+│ Architecture Standard:                   │
+│   Strict layer separation                           │
+│   - presentation/ (UI components, controllers)      │
+│   - application/  (Use cases, services)             │
+│   - domain/       (Core business logic, entities)   │
+│   - infrastructure/ (DB, External APIs, adapters)   │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -166,11 +155,11 @@ Check which conventions already exist in the project:
 
 ### 7.3 Environment Variables Needed
 
-| Variable     | Purpose         | Scope         | To Be Created |
-| ------------ | --------------- | ------------- | :-----------: |
-| {variable}   | {purpose}       | Client/Server |       ☐       |
-| {variable}   | {purpose}       | Client/Server |       ☐       |
-| {variable}   | {purpose}       | Client/Server |       ☐       |
+| Variable   | Purpose   | Scope         | To Be Created |
+| ---------- | --------- | ------------- | :-----------: |
+| {variable} | {purpose} | Client/Server |       ☐       |
+| {variable} | {purpose} | Client/Server |       ☐       |
+| {variable} | {purpose} | Client/Server |       ☐       |
 
 ---
 
