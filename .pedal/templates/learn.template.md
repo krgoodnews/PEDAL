@@ -155,81 +155,20 @@ docs/wiki/{feature}.wiki.md
 
 ---
 
-## 7. Lessons Learned & Retrospective
+## 7. Next Steps
 
-### 7.1 What Went Well (Keep)
-
-- {Positive 1: e.g., Engineering documentation improved implementation efficiency}
-- {Positive 2: e.g., Early code review caught bugs proactively}
-- {Positive 3}
-
-### 7.2 What Needs Improvement (Problem)
-
-- {Improvement 1: e.g., Initial scope estimation was inaccurate}
-- {Improvement 2: e.g., Test cases written too late}
-- {Improvement 3}
-
-### 7.3 What to Try Next (Try)
-
-- {Try 1: e.g., Adopt TDD approach}
-- {Try 2: e.g., Smaller PR units}
-- {Try 3}
-
----
-
-## 8. Process Improvement Suggestions
-
-### 8.1 PEDAL Process
-
-| Phase       | Current                             | Improvement Suggestion          |
-| ----------- | ----------------------------------- | ------------------------------- |
-| Plan        | Insufficient requirement gathering  | Add user interviews             |
-| Engineering | -                                   | -                               |
-| Do          | Poor engineering document reference | Introduce engineering checklist |
-| Analyze     | Manual analysis                     | Introduce automation tools      |
-
-### 8.2 Tools/Environment
-
-| Area    | Improvement Suggestion | Expected Benefit        |
-| ------- | ---------------------- | ----------------------- |
-| CI/CD   | Auto deployment        | Reduced deployment time |
-| Testing | Add E2E tests          | Quality improvement     |
-
----
-
-## 9. Next Steps
-
-### 9.1 Immediate
+### 7.1 Immediate
 
 - [ ] Production deployment
 - [ ] Monitoring setup
 - [ ] User guide creation
 
-### 9.2 Next PEDAL Cycle
+### 7.2 Next PEDAL Cycle
 
 | Item             | Priority | Expected Start |
 | ---------------- | -------- | -------------- |
 | {Next feature 1} | High     | {date}         |
 | {Next feature 2} | Medium   | {date}         |
-
----
-
-## 10. Changelog
-
-### v1.0.0 ({date})
-
-**Added:**
-
-- {Added feature 1}
-- {Added feature 2}
-
-**Changed:**
-
-- {Changed item}
-
-**Fixed:**
-
-- {Fixed bug}
 
 ---
 
