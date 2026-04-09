@@ -93,46 +93,9 @@ variables:
 
 ---
 
-## 6. Architecture Considerations
+## 6. Convention Prerequisites
 
-### 6.1 Architectural Approach
-
-The project follows a strict layer separation approach. Key characteristics include:
-
-- Strict separation of concerns (e.g., Presentation, Application, Domain, Infrastructure layers)
-- Dependency Injection (DI) and decoupled modules
-- Scalable architecture suitable for complex systems
-
-### 6.2 Key Architectural Decisions
-
-| Decision         | Options                         | Selected   | Rationale |
-| ---------------- | ------------------------------- | ---------- | --------- |
-| Language         | {List project-relevant options} | {selected} | {reason}  |
-| Framework        | {List project-relevant options} | {selected} | {reason}  |
-| State Management | {List project-relevant options} | {selected} | {reason}  |
-| Data Storage     | {List project-relevant options} | {selected} | {reason}  |
-| Styling          | {List project-relevant options} | {selected} | {reason}  |
-| Testing          | {List project-relevant options} | {selected} | {reason}  |
-
-### 6.3 Clean Architecture Target Structure
-
-```text
-Folder Structure Preview:
-┌─────────────────────────────────────────────────────┐
-│ Architecture Standard:                   │
-│   Strict layer separation                           │
-│   - presentation/ (UI components, controllers)      │
-│   - application/  (Use cases, services)             │
-│   - domain/       (Core business logic, entities)   │
-│   - infrastructure/ (DB, External APIs, adapters)   │
-└─────────────────────────────────────────────────────┘
-```
-
----
-
-## 7. Convention Prerequisites
-
-### 7.1 Existing Project Conventions
+### 6.1 Existing Project Conventions
 
 Check which conventions already exist in the project:
 
@@ -143,7 +106,7 @@ Check which conventions already exist in the project:
 - [ ] Formatter configuration exists
 - [ ] Language-specific configuration exists
 
-### 7.2 Conventions to Define/Verify
+### 6.2 Conventions to Define/Verify
 
 | Category                  | Current State    | To Define         | Priority |
 | ------------------------- | ---------------- | ----------------- | :------: |
@@ -153,7 +116,7 @@ Check which conventions already exist in the project:
 | **Environment variables** | {exists/missing} | {env var list}    |  Medium  |
 | **Error handling**        | {exists/missing} | {error patterns}  |  Medium  |
 
-### 7.3 Environment Variables Needed
+### 6.3 Environment Variables Needed
 
 | Variable   | Purpose   | Scope         | To Be Created |
 | ---------- | --------- | ------------- | :-----------: |
@@ -163,7 +126,7 @@ Check which conventions already exist in the project:
 
 ---
 
-## 8. Next Steps
+## 7. Next Steps
 
 1. [ ] Write engineering document (`{feature}.engineering.md`)
 2. [ ] Team review and approval

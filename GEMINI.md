@@ -28,7 +28,7 @@ imports:
   - .pedal/PEDAL.md
   - .pedal/templates/plan.template.md
   - .pedal/templates/engineering.template.md
-  - .pedal/templates/iterate.template.md
+  - .pedal/templates/ITERATOR.md
   - .pedal/templates/analysis.template.md
   - .pedal/templates/learn.template.md
 

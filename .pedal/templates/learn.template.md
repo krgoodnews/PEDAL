@@ -157,19 +157,19 @@ docs/wiki/{feature}.wiki.md
 
 ## 7. Lessons Learned & Retrospective
 
-### 6.1 What Went Well (Keep)
+### 7.1 What Went Well (Keep)
 
 - {Positive 1: e.g., Engineering documentation improved implementation efficiency}
 - {Positive 2: e.g., Early code review caught bugs proactively}
 - {Positive 3}
 
-### 6.2 What Needs Improvement (Problem)
+### 7.2 What Needs Improvement (Problem)
 
 - {Improvement 1: e.g., Initial scope estimation was inaccurate}
 - {Improvement 2: e.g., Test cases written too late}
 - {Improvement 3}
 
-### 6.3 What to Try Next (Try)
+### 7.3 What to Try Next (Try)
 
 - {Try 1: e.g., Adopt TDD approach}
 - {Try 2: e.g., Smaller PR units}

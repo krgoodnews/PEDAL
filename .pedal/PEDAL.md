@@ -87,7 +87,7 @@ Do produces **code**, not a PEDAL document. Follow the Engineering document.
 
 ### iterate (Improvement loop)
 
-Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/iterate.template.md` for Evaluator-Optimizer details.
+Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/ITERATOR.md` for Evaluator-Optimizer details.
 
 1. **Append to prompt log** if the user provided new direction or scope changes.
 2. Trigger when match rate < 90% **or** any Critical issue remains.
@@ -357,7 +357,7 @@ Relative to this file:
 
 - `templates/plan.template.md`
 - `templates/engineering.template.md`
-- `templates/iterate.template.md`
+- `templates/ITERATOR.md`
 - `templates/analysis.template.md`
 - `templates/learn.template.md`
 - `REVIEW.md` (cross-review protocol)
