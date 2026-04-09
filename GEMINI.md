@@ -83,10 +83,10 @@ agent -p "Review the file {path_to_document}. Also read {path_to_prompt_log} for
 
 ```bash
 # After Plan phase
-agent -p "Review docs/01-plan/features/user-auth.plan.md. Also read docs/01-plan/features/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/01-plan/features/user-auth.plan.review.md" --model "composer 2"
+agent -p "Review docs/01-plan/user-auth.plan.md. Also read docs/01-plan/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/01-plan/user-auth.plan.review.md" --model "composer 2"
 
 # After Engineering phase
-agent -p "Review docs/02-engineering/features/user-auth.engineering.md. Also read docs/01-plan/features/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/02-engineering/features/user-auth.engineering.review.md" --model "composer 2"
+agent -p "Review docs/02-engineering/user-auth.engineering.md. Also read docs/01-plan/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/02-engineering/user-auth.engineering.review.md" --model "composer 2"
 ```
 
 After receiving the review, critically evaluate each finding. Accept valid points, reject incorrect ones with justification. See [.pedal/REVIEW.md](.pedal/REVIEW.md) for full protocol.

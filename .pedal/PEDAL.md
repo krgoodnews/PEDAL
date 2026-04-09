@@ -7,13 +7,13 @@
 
 **PEDAL** is a development workflow inspired by the classic PDCA cycle, adapted for software delivery:
 
-| Letter | Phase         | Focus |
-| ------ | ------------- | ----- |
-| **P**  | **Plan**      | Goals, scope, requirements, risks |
-| **E**  | **Engineering** | Design, architecture, APIs, UI intent |
-| **D**  | **Do**        | Implement (code); no separate PEDAL document |
-| **A**  | **Analyze**   | Gap analysis vs engineering + quality |
-| **L**  | **Learn**     | Wiki update + completion report + handoff |
+| Letter | Phase           | Focus                                        |
+| ------ | --------------- | -------------------------------------------- |
+| **P**  | **Plan**        | Goals, scope, requirements, risks            |
+| **E**  | **Engineering** | Design, architecture, APIs, UI intent        |
+| **D**  | **Do**          | Implement (code); no separate PEDAL document |
+| **A**  | **Analyze**     | Gap analysis vs engineering + quality        |
+| **L**  | **Learn**       | Wiki update + completion report + handoff    |
 
 **Iterate** is a remediation loop between Analyze and Do (not a separate letter). **Archive** stores completed PEDAL artifacts for a feature.
 
@@ -23,29 +23,29 @@ Every phase that produces a PEDAL document goes through **cross-review** by a di
 
 Use natural language or your tool's command style. Conceptually:
 
-| Phase | Purpose | Primary output |
-| ----- | ------- | -------------- |
-| **plan** | Capture planning for `{feature}` | `docs/01-plan/features/{feature}.plan.md` |
-| **engineering** | Specify how to build it | `docs/02-engineering/features/{feature}.engineering.md` |
-| **do** | Implement per Engineering doc | Source code |
-| **analyze** | Compare engineering vs implementation | `docs/03-analysis/{feature}.analysis.md` |
-| **iterate** | Fix gaps until thresholds met | Updated code; optional iteration notes |
-| **learn** | Document and close the cycle | `docs/wiki/{feature}.wiki.md`, `docs/04-learn/{feature}.report.md` |
-| **archive** | Preserve PEDAL docs; remove noise | `docs/archived/{feature}/` |
+| Phase           | Purpose                               | Primary output                                                     |
+| --------------- | ------------------------------------- | ------------------------------------------------------------------ |
+| **plan**        | Capture planning for `{feature}`      | `docs/01-plan/{feature}.plan.md`                                   |
+| **engineering** | Specify how to build it               | `docs/02-engineering/{feature}.engineering.md`                     |
+| **do**          | Implement per Engineering doc         | Source code                                                        |
+| **analyze**     | Compare engineering vs implementation | `docs/03-analysis/{feature}.analysis.md`                           |
+| **iterate**     | Fix gaps until thresholds met         | Updated code; optional iteration notes                             |
+| **learn**       | Document and close the cycle          | `docs/wiki/{feature}.wiki.md`, `docs/04-learn/{feature}.report.md` |
+| **archive**     | Preserve PEDAL docs; remove noise     | `docs/archived/{feature}/`                                         |
 
 **Compound commands** (run multiple phases sequentially, with human approval gates in between):
 
-| Command | Phases run | Gate before next command |
-| ------- | ---------- | ------------------------ |
-| **spec** | plan → engineering | ⛔ Human approval required before `do` |
-| **build** | do → analyze | ⛔ Human approval required before `learn` |
-| **dev** | plan → engineering → do → analyze | Both gates above apply |
+| Command   | Phases run                        | Gate before next command                  |
+| --------- | --------------------------------- | ----------------------------------------- |
+| **spec**  | plan → engineering                | ⛔ Human approval required before `do`    |
+| **build** | do → analyze                      | ⛔ Human approval required before `learn` |
+| **dev**   | plan → engineering → do → analyze | Both gates above apply                    |
 
 ### plan (Plan)
 
 1. Sync main branch and create a feature branch `feature/{feature}` or `fix/{feature}` when appropriate.
-2. **Create prompt log**: write `docs/01-plan/features/{feature}.prompt.md` with the user's original request (see Prompt Log below).
-3. Ensure `docs/01-plan/features/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
+2. **Create prompt log**: write `docs/01-plan/{feature}.prompt.md` with the user's original request (see Prompt Log below).
+3. Ensure `docs/01-plan/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
 4. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
 5. Critically evaluate the review; accept valid points, reject with justification.
 6. Optional task label: `[Plan] {feature}`
@@ -56,7 +56,7 @@ Use natural language or your tool's command style. Conceptually:
 
 1. Require an approved Plan document.
 2. **Append to prompt log** if the user provided new direction or scope changes.
-3. Create `docs/02-engineering/features/{feature}.engineering.md` from `templates/engineering.template.md`.
+3. Create `docs/02-engineering/{feature}.engineering.md` from `templates/engineering.template.md`.
 4. Include ASCII art for expected UI where relevant.
 5. **Cross-review**: invoke the reviewer agent to produce `{feature}.engineering.review.md`.
 6. Critically evaluate the review; accept valid points, reject with justification.
@@ -79,11 +79,11 @@ Do produces **code**, not a PEDAL document. Follow the Engineering document.
 1. **Append to prompt log** if the user provided new direction or scope changes.
 2. Run gap / quality analysis (e.g. gap-detector pattern).
 3. Compare Engineering document vs implementation.
-3. Compute **severity-weighted match rate** (see below).
-4. Any **Critical** issue forces iterate regardless of aggregate match rate.
-5. **Cross-review**: invoke the reviewer agent to produce `{feature}.analysis.review.md`.
-6. Critically evaluate the review; accept valid points, reject with justification.
-7. Optional task label: `[Analyze] {feature}`
+4. Compute **severity-weighted match rate** (see below).
+5. Any **Critical** issue forces iterate regardless of aggregate match rate.
+6. **Cross-review**: invoke the reviewer agent to produce `{feature}.analysis.review.md`.
+7. Critically evaluate the review; accept valid points, reject with justification.
+8. Optional task label: `[Analyze] {feature}`
 
 ### iterate (Improvement loop)
 
@@ -100,11 +100,11 @@ Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/
 
 1. **Append to prompt log** if the user provided new direction or scope changes.
 2. Require Analyze: match rate >= 90% and **zero** Critical issues.
-2. Update `docs/wiki/{feature}.wiki.md` with verified facts, agent-friendly structure, and ASCII layouts for UI surfaces.
-3. Write `docs/04-learn/{feature}.report.md` using `templates/learn.template.md`.
-4. **Cross-review**: invoke the reviewer agent to produce `{feature}.report.review.md`.
-5. Critically evaluate the review; accept valid points, reject with justification.
-6. Typical close-out: `git push`, open PR with report as body (e.g. `gh pr create`), PR title with Gitmoji, open PR URL when applicable.
+3. Update `docs/wiki/{feature}.wiki.md` with verified facts, agent-friendly structure, and ASCII layouts for UI surfaces.
+4. Write `docs/04-learn/{feature}.report.md` using `templates/learn.template.md`.
+5. **Cross-review**: invoke the reviewer agent to produce `{feature}.report.review.md`.
+6. Critically evaluate the review; accept valid points, reject with justification.
+7. Typical close-out: `git push`, open PR with report as body (e.g. `gh pr create`), PR title with Gitmoji, open PR URL when applicable.
 
 ### archive (Archive)
 
@@ -123,7 +123,7 @@ Runs **plan** then **engineering** back-to-back. Stops after Engineering is comm
 1. Execute plan phase fully (all steps, cross-review, commit).
 2. Execute engineering phase fully (all steps, cross-review, commit).
 3. STOP — present a summary and prompt the user:
-   "spec complete. Review docs/02-engineering/features/{feature}.engineering.md
+   "spec complete. Review docs/02-engineering/{feature}.engineering.md
     and approve before running 'do' or 'build'."
 ```
 
@@ -170,7 +170,7 @@ dev
 
 ## Prompt Log
 
-Each feature has a **single append-only** file `docs/01-plan/features/{feature}.prompt.md` that records user prompts throughout the PEDAL cycle.
+Each feature has a **single append-only** file `docs/01-plan/{feature}.prompt.md` that records user prompts throughout the PEDAL cycle.
 
 ### Purpose
 
@@ -184,13 +184,13 @@ Without the raw prompt, the reviewer can only judge the document on its own meri
 
 ### Rules
 
-| Rule | Detail |
-|---|---|
-| **Create** | At the start of the Plan phase, before writing `plan.md`. |
-| **Append** | At any phase, when the user gives a prompt that changes direction, scope, or constraints. |
-| **Skip** | Trivial prompts ("proceed", "looks good", "continue") are NOT recorded. |
-| **Immutable entries** | Once an entry is written, it must never be edited or deleted. Append only. |
-| **Archive** | Moved together with other PEDAL artifacts during the archive phase. |
+| Rule                  | Detail                                                                                    |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| **Create**            | At the start of the Plan phase, before writing `plan.md`.                                 |
+| **Append**            | At any phase, when the user gives a prompt that changes direction, scope, or constraints. |
+| **Skip**              | Trivial prompts ("proceed", "looks good", "continue") are NOT recorded.                   |
+| **Immutable entries** | Once an entry is written, it must never be edited or deleted. Append only.                |
+| **Archive**           | Moved together with other PEDAL artifacts during the archive phase.                       |
 
 ### Format
 
@@ -223,11 +223,10 @@ When invoking the reviewer, always include the prompt log in the review command 
 ```
 docs/
 ├── 01-plan/
-│   └── features/
-│       ├── {feature}.prompt.md   ← prompt log (append-only)
-│       └── {feature}.plan.md
+│   ├── {feature}.prompt.md   ← prompt log (append-only)
+│   └── {feature}.plan.md
 ├── 02-engineering/
-│   └── features/{feature}.engineering.md
+│   └── {feature}.engineering.md
 ├── 03-analysis/
 │   └── {feature}.analysis.md
 ├── 04-learn/
@@ -258,6 +257,7 @@ docs/
 Each document-producing phase invokes a **different AI agent** as reviewer. The reviewer writes a `*.review.md` file with findings classified as Critical / Warning / Info.
 
 The main agent must **not** blindly accept the review:
+
 - **Accept** valid findings and update the document.
 - **Reject with justification** findings that are incorrect or out of scope.
 - **All Critical items** from the review must be addressed (accepted or rejected with reason) before proceeding.
@@ -268,11 +268,11 @@ Tool-specific reviewer commands are in [GEMINI.md](../GEMINI.md) and [.cursor/ru
 
 ## Severity-weighted scoring
 
-| Severity   | Weight | Iterate trigger |
-| ---------- | :----: | ---------------- |
-| Critical   | x3     | Always (even if >= 90%) |
-| Warning    | x2     | If match rate < 90% |
-| Info       | x1     | If match rate < 90% |
+| Severity | Weight | Iterate trigger         |
+| -------- | :----: | ----------------------- |
+| Critical |   x3   | Always (even if >= 90%) |
+| Warning  |   x2   | If match rate < 90%     |
+| Info     |   x1   | If match rate < 90%     |
 
 ```
 weightedScore = Σ(issue_severity_weight × issue_count)
@@ -319,19 +319,19 @@ Any **Critical** issue -> iterate is **mandatory**, regardless of match rate thr
 }
 ```
 
-| Field                         | Type     | Description |
-| ----------------------------- | -------- | ----------- |
-| `version`                     | string   | Schema version |
-| `lastUpdated`                 | ISO 8601 | Last update (use real system time) |
-| `activeFeatures`              | string[] | Active feature names |
-| `primaryFeature`              | string   | Current focus feature |
+| Field                         | Type     | Description                                                                        |
+| ----------------------------- | -------- | ---------------------------------------------------------------------------------- |
+| `version`                     | string   | Schema version                                                                     |
+| `lastUpdated`                 | ISO 8601 | Last update (use real system time)                                                 |
+| `activeFeatures`              | string[] | Active feature names                                                               |
+| `primaryFeature`              | string   | Current focus feature                                                              |
 | `features.{name}.phase`       | enum     | `plan` \| `engineering` \| `do` \| `analyze` \| `iterate` \| `learn` \| `archived` |
-| `features.{name}.status`      | enum     | `pending` \| `in_progress` \| `completed` \| `blocked` \| `archived` |
-| `features.{name}.updatedAt`   | ISO 8601 | Phase update time |
-| `features.{name}.description` | string   | Short description |
-| `session.startedAt`           | ISO 8601 | Session start |
-| `session.lastActivity`        | ISO 8601 | Last activity |
-| `history[]`                   | array    | Event log |
+| `features.{name}.status`      | enum     | `pending` \| `in_progress` \| `completed` \| `blocked` \| `archived`               |
+| `features.{name}.updatedAt`   | ISO 8601 | Phase update time                                                                  |
+| `features.{name}.description` | string   | Short description                                                                  |
+| `session.startedAt`           | ISO 8601 | Session start                                                                      |
+| `session.lastActivity`        | ISO 8601 | Last activity                                                                      |
+| `history[]`                   | array    | Event log                                                                          |
 
 ## General rules
 

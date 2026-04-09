@@ -19,14 +19,14 @@ variables:
 > **Author**: {author}
 > **Date**: {date}
 > **Status**: Draft
-> **Planning Doc**: [{feature}.plan.md](../01-plan/features/{feature}.plan.md)
+> **Planning Doc**: [{feature}.plan.md](../01-plan/{feature}.plan.md)
 
 ### Related Documents
 
-| Document                                        | Status    |
-| ----------------------------------------------- | --------- |
-| [Plan](../01-plan/features/{feature}.plan.md)   | ✅/❌/N/A |
-| [Conventions](../01-plan/conventions.md)         | ✅/❌/N/A |
+| Document                                 | Status    |
+| ---------------------------------------- | --------- |
+| [Plan](../01-plan/{feature}.plan.md)     | ✅/❌/N/A |
+| [Prompt](../01-plan/{feature}.prompt.md) | ✅/❌/N/A |
 
 ---
 
@@ -262,12 +262,12 @@ Home → Login → Dashboard → Use Feature → View Results
 
 ### 9.3 This Feature's Layer Assignment
 
-| Component  | Layer          | Location          |
-| ---------- | -------------- | ----------------- |
-| {module_a} | Presentation   | {path}            |
-| {module_b} | Application    | {path}            |
-| {module_c} | Domain         | {path}            |
-| {module_d} | Infrastructure | {path}            |
+| Component  | Layer          | Location |
+| ---------- | -------------- | -------- |
+| {module_a} | Presentation   | {path}   |
+| {module_b} | Application    | {path}   |
+| {module_c} | Domain         | {path}   |
+| {module_d} | Infrastructure | {path}   |
 
 ---
 
@@ -277,11 +277,11 @@ Home → Login → Dashboard → Use Feature → View Results
 
 ### 10.1 Naming Conventions
 
-| Target     | Rule       | Example          |
-| ---------- | ---------- | ---------------- |
-| {category} | {rule}     | {example}        |
-| {category} | {rule}     | {example}        |
-| {category} | {rule}     | {example}        |
+| Target     | Rule   | Example   |
+| ---------- | ------ | --------- |
+| {category} | {rule} | {example} |
+| {category} | {rule} | {example} |
+| {category} | {rule} | {example} |
 
 ### 10.2 This Feature's Conventions
 

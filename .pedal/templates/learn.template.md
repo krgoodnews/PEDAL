@@ -49,12 +49,12 @@ variables:
 
 ## 2. Related Documents
 
-| Phase  | Document                                                         | Status       |
-| ------ | ---------------------------------------------------------------- | ------------ |
-| Plan        | [{feature}.plan.md](../01-plan/features/{feature}.plan.md)                | ✅ Finalized |
-| Engineering | [{feature}.engineering.md](../02-engineering/features/{feature}.engineering.md) | ✅ Finalized |
-| Analyze     | [{feature}.analysis.md](../03-analysis/{feature}.analysis.md)             | ✅ Complete  |
-| Learn       | Current document                                                          | 🔄 Writing   |
+| Phase       | Document                                                               | Status       |
+| ----------- | ---------------------------------------------------------------------- | ------------ |
+| Plan        | [{feature}.plan.md](../01-plan/{feature}.plan.md)                      | ✅ Finalized |
+| Engineering | [{feature}.engineering.md](../02-engineering/{feature}.engineering.md) | ✅ Finalized |
+| Analyze     | [{feature}.analysis.md](../03-analysis/{feature}.analysis.md)          | ✅ Complete  |
+| Learn       | Current document                                                       | 🔄 Writing   |
 
 ---
 
@@ -109,12 +109,12 @@ variables:
 
 ### 5.1 Final Analyze Results
 
-| Metric             | Target     | Final | Change |
-| ------------------ | ---------- | ----- | ------ |
+| Metric                 | Target     | Final | Change |
+| ---------------------- | ---------- | ----- | ------ |
 | Engineering Match Rate | 90%        | 95%   | +20%   |
-| Code Quality Score | 70         | 85    | +15    |
-| Test Coverage      | 80%        | 82%   | +12%   |
-| Security Issues    | 0 Critical | 0     | ✅     |
+| Code Quality Score     | 70         | 85    | +15    |
+| Test Coverage          | 80%        | 82%   | +12%   |
+| Security Issues        | 0 Critical | 0     | ✅     |
 
 ### 5.2 Resolved Issues
 
@@ -181,12 +181,12 @@ docs/wiki/{feature}.wiki.md
 
 ### 8.1 PEDAL Process
 
-| Phase       | Current                                | Improvement Suggestion          |
-| ----------- | -------------------------------------- | ------------------------------- |
-| Plan        | Insufficient requirement gathering     | Add user interviews             |
-| Engineering | -                                      | -                               |
-| Do          | Poor engineering document reference    | Introduce engineering checklist  |
-| Analyze     | Manual analysis                        | Introduce automation tools      |
+| Phase       | Current                             | Improvement Suggestion          |
+| ----------- | ----------------------------------- | ------------------------------- |
+| Plan        | Insufficient requirement gathering  | Add user interviews             |
+| Engineering | -                                   | -                               |
+| Do          | Poor engineering document reference | Introduce engineering checklist |
+| Analyze     | Manual analysis                     | Introduce automation tools      |
 
 ### 8.2 Tools/Environment
 

@@ -18,15 +18,15 @@ variables:
 > **Version**: {version}
 > **Analyst**: {author}
 > **Date**: {date}
-> **Engineering Doc**: [{feature}.engineering.md](../02-engineering/features/{feature}.engineering.md)
+> **Engineering Doc**: [{feature}.engineering.md](../02-engineering/{feature}.engineering.md)
 
 ### Related Documents (for verification)
 
-| Document                                                        | Verification Target   |
-| --------------------------------------------------------------- | --------------------- |
-| [Plan](../01-plan/features/{feature}.plan.md)                   | Requirements match    |
-| [Engineering](../02-engineering/features/{feature}.engineering.md) | Implementation match  |
-| [Conventions](../01-plan/conventions.md)                        | Convention compliance |
+| Document                                                  | Verification Target   |
+| --------------------------------------------------------- | --------------------- |
+| [Plan](../01-plan/{feature}.plan.md)                      | Requirements match    |
+| [Engineering](../02-engineering/{feature}.engineering.md) | Implementation match  |
+| [Conventions](../01-plan/conventions.md)                  | Convention compliance |
 
 ---
 
@@ -38,8 +38,8 @@ variables:
 
 ### 1.2 Analysis Scope
 
-- **Engineering Document**: `docs/02-engineering/features/{feature}.engineering.md`
-- **Implementation Path**: `src/features/{feature}/`
+- **Engineering Document**: `docs/02-engineering/{feature}.engineering.md`
+- **Implementation Path**: `src/{feature}/`
 - **Analysis Date**: {date}
 
 ---
@@ -66,10 +66,10 @@ variables:
 
 ### 2.3 Component Structure
 
-| Engineering Component | Implementation File             | Status             |
-| ---------------- | ------------------------------- | ------------------ |
-| {ComponentA}     | {actual path}                   | ✅ Match           |
-| {ComponentB}     | -                               | ❌ Not implemented |
+| Engineering Component | Implementation File | Status             |
+| --------------------- | ------------------- | ------------------ |
+| {ComponentA}          | {actual path}       | ✅ Match           |
+| {ComponentB}          | -                   | ❌ Not implemented |
 
 ### 2.4 Match Rate Summary
 
@@ -163,9 +163,9 @@ variables:
 
 ### 6.2 Dependency Violations
 
-| File   | Layer   | Violation     | Severity    | Recommendation |
-| ------ | ------- | ------------- | ----------- | -------------- |
-| {file} | {layer} | {violation}   | 🔴/🟡/🟢   | {fix}          |
+| File   | Layer   | Violation   | Severity | Recommendation |
+| ------ | ------- | ----------- | -------- | -------------- |
+| {file} | {layer} | {violation} | 🔴/🟡/🟢 | {fix}          |
 
 ### 6.3 Layer Assignment Verification
 
@@ -203,9 +203,9 @@ variables:
 
 ### 7.2 Folder Structure Check
 
-| Expected Path | Exists | Contents Correct | Notes     |
-| ------------- | :----: | :--------------: | --------- |
-| {path}        |  ✅/❌ |      ✅/⚠️/❌    | {notes}   |
+| Expected Path | Exists | Contents Correct | Notes   |
+| ------------- | :----: | :--------------: | ------- |
+| {path}        | ✅/❌  |     ✅/⚠️/❌     | {notes} |
 
 ### 7.3 Convention Score
 
@@ -247,10 +247,10 @@ Issues are weighted by severity per PEDAL rules. 🔴 Critical issues **force it
 
 | Severity    | Count | Weight | Weighted Score |
 | ----------- | :---: | :----: | :------------: |
-| 🔴 Critical |  {n}  |   x3   |   {n × 3}     |
-| 🟡 Warning  |  {n}  |   x2   |   {n × 2}     |
-| 🟢 Info     |  {n}  |   x1   |   {n × 1}     |
-| **Total**   |       |        |   {total}      |
+| 🔴 Critical |  {n}  |   x3   |    {n × 3}     |
+| 🟡 Warning  |  {n}  |   x2   |    {n × 2}     |
+| 🟢 Info     |  {n}  |   x1   |    {n × 1}     |
+| **Total**   |       |        |    {total}     |
 
 ### 9.2 Weighted Match Rate
 

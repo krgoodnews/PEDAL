@@ -99,7 +99,7 @@ The main agent must **not** blindly accept the review. Instead:
 
 ## Prompt log reference
 
-The reviewer must also read the **prompt log** (`docs/01-plan/features/{feature}.prompt.md`) to verify that the document faithfully reflects the user's original intent and any subsequent scope changes.
+The reviewer must also read the **prompt log** (`docs/01-plan/{feature}.prompt.md`) to verify that the document faithfully reflects the user's original intent and any subsequent scope changes.
 
 When the prompt log exists, the reviewer should check:
 
