@@ -126,44 +126,67 @@ variables:
 
 ---
 
-## 6. Wiki Update
+## 6. Wiki Integration
 
-> Update `docs/wiki/{feature}.wiki.md` with verified facts from this PEDAL cycle.
+> The wiki is the project-wide SSOT. This cycle's verified facts must be **integrated** into the existing wiki — not saved as a standalone feature file. See `PEDAL.md § Wiki` for full protocol.
 
-### 6.1 Wiki Checklist
+### 6.1 Pages Touched
 
-- [ ] Feature overview matches current implementation
-- [ ] Architecture decisions documented
-- [ ] Key implementation details recorded
-- [ ] Screen layouts included as ASCII Art (for UI-bearing features)
-- [ ] API reference documented (if applicable)
-- [ ] Configuration and setup notes added
-- [ ] File locations and module structure documented
+| Wiki Page | Action | Summary of Changes |
+| --------- | ------ | ------------------ |
+| {page}.md | Created / Updated | {what was added or changed} |
 
-### 6.2 Wiki Guidelines
+### 6.2 Integration Checklist
+
+> **Agent**: verify internally — do not modify this file to tick boxes.
+
+- Architecture / system overview updated to reflect this feature
+- New APIs, data models, or components documented in relevant wiki pages
+- Contradictory or outdated information in existing pages corrected
+- ASCII Art included for new UI surfaces (if applicable)
+- `docs/wiki/index.md` updated with any new or renamed pages
+
+### 6.3 Wiki Quality
 
 - Document only **verified facts** that match the current project state.
-- Write in a format useful for both **humans reading guides** and **AI agents performing future tasks**.
-- For mobile or web features, include **ASCII Art** depicting screen layouts and component hierarchy.
-- Keep the wiki as the **single source of truth** for feature knowledge.
-
-### 6.3 Wiki Location
-
-```
-docs/wiki/{feature}.wiki.md
-```
+- Write for both **humans reading guides** and **AI agents performing future tasks**.
+- When new facts contradict existing wiki content, **replace** the old content (do not keep both).
+- Prefer multiple focused pages over a single large file.
 
 ---
 
-## 7. Next Steps
+## 7. Bug Patterns
 
-### 7.1 Immediate
+> Extract recurring bug patterns from the Analyze/Iterate phases. These are **objective facts** (not subjective retrospectives) that help prevent the same mistakes in future PEDAL cycles.
+> After writing this section, append new entries to `docs/wiki/bug-patterns.md`.
+
+### 7.1 Patterns Found in This Cycle
+
+| ID | Pattern | Root Cause | File(s) | Fix Applied | Prevention Rule |
+| -- | ------- | ---------- | ------- | ----------- | --------------- |
+| BP-{NNN} | {short name} | {why it happened} | {file:line} | {what was changed} | {concrete rule for future Do/Analyze} |
+
+### 7.2 Registry Reference
+
+Append patterns above to the project-wide registry:
+
+```
+docs/wiki/bug-patterns.md
+```
+
+> **Agent note**: During future `do` phases, read `bug-patterns.md` and actively check for recurrence of known patterns.
+
+---
+
+## 8. Next Steps
+
+### 8.1 Immediate
 
 - [ ] Production deployment
 - [ ] Monitoring setup
 - [ ] User guide creation
 
-### 7.2 Next PEDAL Cycle
+### 8.2 Next PEDAL Cycle
 
 | Item             | Priority | Expected Start |
 | ---------------- | -------- | -------------- |

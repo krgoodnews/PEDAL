@@ -96,19 +96,19 @@ variables:
 
 ### 3.2 Code Smells
 
-| Type           | File       | Location | Description                 | Severity |
-| -------------- | ---------- | -------- | --------------------------- | -------- |
-| Long function  | api.ts     | L45-120  | 75 lines (recommended: <50) | 🟡       |
-| Duplicate code | helpers.ts | L10, L45 | Same logic repeated         | 🟡       |
-| Magic number   | config.ts  | L23      | Hardcoded number            | 🟢       |
+| Type           | File       | Location | Description                 | Severity | Root Cause              |
+| -------------- | ---------- | -------- | --------------------------- | -------- | ----------------------- |
+| Long function  | api.ts     | L45-120  | 75 lines (recommended: <50) | 🟡       | {why this happened}     |
+| Duplicate code | helpers.ts | L10, L45 | Same logic repeated         | 🟡       | {why this happened}     |
+| Magic number   | config.ts  | L23      | Hardcoded number            | 🟢       | {why this happened}     |
 
 ### 3.3 Security Issues
 
-| Severity    | File    | Location | Issue                    | Recommendation  |
-| ----------- | ------- | -------- | ------------------------ | --------------- |
-| 🔴 Critical | auth.ts | L42      | Hardcoded secret         | Move to env var |
-| 🟡 Warning  | api.ts  | L15      | Missing input validation | Add validation  |
-| 🟢 Info     | -       | -        | -                        | -               |
+| Severity    | File    | Location | Issue                    | Root Cause              | Recommendation  |
+| ----------- | ------- | -------- | ------------------------ | ----------------------- | --------------- |
+| 🔴 Critical | auth.ts | L42      | Hardcoded secret         | {why this happened}     | Move to env var |
+| 🟡 Warning  | api.ts  | L15      | Missing input validation | {why this happened}     | Add validation  |
+| 🟢 Info     | -       | -        | -                        | -                       | -               |
 
 ---
 

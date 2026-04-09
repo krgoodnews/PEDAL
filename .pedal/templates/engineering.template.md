@@ -25,6 +25,7 @@ variables:
 
 | Document                                 | Status    |
 | ---------------------------------------- | --------- |
+| [Wiki (SSOT)](../wiki/index.md)          | ✅/❌/N/A |
 | [Plan](../01-plan/{feature}.plan.md)     | ✅/❌/N/A |
 | [Conventions](../01-plan/conventions.md) | ✅/❌/N/A |
 | [Prompt](../01-plan/{feature}.prompt.md) | ✅/❌/N/A |

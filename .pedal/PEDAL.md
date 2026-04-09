@@ -30,7 +30,7 @@ Use natural language or your tool's command style. Conceptually:
 | **do**          | Implement per Engineering doc         | Source code                                                        |
 | **analyze**     | Compare engineering vs implementation | `docs/03-analysis/{feature}.analysis.md`                           |
 | **iterate**     | Fix gaps until thresholds met         | Updated code; optional iteration notes                             |
-| **learn**       | Document and close the cycle          | `docs/wiki/{feature}.wiki.md`, `docs/04-learn/{feature}.report.md` |
+| **learn**       | Document and close the cycle          | Wiki updates, `docs/04-learn/{feature}.report.md`                  |
 | **archive**     | Preserve PEDAL docs; remove noise     | `docs/archived/{feature}/`                                         |
 
 **Compound commands** (run multiple phases sequentially, with human approval gates in between):
@@ -44,33 +44,36 @@ Use natural language or your tool's command style. Conceptually:
 ### plan (Plan)
 
 1. Sync main branch and create a feature branch `feature/{feature}` or `fix/{feature}` when appropriate.
-2. **Create prompt log**: write `docs/01-plan/{feature}.prompt.md` with the user's original request (see Prompt Log below).
-3. Ensure `docs/01-plan/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
-4. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
-5. Critically evaluate the review; accept valid points, reject with justification.
-6. Optional task label: `[Plan] {feature}`
+2. **Read wiki**: if `docs/wiki/index.md` exists, read it and any relevant pages to understand current project state before planning.
+3. **Create prompt log**: write `docs/01-plan/{feature}.prompt.md` with the user's original request (see Prompt Log below).
+4. Ensure `docs/01-plan/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
+5. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
+6. Critically evaluate the review; accept valid points, reject with justification.
+7. Optional task label: `[Plan] {feature}`
 
 > **Important:** Do not enter a special "plan-only" mode that blocks normal work. Write the Plan in normal interaction and report progress to the user.
 
 ### engineering (Engineering)
 
 1. Require an approved Plan document.
-2. **Append to prompt log** if the user provided new direction or scope changes.
-3. Create `docs/02-engineering/{feature}.engineering.md` from `templates/engineering.template.md`.
-4. Include ASCII art for expected UI where relevant.
-5. **Cross-review**: invoke the reviewer agent to produce `{feature}.engineering.review.md`.
-6. Critically evaluate the review; accept valid points, reject with justification.
-7. Optional task label: `[Engineering] {feature}` (depends on Plan)
+2. **Read wiki**: read `docs/wiki/index.md` and relevant pages (architecture, APIs, data models) for context on existing system.
+3. **Append to prompt log** if the user provided new direction or scope changes.
+4. Create `docs/02-engineering/{feature}.engineering.md` from `templates/engineering.template.md`.
+5. Include ASCII art for expected UI where relevant.
+6. **Cross-review**: invoke the reviewer agent to produce `{feature}.engineering.review.md`.
+7. Critically evaluate the review; accept valid points, reject with justification.
+8. Optional task label: `[Engineering] {feature}` (depends on Plan)
 
 ### do (Do)
 
 Do produces **code**, not a PEDAL document. Follow the Engineering document.
 
 1. Require Engineering document.
-2. **Append to prompt log** if the user provided new direction or scope changes.
-3. Implement per Engineering (architecture, data model, API, etc.).
-4. Complete **Self-Review Checklist** (Section 12 in `engineering.template.md`) before Analyze.
-5. Optional task label: `[Do] {feature}` (depends on Engineering)
+2. **Read wiki**: read `docs/wiki/bug-patterns.md` (if exists) to avoid known mistakes. Optionally read other relevant wiki pages for conventions and module boundaries.
+3. **Append to prompt log** if the user provided new direction or scope changes.
+4. Implement per Engineering (architecture, data model, API, etc.).
+5. Complete **Self-Review Criteria** (Section 12 in `engineering.template.md`) before Analyze.
+6. Optional task label: `[Do] {feature}` (depends on Engineering)
 
 > No cross-review for Do -- code quality is validated in the Analyze phase.
 
@@ -100,11 +103,12 @@ Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/
 
 1. **Append to prompt log** if the user provided new direction or scope changes.
 2. Require Analyze: match rate >= 90% and **zero** Critical issues.
-3. Update `docs/wiki/{feature}.wiki.md` with verified facts, agent-friendly structure, and ASCII layouts for UI surfaces.
-4. Write `docs/04-learn/{feature}.report.md` using `templates/learn.template.md`.
-5. **Cross-review**: invoke the reviewer agent to produce `{feature}.report.review.md`.
-6. Critically evaluate the review; accept valid points, reject with justification.
-7. Typical close-out: `git push`, open PR with report as body (e.g. `gh pr create`), PR title with Gitmoji, open PR URL when applicable.
+3. **Integrate into wiki**: read `docs/wiki/index.md`, then update existing wiki pages (or create new ones) with verified facts from this cycle. Update contradictory information to reflect current state. Update `index.md` after changes. See the **Wiki** section for full protocol.
+4. **Append bug patterns** from Analyze/Iterate findings to `docs/wiki/bug-patterns.md`.
+5. Write `docs/04-learn/{feature}.report.md` using `templates/learn.template.md`.
+6. **Cross-review**: invoke the reviewer agent to produce `{feature}.report.review.md`.
+7. Critically evaluate the review; accept valid points, reject with justification.
+8. Typical close-out: `git push`, open PR with report as body (e.g. `gh pr create`), PR title with Gitmoji, open PR URL when applicable.
 
 ### archive (Archive)
 
@@ -231,8 +235,11 @@ docs/
 │   └── {feature}.analysis.md
 ├── 04-learn/
 │   └── {feature}.report.md
-├── wiki/
-│   └── {feature}.wiki.md
+├── wiki/                            ← project-wide SSOT (see Wiki section)
+│   ├── index.md                 ← catalog of all wiki pages
+│   ├── overview.md              ← project summary, tech stack, architecture
+│   ├── {topic}.md               ← topic pages (agent splits freely)
+│   └── bug-patterns.md          ← bug pattern registry (append-only)
 └── archived/
     └── {feature}/
         ├── {feature}.plan.md
@@ -265,6 +272,88 @@ The main agent must **not** blindly accept the review:
 Full protocol, reviewer role definition, output format, and severity table: [REVIEW.md](REVIEW.md).
 
 Tool-specific reviewer commands are in [GEMINI.md](../GEMINI.md) and [.cursor/rules/pedal.mdc](../.cursor/rules/pedal.mdc).
+
+## Wiki (Project Knowledge Base)
+
+The wiki is a **persistent, compounding knowledge base** maintained by AI agents. It serves as the project's **Single Source of Truth (SSOT)** for current state — architecture, APIs, data models, conventions, and accumulated knowledge from all PEDAL cycles.
+
+### Core Principle
+
+```
+PEDAL artifacts (Plan, Engineering, Analysis)  → per-feature, ephemeral, eventually archived
+Wiki                                           → project-wide, persistent, cumulative
+```
+
+Unlike PEDAL documents scoped to a single feature cycle, the wiki reflects the **current state of the entire project**. Each Learn phase *integrates* new knowledge into the existing wiki rather than creating isolated feature files.
+
+### Architecture
+
+| Layer            | Content                                | Lifecycle                                |
+| ---------------- | -------------------------------------- | ---------------------------------------- |
+| **Source code**  | The actual implementation              | Ground truth                             |
+| **Wiki**         | Project-wide synthesized knowledge     | LLM-maintained, persistent, incremental  |
+| **PEDAL docs**   | Feature-scoped plans, specs, analyses  | Created per cycle, eventually archived   |
+
+The wiki sits between PEDAL docs and source code — a compiled, navigable knowledge layer that saves the agent from re-deriving project understanding from scratch on every cycle.
+
+### When to Read / Write
+
+| Phase           | Action                                                                 |
+| --------------- | ---------------------------------------------------------------------- |
+| **Plan**        | **Read** — understand current project state before scoping new work    |
+| **Engineering** | **Read** — reference existing architecture, APIs, data models          |
+| **Do**          | **Read** — check known bug patterns, conventions, module boundaries    |
+| **Learn**       | **Write** — integrate verified facts from the completed cycle          |
+
+### Directory Structure
+
+```
+docs/wiki/
+├── index.md          ← catalog of all pages (agent reads this first)
+├── overview.md       ← project summary, tech stack, high-level architecture
+├── {topic}.md        ← topic pages as needed (split freely for readability)
+└── bug-patterns.md   ← bug pattern registry (append-only)
+```
+
+The agent decides how to organize topic pages. Files can be split, merged, or reorganized as the project evolves. The only fixed conventions:
+
+- `index.md` — always present, always current.
+- `bug-patterns.md` — append-only registry.
+- Everything else — agent's discretion based on project size and domain.
+
+### index.md
+
+A catalog of every wiki page with a one-line summary. The agent reads this **first** to locate relevant pages, then drills into them.
+
+```markdown
+# Wiki Index
+
+| Page | Summary | Last Updated |
+|------|---------|--------------|
+| [overview](overview.md) | Project summary, tech stack, deployment | 2026-04-09 |
+| [architecture](architecture.md) | System layers, dependencies, data flow | 2026-04-09 |
+| [bug-patterns](bug-patterns.md) | Known bug patterns and prevention rules | 2026-04-09 |
+```
+
+Update `index.md` every time a wiki page is created, renamed, or significantly changed.
+
+### Operations
+
+**Integrate** (during Learn): Read the PEDAL artifacts and code from the completed cycle. Extract verified facts and update existing wiki pages — or create new ones. A single feature cycle may touch multiple wiki pages. When new information **contradicts** existing wiki content, update the wiki to reflect current state (do not keep both versions). Update `index.md` after changes.
+
+**Reference** (during Plan / Engineering / Do): Read `index.md`, identify relevant pages, read them for context. Do **not** modify the wiki outside of the Learn phase.
+
+**Lint** (optional, periodic): Check for stale information that no longer matches the codebase, orphan pages, missing cross-references, or gaps in coverage. The agent can suggest wiki maintenance when it detects drift.
+
+### Guidelines
+
+- Document only **verified facts** that match the current project state.
+- Write for both **humans reading guides** and **AI agents performing future tasks**.
+- For UI-bearing features, include **ASCII Art** depicting screen layouts and component hierarchy.
+- Keep pages focused — prefer multiple smaller files over one giant file.
+- The wiki is just markdown files in a git repo. Version history comes for free.
+
+---
 
 ## Severity-weighted scoring
 

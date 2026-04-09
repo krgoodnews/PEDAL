@@ -122,9 +122,11 @@ Evaluation Criteria:
 ```markdown
 If evaluation fails:
 1. Analyze failure reasons
-2. Prioritize issues (🔴 Critical > 🟡 Warning > 🟢 Info)
-3. Generate fix suggestions
-4. Apply fixes using replace/write_file tools
+2. Identify root cause for each issue (why it happened, not just what is wrong)
+3. Prioritize issues (🔴 Critical > 🟡 Warning > 🟢 Info)
+4. Generate fix suggestions
+5. Apply fixes using replace/write_file tools
+6. Record root cause in the analysis report's Root Cause column
 ```
 
 ### Phase 3: Re-evaluation
@@ -224,8 +226,11 @@ PARTIAL:
 
 🔧 Fixing 3 issues:
    1. [🔴 Critical] Hardcoded secret in auth module
+      Root cause: Prototype code carried over to production
    2. [🟡 Gap] Missing POST /auth/logout endpoint
+      Root cause: Engineering doc endpoint omitted during Do phase
    3. [🟡 Gap] Response format mismatch in /auth/login
+      Root cause: Response shape diverged from engineering spec
 
 ✏️ Applied fixes to:
    - src/api/auth/logout.ts (created)

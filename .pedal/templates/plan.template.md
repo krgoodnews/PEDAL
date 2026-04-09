@@ -34,6 +34,7 @@ variables:
 
 ### 1.3 Related Documents
 
+- Wiki (project SSOT): [docs/wiki/index.md](../wiki/index.md)
 - Requirements: {link}
 - References: {link}
 
