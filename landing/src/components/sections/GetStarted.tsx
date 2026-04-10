@@ -6,7 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Star } from "lucide-react";
 import { TerminalBlock } from "@/components/ui/TerminalBlock";
-import { TERMINAL_LINES, SITE_META } from "@/constants/content";
+import { TERMINAL_LINES, SITE_META, SECTION_COPY } from "@/constants/content";
+import { getAnimationConfig } from "@/lib/animation-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,10 +16,14 @@ export function GetStarted() {
 
   useGSAP(
     () => {
+      const { enabled, duration } = getAnimationConfig();
+
+      if (!enabled) return;
+
       gsap.from(".get-started-title", {
         opacity: 0,
         y: 40,
-        duration: 0.8,
+        duration,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".get-started-title",
@@ -30,7 +35,7 @@ export function GetStarted() {
       gsap.from(".get-started-terminal", {
         opacity: 0,
         y: 40,
-        duration: 0.8,
+        duration,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".get-started-terminal",
@@ -42,7 +47,7 @@ export function GetStarted() {
       gsap.from(".get-started-cta", {
         opacity: 0,
         scale: 0.9,
-        duration: 0.5,
+        duration: duration * 0.7,
         ease: "back.out(1.5)",
         scrollTrigger: {
           trigger: ".get-started-cta",
@@ -59,14 +64,14 @@ export function GetStarted() {
       <div className="mx-auto max-w-3xl text-center">
         {/* Header */}
         <div className="get-started-title mb-12">
-          <p className="mb-3 text-sm font-mono text-[#00d4ff] tracking-widest uppercase">Get Started</p>
+          <p className="mb-3 text-sm font-mono text-[#00d4ff] tracking-widest uppercase">{SECTION_COPY.getStarted.eyebrow}</p>
           <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-            지금 바로
+            {SECTION_COPY.getStarted.title}
             <br />
-            <span className="gradient-text">PEDAL을 시작하세요</span>
+            <span className="gradient-text">{SECTION_COPY.getStarted.titleAccent}</span>
           </h2>
           <p className="mt-4 text-white/50 max-w-lg mx-auto">
-            `.pedal/` 디렉토리를 복사하고, 도구별 설정을 추가하면 바로 사용할 수 있습니다.
+            {SECTION_COPY.getStarted.description}
           </p>
         </div>
 
@@ -84,7 +89,7 @@ export function GetStarted() {
         >
           <span className="flex items-center gap-2 rounded-[11px] bg-[#0a0a0f] px-6 py-3 text-sm font-semibold text-white group-hover:bg-[#12121a] transition-colors duration-300">
             <Star size={16} className="text-yellow-400" />
-            GitHub에서 Star 하기
+            {SECTION_COPY.getStarted.ctaLabel}
             <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
@@ -93,19 +98,16 @@ export function GetStarted() {
 
         {/* Tools */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-white/30">
-          <span>지원 도구:</span>
-          <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-[#00d4ff]" />
-            <span>Cursor</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-[#8b5cf6]" />
-            <span>Gemini CLI</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-[#ec4899]" />
-            <span>모든 AI 도구</span>
-          </div>
+          <span>{SECTION_COPY.getStarted.toolsLabel}</span>
+          {SECTION_COPY.getStarted.tools.map((tool, i) => (
+            <div key={tool} className="flex items-center gap-2">
+              <div
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ background: i === 0 ? "#00d4ff" : i === 1 ? "#8b5cf6" : "#ec4899" }}
+              />
+              <span>{tool}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

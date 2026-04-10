@@ -181,9 +181,13 @@ export interface SiteContent {
   features: Feature[];
   terminal: TerminalLine[];
   getStarted: {
+    eyebrow: string;
     title: string;
+    titleAccent: string;
     description: string;
-    githubCta: string;
+    ctaLabel: string;
+    toolsLabel: string;
+    tools: string[];
   };
   footer: {
     license: string;
@@ -194,6 +198,42 @@ export interface SiteContent {
 export const SITE_META = {
   githubUrl: "https://github.com/krgoodnews/PEDAL",
   license: "Apache License 2.0",
+};
+
+export const SECTION_COPY = {
+  whatIsPedal: {
+    eyebrow: "What is PEDAL?",
+    title: "5단계로 완성되는",
+    titleAccent: "AI 개발 사이클",
+    description: "전통적인 PDCA 사이클에서 영감을 받아 AI Agent에 최적화된 워크플로입니다.",
+  },
+  workflow: {
+    eyebrow: "Workflow",
+    title: "사이클이 돌수록",
+    titleAccent: "더 나은 코드",
+    description: "품질 임계값 미만이거나 높은 중요도 이슈가 있으면 Iterate가 강제됩니다. 임계값에 도달할 때까지 자동 반복합니다.",
+  },
+  features: {
+    eyebrow: "Features",
+    title: "품질을 보장하는",
+    titleAccent: "핵심 메커니즘",
+  },
+  getStarted: {
+    eyebrow: "Get Started",
+    title: "지금 바로",
+    titleAccent: "PEDAL을 시작하세요",
+    description: "`.pedal/` 디렉토리를 복사하고, 도구별 설정을 추가하면 바로 사용할 수 있습니다.",
+    ctaLabel: "GitHub에서 Star 하기",
+    toolsLabel: "지원 도구:",
+    tools: ["Cursor", "Gemini CLI", "모든 AI 도구"],
+  },
+  footer: {
+    links: [
+      { label: "GitHub", href: "" },
+      { label: "Docs", path: "/blob/main/.pedal/PEDAL.md" },
+      { label: "README", path: "/blob/main/README.md" },
+    ],
+  },
 };
 
 export const HERO_CONTENT = {

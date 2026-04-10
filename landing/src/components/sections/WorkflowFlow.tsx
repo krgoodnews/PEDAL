@@ -5,6 +5,9 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { SECTION_COPY } from "@/constants/content";
+import { getAnimationConfig } from "@/lib/animation-utils";
+
 gsap.registerPlugin(ScrollTrigger);
 
 const NODES = [
@@ -21,6 +24,9 @@ export function WorkflowFlow() {
 
   useGSAP(
     () => {
+      const { enabled } = getAnimationConfig();
+      if (!enabled) return;
+
       const mainPath = svgRef.current?.querySelector(".main-flow-path") as SVGPathElement | null;
       const iteratePath = svgRef.current?.querySelector(".iterate-path") as SVGPathElement | null;
 
@@ -98,14 +104,14 @@ export function WorkflowFlow() {
       <div className="mx-auto max-w-5xl">
         {/* Header */}
         <div className="flow-section-title mb-16 text-center">
-          <p className="mb-3 text-sm font-mono text-[#8b5cf6] tracking-widest uppercase">Workflow</p>
+          <p className="mb-3 text-sm font-mono text-[#8b5cf6] tracking-widest uppercase">{SECTION_COPY.workflow.eyebrow}</p>
           <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-            사이클이 돌수록
+            {SECTION_COPY.workflow.title}
             <br />
-            <span className="gradient-text">더 나은 코드</span>
+            <span className="gradient-text">{SECTION_COPY.workflow.titleAccent}</span>
           </h2>
           <p className="mt-4 text-white/50 max-w-xl mx-auto">
-            90% 미만이거나 Critical 이슈가 있으면 Iterate가 강제됩니다. 임계값에 도달할 때까지 자동 반복합니다.
+            {SECTION_COPY.workflow.description}
           </p>
         </div>
 

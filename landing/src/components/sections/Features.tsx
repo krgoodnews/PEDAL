@@ -13,7 +13,8 @@ import {
   Layers,
 } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { FEATURES } from "@/constants/content";
+import { FEATURES, SECTION_COPY } from "@/constants/content";
+import { getAnimationConfig } from "@/lib/animation-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,11 +31,15 @@ export function Features() {
 
   useGSAP(
     () => {
+      const { enabled, duration } = getAnimationConfig();
+
+      if (!enabled) return;
+
       gsap.set(".features-title", { opacity: 0, y: 40 });
       gsap.to(".features-title", {
         opacity: 1,
         y: 0,
-        duration: 0.8,
+        duration,
         ease: "power2.out",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -43,7 +48,6 @@ export function Features() {
         },
       });
 
-      // 각 카드를 자기 자신의 위치 기준으로 개별 트리거
       const cards = gsap.utils.toArray<HTMLElement>(".feature-card");
       cards.forEach((card) => {
         gsap.set(card, { opacity: 0, y: 50, scale: 0.97 });
@@ -51,7 +55,7 @@ export function Features() {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.6,
+          duration,
           ease: "power2.out",
           scrollTrigger: {
             trigger: card,
@@ -74,11 +78,11 @@ export function Features() {
       <div className="mx-auto max-w-5xl">
         {/* Header */}
         <div className="features-title mb-16 text-center">
-          <p className="mb-3 text-sm font-mono text-[#ec4899] tracking-widest uppercase">Features</p>
+          <p className="mb-3 text-sm font-mono text-[#ec4899] tracking-widest uppercase">{SECTION_COPY.features.eyebrow}</p>
           <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-            품질을 보장하는
+            {SECTION_COPY.features.title}
             <br />
-            <span className="gradient-text">핵심 메커니즘</span>
+            <span className="gradient-text">{SECTION_COPY.features.titleAccent}</span>
           </h2>
         </div>
 

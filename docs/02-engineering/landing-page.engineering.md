@@ -753,7 +753,7 @@ landing/
 1. [ ] **프로젝트 스캐폴딩**: `create-next-app` + 의존성 설치 + Tailwind v4 설정
 2. [ ] **글로벌 설정**: `layout.tsx` (폰트, 메타), `globals.css` (테마 토큰), `next.config.ts`
 3. [ ] **인프라**: `SmoothScrollProvider` (Lenis + GSAP 통합)
-4. [ ] **공통 UI**: `GlassCard`, `MeshGradient`, `AnimatedSection`, `TerminalBlock`
+4. [ ] **공통 UI**: `GlassCard`, `MeshGradient`, `TerminalBlock`
 5. [ ] **콘텐츠**: `constants/content.ts` (모든 텍스트 데이터)
 6. [ ] **섹션 구현** (순서대로):
    - Hero (메쉬 그라디언트 + 로드 애니메이션 + 패럴랙스)

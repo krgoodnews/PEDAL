@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MeshGradient } from "@/components/ui/MeshGradient";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 import { HERO_CONTENT } from "@/constants/content";
+import { getAnimationConfig } from "@/lib/animation-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,7 +16,13 @@ export function Hero() {
 
   useGSAP(
     () => {
+      const { enabled } = getAnimationConfig();
       const targets = [".hero-badge", ".hero-title", ".hero-subtitle", ".hero-cta-btn", ".hero-stats", ".hero-scroll"];
+
+      if (!enabled) {
+        gsap.set(targets, { opacity: 1, y: 0, scale: 1 });
+        return () => { gsap.set(targets, { clearProps: "all" }); };
+      }
 
       // 초기 상태를 명시적으로 설정 (from() 대신 set + to 패턴)
       gsap.set(".hero-badge", { opacity: 0, y: 20 });

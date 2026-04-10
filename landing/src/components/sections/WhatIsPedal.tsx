@@ -6,7 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Map, Cpu, Code2, BarChart3, BookOpen } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { PEDAL_STEPS } from "@/constants/content";
+import { PEDAL_STEPS, SECTION_COPY } from "@/constants/content";
+import { getAnimationConfig } from "@/lib/animation-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,10 +18,14 @@ export function WhatIsPedal() {
 
   useGSAP(
     () => {
+      const { enabled, duration } = getAnimationConfig();
+
+      if (!enabled) return;
+
       gsap.from(".pedal-title", {
         opacity: 0,
         y: 50,
-        duration: 0.8,
+        duration,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".pedal-title",
@@ -35,7 +40,7 @@ export function WhatIsPedal() {
         gsap.from(card, {
           x: fromX,
           opacity: 0,
-          duration: 0.7,
+          duration,
           ease: "power2.out",
           scrollTrigger: {
             trigger: card,
@@ -49,7 +54,7 @@ export function WhatIsPedal() {
           gsap.from(letter, {
             scale: 0,
             rotation: -15,
-            duration: 0.5,
+            duration: duration * 0.7,
             ease: "back.out(2)",
             scrollTrigger: {
               trigger: card,
@@ -72,14 +77,14 @@ export function WhatIsPedal() {
       <div className="mx-auto max-w-5xl">
         {/* Section header */}
         <div className="pedal-title mb-16 text-center">
-          <p className="mb-3 text-sm font-mono text-[#00d4ff] tracking-widest uppercase">What is PEDAL?</p>
+          <p className="mb-3 text-sm font-mono text-[#00d4ff] tracking-widest uppercase">{SECTION_COPY.whatIsPedal.eyebrow}</p>
           <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-            5단계로 완성되는
+            {SECTION_COPY.whatIsPedal.title}
             <br />
-            <span className="gradient-text">AI 개발 사이클</span>
+            <span className="gradient-text">{SECTION_COPY.whatIsPedal.titleAccent}</span>
           </h2>
           <p className="mt-4 text-white/50 max-w-xl mx-auto">
-            전통적인 PDCA 사이클에서 영감을 받아 AI Agent에 최적화된 워크플로입니다.
+            {SECTION_COPY.whatIsPedal.description}
           </p>
         </div>
 
