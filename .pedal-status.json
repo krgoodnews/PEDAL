@@ -1,19 +1,19 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-10T06:05:38Z",
+  "lastUpdated": "2026-04-10T06:12:31Z",
   "activeFeatures": ["landing-page"],
   "primaryFeature": "landing-page",
   "features": {
     "landing-page": {
-      "phase": "analyze",
+      "phase": "learn",
       "status": "completed",
-      "updatedAt": "2026-04-10T06:05:38Z",
+      "updatedAt": "2026-04-10T06:12:31Z",
       "description": "PEDAL 소개 랜딩 페이지 (Dark Glassmorphism + 스크롤 애니메이션)"
     }
   },
   "session": {
     "startedAt": "2026-04-10T04:23:53Z",
-    "lastActivity": "2026-04-10T06:05:38Z"
+    "lastActivity": "2026-04-10T06:12:31Z"
   },
   "history": [
     {
@@ -56,19 +56,25 @@
       "timestamp": "2026-04-10T05:20:00Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Iterate phase — all 8 gaps resolved. og-image, not-found, HERO_CONTENT, SiteContent type, design tokens, prettier, AnimatedSection removed from spec."
+      "details": "Completed Iterate — all 8 gaps resolved."
     },
     {
       "timestamp": "2026-04-10T05:55:00Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Analyze v0.2 — Match Rate 87.3%, 0 Critical, 4 Warning, 8 Info. Decision: ITERATE REQUIRED (matchRate < 90%)."
+      "details": "Completed Analyze v0.2 — Match Rate 87.3%, 0 Critical, 4 Warning. Decision: ITERATE REQUIRED."
     },
     {
       "timestamp": "2026-04-10T06:05:38Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Analyze v0.3 — Match Rate 91.3%, 0 Critical, 1 Warning, 9 Info. Decision: PASS. 크로스 리뷰 반영 후 최종 통과."
+      "details": "Completed Analyze v0.3 — Match Rate 91.3%, 0 Critical, 1 Warning. Decision: PASS."
+    },
+    {
+      "timestamp": "2026-04-10T06:12:31Z",
+      "action": "phase_progression",
+      "feature": "landing-page",
+      "details": "Completed Learn phase — Wiki 4 pages created (index, overview, landing-page, bug-patterns), completion report written, cross-review PASS."
     }
   ]
 }
