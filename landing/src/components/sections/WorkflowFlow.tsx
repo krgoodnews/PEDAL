@@ -231,17 +231,15 @@ export function WorkflowFlow() {
         {/* Score table */}
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {[
-            { severity: "Critical", weight: "×3", color: "#ef4444", desc: "무조건 Iterate 강제" },
-            { severity: "Warning", weight: "×2", color: "#f59e0b", desc: "90% 미만 시 Iterate" },
-            { severity: "Info", weight: "×1", color: "#6b7280", desc: "선택적 개선 사항" },
+            { severity: "Critical", color: "#ef4444", desc: "높은 중요도 — Iterate 강제" },
+            { severity: "Warning", color: "#f59e0b", desc: "중간 중요도 — 개선 권고" },
+            { severity: "Info", color: "#6b7280", desc: "낮은 중요도 — 선택적 개선" },
           ].map((item) => (
             <div key={item.severity} className="glass rounded-xl p-4 flex items-center gap-4">
               <div
-                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg text-sm font-bold"
-                style={{ background: `${item.color}20`, color: item.color }}
-              >
-                {item.weight}
-              </div>
+                className="flex h-3 w-3 flex-shrink-0 rounded-full"
+                style={{ background: item.color, boxShadow: `0 0 8px ${item.color}80` }}
+              />
               <div>
                 <p className="text-sm font-semibold text-white">{item.severity}</p>
                 <p className="text-xs text-white/40">{item.desc}</p>

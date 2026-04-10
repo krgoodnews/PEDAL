@@ -117,7 +117,7 @@ export const FEATURES: Feature[] = [
   {
     title: "Severity Scoring",
     description:
-      "Critical(×3) / Warning(×2) / Info(×1) 가중치로 품질을 수치화합니다. Critical 이슈는 무조건 Iterate를 강제합니다.",
+      "이슈를 중요도별로 분류하고, 중요도에 따라 가중치를 부여해 품질을 수치화합니다. 높은 중요도의 이슈는 Iterate를 강제합니다.",
     icon: "Gauge",
     gridSpan: "normal",
     accent: "pink",
