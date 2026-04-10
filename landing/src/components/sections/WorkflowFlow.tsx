@@ -120,7 +120,7 @@ export function WorkflowFlow() {
             {/* Main flow path */}
             <path
               className="main-flow-path"
-              d="M 100 80 L 180 80 M 260 80 L 340 80 M 420 80 L 500 80 M 580 80 L 660 80"
+              d="M 96 80 L 184 80 M 256 80 L 344 80 M 416 80 L 504 80 M 576 80 L 664 80"
               stroke="url(#flowGradient)"
               strokeWidth="2"
               fill="none"
@@ -151,11 +151,11 @@ export function WorkflowFlow() {
               </marker>
             </defs>
 
-            {/* Arrow heads on connectors */}
-            {[180, 340, 500, 660].map((x, i) => (
+            {/* Arrow heads — centered between nodes */}
+            {[140, 300, 460, 620].map((x, i) => (
               <polygon
                 key={i}
-                points={`${x - 4},76 ${x + 4},80 ${x - 4},84`}
+                points={`${x - 5},76 ${x + 5},80 ${x - 5},84`}
                 fill={i === 0 ? "#00d4ff" : i === 1 ? "#8b5cf6" : i === 2 ? "#ec4899" : "#8b5cf6"}
                 opacity="0.8"
               />

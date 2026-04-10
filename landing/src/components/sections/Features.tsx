@@ -36,22 +36,23 @@ export function Features() {
         duration: 0.8,
         ease: "power2.out",
         scrollTrigger: {
-          trigger: ".features-title",
-          start: "top 85%",
+          trigger: sectionRef.current,
+          start: "top 80%",
           toggleActions: "play none none none",
         },
       });
 
-      gsap.from(".feature-card", {
+      const cards = gsap.utils.toArray<HTMLElement>(".feature-card");
+      gsap.from(cards, {
         opacity: 0,
         y: 60,
         scale: 0.95,
         duration: 0.6,
         ease: "power2.out",
-        stagger: 0.1,
+        stagger: 0.12,
         scrollTrigger: {
-          trigger: ".feature-card",
-          start: "top 85%",
+          trigger: sectionRef.current,
+          start: "top 60%",
           toggleActions: "play none none none",
         },
       });

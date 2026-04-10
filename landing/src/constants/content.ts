@@ -41,8 +41,7 @@ export const PEDAL_STEPS: PedalStep[] = [
     letter: "E",
     title: "Engineering",
     subtitle: "어떻게 만들지 설계한다",
-    description:
-      "아키텍처, API, UI 의도를 상세히 명세합니다. 구현 전 설계를 검증합니다.",
+    description: "아키텍처, API, UI 의도를 상세히 명세합니다. 구현 전 설계를 검증합니다.",
     icon: "Cpu",
     color: "#8b5cf6",
     details: [
@@ -86,8 +85,7 @@ export const PEDAL_STEPS: PedalStep[] = [
     letter: "L",
     title: "Learn",
     subtitle: "지식을 Wiki에 축적한다",
-    description:
-      "검증된 사실을 Wiki에 통합합니다. 다음 사이클의 컨텍스트가 됩니다.",
+    description: "검증된 사실을 Wiki에 통합합니다. 다음 사이클의 컨텍스트가 됩니다.",
     icon: "BookOpen",
     color: "#8b5cf6",
     details: [
@@ -207,7 +205,7 @@ export const HERO_CONTENT = {
   ctaSecondary: { label: "더 알아보기", href: "#what-is-pedal" },
   stats: [
     { value: "5", label: "단계 워크플로", accent: "cyan" as const },
-    { value: "2", label: "AI 크로스 리뷰", accent: "purple" as const },
+    { value: "Cross Review", label: "AI 크로스 리뷰", accent: "purple" as const },
     { value: "90%", label: "품질 임계값", accent: "pink" as const },
   ],
 };

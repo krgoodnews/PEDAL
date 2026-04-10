@@ -86,9 +86,9 @@ export function Hero() {
         {/* Stats */}
         <div className="hero-cta flex flex-wrap items-center justify-center gap-8 mt-4 text-sm text-white/40">
           {HERO_CONTENT.stats.map((stat, i) => (
-            <>
-              {i > 0 && <div key={`divider-${i}`} className="h-4 w-px bg-white/10" />}
-              <div key={stat.label} className="flex items-center gap-2">
+            <div key={stat.label} className="flex items-center gap-8">
+              {i > 0 && <div className="h-4 w-px bg-white/10" />}
+              <div className="flex items-center gap-2">
                 <span
                   className="font-semibold"
                   style={{ color: stat.accent === "cyan" ? "#00d4ff" : stat.accent === "purple" ? "#8b5cf6" : "#ec4899" }}
@@ -97,7 +97,7 @@ export function Hero() {
                 </span>
                 <span>{stat.label}</span>
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>
