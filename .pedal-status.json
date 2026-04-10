@@ -1,0 +1,26 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-04-10T04:23:53Z",
+  "activeFeatures": ["landing-page"],
+  "primaryFeature": "landing-page",
+  "features": {
+    "landing-page": {
+      "phase": "plan",
+      "status": "in_progress",
+      "updatedAt": "2026-04-10T04:23:53Z",
+      "description": "PEDAL 소개 랜딩 페이지 (Dark Glassmorphism + 스크롤 애니메이션)"
+    }
+  },
+  "session": {
+    "startedAt": "2026-04-10T04:23:53Z",
+    "lastActivity": "2026-04-10T04:23:53Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-10T04:23:53Z",
+      "action": "phase_start",
+      "feature": "landing-page",
+      "details": "Plan phase started for PEDAL landing page"
+    }
+  ]
+}
