@@ -15,12 +15,23 @@ export function Hero() {
 
   useGSAP(
     () => {
+      const targets = [".hero-badge", ".hero-title", ".hero-subtitle", ".hero-cta-btn", ".hero-stats", ".hero-scroll"];
+
+      // 초기 상태를 명시적으로 설정 (from() 대신 set + to 패턴)
+      gsap.set(".hero-badge", { opacity: 0, y: 20 });
+      gsap.set(".hero-title", { opacity: 0, y: 40 });
+      gsap.set(".hero-subtitle", { opacity: 0, y: 30 });
+      gsap.set(".hero-cta-btn", { opacity: 0, y: 20 });
+      gsap.set(".hero-stats", { opacity: 0, y: 20 });
+      gsap.set(".hero-scroll", { opacity: 0 });
+
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.from(".hero-badge", { opacity: 0, y: 20, duration: 0.6 })
-        .from(".hero-title", { opacity: 0, y: 40, duration: 1 }, "-=0.3")
-        .from(".hero-subtitle", { opacity: 0, y: 30, duration: 0.8 }, "-=0.5")
-        .from(".hero-cta", { opacity: 0, y: 20, duration: 0.6, stagger: 0.15 }, "-=0.4")
-        .from(".hero-scroll", { opacity: 0, duration: 0.5 }, "-=0.2");
+      tl.to(".hero-badge", { opacity: 1, y: 0, duration: 0.6 })
+        .to(".hero-title", { opacity: 1, y: 0, duration: 1 }, "-=0.3")
+        .to(".hero-subtitle", { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
+        .to(".hero-cta-btn", { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, "-=0.4")
+        .to(".hero-stats", { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
+        .to(".hero-scroll", { opacity: 1, duration: 0.5 }, "-=0.2");
 
       gsap.to(".hero-content", {
         y: -80,
@@ -32,6 +43,11 @@ export function Hero() {
           scrub: 1.5,
         },
       });
+
+      return () => {
+        // 클린업 시 인라인 스타일 제거해 다음 마운트에서 깨끗하게 시작
+        gsap.set(targets, { clearProps: "all" });
+      };
     },
     { scope: sectionRef }
   );
@@ -68,7 +84,7 @@ export function Hero() {
             href={HERO_CONTENT.ctaPrimary.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="hero-cta group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#00d4ff] via-[#8b5cf6] to-[#ec4899] px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)]"
+            className="hero-cta-btn group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#00d4ff] via-[#8b5cf6] to-[#ec4899] px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)]"
           >
             <span className="relative z-10">{HERO_CONTENT.ctaPrimary.label}</span>
             <svg className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -77,14 +93,14 @@ export function Hero() {
           </a>
           <a
             href={HERO_CONTENT.ctaSecondary.href}
-            className="hero-cta glass inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white/80 transition-all duration-300 hover:text-white hover:bg-white/10"
+            className="hero-cta-btn glass inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white/80 transition-all duration-300 hover:text-white hover:bg-white/10"
           >
             {HERO_CONTENT.ctaSecondary.label}
           </a>
         </div>
 
         {/* Stats */}
-        <div className="hero-cta flex flex-wrap items-center justify-center gap-8 mt-4 text-sm text-white/40">
+        <div className="hero-stats flex flex-wrap items-center justify-center gap-8 mt-4 text-sm text-white/40">
           {HERO_CONTENT.stats.map((stat, i) => (
             <div key={stat.label} className="flex items-center gap-8">
               {i > 0 && <div className="h-4 w-px bg-white/10" />}

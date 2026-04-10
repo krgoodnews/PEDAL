@@ -205,7 +205,7 @@ export const HERO_CONTENT = {
   ctaSecondary: { label: "더 알아보기", href: "#what-is-pedal" },
   stats: [
     { value: "5", label: "단계 워크플로", accent: "cyan" as const },
-    { value: "Cross Review", label: "AI 크로스 리뷰", accent: "purple" as const },
+    { value: "크로스 리뷰", label: "다른 AI 모델의 비판적 검토", accent: "purple" as const },
     { value: "90%", label: "품질 임계값", accent: "pink" as const },
   ],
 };
