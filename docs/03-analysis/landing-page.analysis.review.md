@@ -1,25 +1,26 @@
-# landing-page Analysis Review
+# landing-page Analysis Review (v0.2)
 
 > **Reviewed by**: Gemini CLI
 > **Date**: 2026-04-10
-> **Document**: docs/03-analysis/landing-page.analysis.md
+> **Document**: docs/03-analysis/landing-page.analysis.md (v0.2)
 
 ## Critical
 
-- (None) The analysis document accurately captures the state of the project and follows the PEDAL protocol without logical errors.
+- (None) — The analysis correctly identifies 0 Critical issues in the current implementation. OG image, 404 page, and build blockers from v0.1 are all resolved.
 
 ## Warning
 
-- (None) The analysis is consistent with the Engineering specification and the implementation reality.
+- **`prefers-reduced-motion` severity** — The analysis classifies this as Warning. For a public marketing site, some teams treat accessibility/motion policy as Critical. The current classification is acceptable given this is a documentation/portfolio site, but worth flagging for the team's consideration.
+- **`SiteContent.getStarted` shape divergence** — Correctly identified as Warning. The interface defines `codeSnippet`/`githubUrl` but implementation uses `TERMINAL_LINES[]` + different field names. This should be resolved in the next iterate to prevent future confusion.
 
 ## Info / Suggestions
 
-- **Test Depth Verification** — The analysis correctly identifies "Uncovered Areas" in Section 4. It is suggested that in the next iteration, specific test cases for the GSAP `ScrollTrigger` logic itself (e.g., verifying `start` and `end` values via mocks) be considered to ensure the "유려한 애니메이션" (smooth animation) requirement from the original prompt is robustly verified. — [ref](https://gsap.com/resources/testing/)
-- **Match Rate Granularity** — The "Total checked items: 42" is a solid baseline. For even higher fidelity, splitting "Design Tokens" into individual checks (as done in Section 2.5) while keeping the count consistent with the table rows is appreciated.
-- **Convention Enforcement** — The analysis correctly flags the TDD violation (Post-implementation testing). This is a vital finding for maintaining the PEDAL workflow integrity. — [ref](01-plan/conventions.md)
+- **Match Rate calculation** — The 87.3% calculation is sound. The denominator (42 items) is consistent with v0.1, enabling meaningful comparison.
+- **Engineering doc debt** — The analysis correctly flags §2.3, §2.1, §6.2, §13.2 as needing updates. These are low-risk but should be addressed before the Learn phase to keep the Engineering doc as a reliable reference.
+- **Test gap** — WorkflowFlow, GetStarted, Footer, SmoothScrollProvider remain untested. Given conventions.md guidance ("너무 많은 테스트 코드를 작성하지 말 것"), the current coverage is acceptable, but the analysis correctly notes these as Info items.
 
 ## Verdict
 
 **PASS**
 
-The analysis is comprehensive, sharp, and provides a clear, data-driven decision for the `ITERATE` phase. The identification of the hardcoding violation against §14.2 of the Engineering doc is particularly noteworthy.
+The v0.2 analysis is accurate, well-structured, and provides a clear data-driven basis for the next iterate. The 87.3% match rate and 4 Warning items correctly trigger ITERATE REQUIRED. The prioritization of `prefers-reduced-motion` and content centralization as the key items to resolve is sound.

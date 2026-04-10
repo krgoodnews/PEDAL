@@ -32,10 +32,10 @@ describe("Hero 섹션 (FR-01)", () => {
     expect(screen.getByText("scroll")).toBeInTheDocument();
   });
 
-  it("통계 수치(5단계, 2 AI, 90%)가 표시되어야 한다", () => {
+  it("통계 항목(5단계, 크로스 리뷰, 90%)이 표시되어야 한다", () => {
     render(<Hero />);
     expect(screen.getByText("5")).toBeInTheDocument();
-    expect(screen.getByText("2")).toBeInTheDocument();
+    expect(screen.getByText("크로스 리뷰")).toBeInTheDocument();
     expect(screen.getByText("90%")).toBeInTheDocument();
   });
 });

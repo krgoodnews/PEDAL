@@ -22,7 +22,7 @@
 
 ### 1.1 Analysis Purpose
 
-Engineering 문서에 명세된 컴포넌트, 데이터 모델, 디자인 토큰, 파일 구조, 컨벤션을 실제 구현과 비교하여 갭을 식별하고, Severity-Weighted Match Rate를 계산한다.
+v0.1 Analyze → Iterate 이후 잔존 갭을 재확인하고, Severity-Weighted Match Rate를 재계산한다.
 
 ### 1.2 Analysis Scope
 
@@ -33,206 +33,188 @@ Engineering 문서에 명세된 컴포넌트, 데이터 모델, 디자인 토큰
 
 ---
 
-## 2. Gap Analysis (Engineering vs Implementation)
+## 2. Iterate 이후 해결된 항목
 
-### 2.1 Component Structure (§5.3)
-
-| Engineering Component  | Implementation File                               | Status              |
-| ---------------------- | ------------------------------------------------- | ------------------- |
-| `RootLayout`           | `src/app/layout.tsx`                               | ✅ Match            |
-| `HomePage`             | `src/app/page.tsx`                                 | ✅ Match            |
-| `SmoothScrollProvider` | `src/components/providers/SmoothScrollProvider.tsx` | ✅ Match            |
-| `Hero`                 | `src/components/sections/Hero.tsx`                  | ✅ Match            |
-| `WhatIsPedal`          | `src/components/sections/WhatIsPedal.tsx`           | ✅ Match            |
-| `WorkflowFlow`         | `src/components/sections/WorkflowFlow.tsx`          | ✅ Match            |
-| `Features`             | `src/components/sections/Features.tsx`              | ✅ Match            |
-| `GetStarted`           | `src/components/sections/GetStarted.tsx`            | ✅ Match            |
-| `Footer`               | `src/components/sections/Footer.tsx`                | ✅ Match (Server)   |
-| `GlassCard`            | `src/components/ui/GlassCard.tsx`                   | ✅ Match            |
-| **`AnimatedSection`**  | —                                                  | ⚠️ Not implemented  |
-| `MeshGradient`         | `src/components/ui/MeshGradient.tsx`                | ✅ Match            |
-| `TerminalBlock`        | `src/components/ui/TerminalBlock.tsx`                | ✅ Match            |
-| `ScrollIndicator`      | `src/components/ui/ScrollIndicator.tsx`              | ✅ Match            |
-
-### 2.2 Data Model (§3.1)
-
-| Engineering Type   | Implementation                 | Status             | Notes                                  |
-| ------------------ | ------------------------------ | ------------------ | -------------------------------------- |
-| `PedalStep`        | `PedalStep` in content.ts      | ⚠️ Modified        | `subtitle` 필드 추가 (Engineering에 없음) |
-| `Feature`          | `Feature` in content.ts        | ⚠️ Modified        | `accent` 필드 추가 (Engineering에 없음) |
-| `SiteContent`      | —                              | ⚠️ Not implemented | 통합 타입 미구현, 개별 export로 대체   |
-| `TerminalLine`     | `TerminalLine` in content.ts   | ⚠️ Added           | Engineering에 없는 타입 추가           |
-
-### 2.3 File Structure (§13.1)
-
-| Expected File              | Actual                    | Status             |
-| -------------------------- | ------------------------- | ------------------- |
-| `src/app/not-found.tsx`    | —                         | ⚠️ Missing          |
-| `src/components/ui/AnimatedSection.tsx` | —              | ⚠️ Missing          |
-| `public/og-image.png`      | —                         | ❌ Missing (메타에서 참조) |
-| `public/favicon.ico`       | `src/app/favicon.ico`     | ✅ (다른 위치)      |
-| `pnpm-lock.yaml`           | `package-lock.json`       | ℹ️ npm 사용         |
-| `.eslintrc.json`           | `eslint.config.mjs`       | ℹ️ flat config      |
-| `.prettierrc`              | —                         | ⚠️ Missing          |
-
-### 2.4 Dependencies (§2.3)
-
-| Package                         | Engineering  | Actual     | Status     |
-| ------------------------------- | ------------ | ---------- | ---------- |
-| `next`                          | ^15.0.0      | 16.2.3     | ℹ️ Newer   |
-| `prettier`                      | ^3.0.0       | —          | ⚠️ Missing |
-| `prettier-plugin-tailwindcss`   | latest       | —          | ⚠️ Missing |
-| `lucide-react`                  | ^0.400.0     | ^1.8.0     | ℹ️ Newer   |
-
-### 2.5 Design Tokens (§7.1)
-
-| Token                    | Engineering | Implementation | Status     |
-| ------------------------ | ----------- | -------------- | ---------- |
-| `--color-bg-primary`     | ✅          | ✅              | ✅ Match   |
-| `--color-bg-secondary`   | ✅          | ✅              | ✅ Match   |
-| `--color-glass`          | ✅          | —              | ⚠️ Missing |
-| `--color-glass-border`   | ✅          | —              | ⚠️ Missing |
-| `--color-glass-hover`    | ✅          | —              | ⚠️ Missing |
-| `--color-accent-*`       | ✅          | ✅              | ✅ Match   |
-| `--color-text-*`         | ✅          | ✅              | ✅ Match   |
-| `--gradient-accent`      | ✅          | —              | ⚠️ Missing |
-| `--gradient-glass`       | ✅          | —              | ⚠️ Missing |
-| `--shadow-glow-*`        | ✅          | —              | ⚠️ Missing |
-| `--shadow-glass-inset`   | ✅          | —              | ⚠️ Missing |
-
-> Glass/gradient/shadow 토큰은 `.glass` 클래스와 Tailwind arbitrary value로 동일 효과를 내지만, 명시적 CSS 변수로는 정의되지 않음.
-
-### 2.6 기타
-
-| Item                         | Engineering     | Implementation | Status      |
-| ---------------------------- | --------------- | -------------- | ----------- |
-| Font: Pretendard             | §2.1 diagram    | —              | ⚠️ Missing  |
-| `<html lang="en">`          | §2.1 diagram    | `lang="ko"`    | ℹ️ 의도적 변경 |
-| `<html className="dark">`    | §2.1 diagram    | —              | ⚠️ Missing  |
-| Hero 텍스트 하드코딩          | §14.2 "없음"    | Hero.tsx 내 직접 기입 | ⚠️ 위반 |
-| Footer 링크 데이터            | §3.1 `footer.links[]` | Footer.tsx 내 직접 기입 | ⚠️ 위반 |
+| 항목 | 처리 |
+| ---- | ---- |
+| `og-image.png` 없음 | `public/og-image.png` 추가, OG height 634 반영 |
+| `not-found.tsx` 없음 | Dark Glassmorphism 404 페이지 구현 |
+| Hero 텍스트 하드코딩 | `HERO_CONTENT` 상수로 분리 |
+| `SiteContent` 타입 없음 | `content.ts`에 통합 타입 정의 |
+| Design tokens 7개 누락 | `globals.css`에 glass/gradient/shadow 토큰 추가 |
+| `prettier` 미설치 | 설치 + `.prettierrc` 생성 |
+| `AnimatedSection` 미구현 | Engineering 문서에서 삭제 |
+| Hero animation `from()` 부작용 | `gsap.set()+to()` 패턴으로 변경, `clearProps` 추가 |
+| Features 카드 미표시 | 카드별 개별 ScrollTrigger로 변경 |
+| WorkflowFlow 화살표 위치 | 노드 간 중앙(140/300/460/620)으로 수정 |
+| Hydration mismatch 경고 | `suppressHydrationWarning` 추가 |
+| Severity 공식(×3/×2/×1) 노출 | UI 텍스트에서 수치 제거 |
 
 ---
 
-## 3. Code Quality Analysis
+## 3. Gap Analysis (Engineering vs Implementation) — v0.2
 
-### 3.1 Build & Lint
+### 3.1 Component Structure (§5.3)
 
-| Check           | Result | Notes         |
-| --------------- | ------ | ------------- |
-| `npm run build` | ✅ Pass | 0 warnings    |
-| `tsc --noEmit`  | ✅ Pass | 0 errors      |
-| `npx eslint src/` | ✅ Pass | 0 warnings |
+| Engineering Component  | Implementation File                                 | Status          |
+| ---------------------- | --------------------------------------------------- | --------------- |
+| `RootLayout`           | `src/app/layout.tsx`                                | ✅ Match        |
+| `HomePage`             | `src/app/page.tsx`                                  | ✅ Match        |
+| `SmoothScrollProvider` | `src/components/providers/SmoothScrollProvider.tsx` | ✅ Match        |
+| `Hero`                 | `src/components/sections/Hero.tsx`                  | ✅ Match        |
+| `WhatIsPedal`          | `src/components/sections/WhatIsPedal.tsx`           | ✅ Match        |
+| `WorkflowFlow`         | `src/components/sections/WorkflowFlow.tsx`          | ✅ Match        |
+| `Features`             | `src/components/sections/Features.tsx`              | ✅ Match        |
+| `GetStarted`           | `src/components/sections/GetStarted.tsx`            | ✅ Match        |
+| `Footer`               | `src/components/sections/Footer.tsx`                | ✅ Match        |
+| `GlassCard`            | `src/components/ui/GlassCard.tsx`                   | ✅ Match        |
+| `MeshGradient`         | `src/components/ui/MeshGradient.tsx`                | ✅ Match        |
+| `TerminalBlock`        | `src/components/ui/TerminalBlock.tsx`               | ✅ Match        |
+| `ScrollIndicator`      | `src/components/ui/ScrollIndicator.tsx`             | ✅ Match        |
 
-### 3.2 Code Smells
+### 3.2 Data Model (§3.1)
 
-| Type            | File            | Description                              | Severity |
-| --------------- | --------------- | ---------------------------------------- | -------- |
-| Hardcoded text  | `Hero.tsx`      | 타이틀, 서브타이틀, badge, 통계 직접 기입 | 🟡       |
-| Hardcoded links | `Footer.tsx`    | Docs/README 링크 직접 기입               | 🟢       |
+| Engineering Type | Implementation | Status | Notes |
+| ---------------- | -------------- | ------ | ----- |
+| `PedalStep` | `PedalStep` | ⚠️ Modified | `subtitle` 필드 추가 |
+| `Feature` | `Feature` | ⚠️ Modified | `accent` 필드 추가 |
+| `TerminalLine` | `TerminalLine` | ⚠️ Added | Engineering에 없는 타입 |
+| `SiteContent` | `SiteContent` | ✅ Added | 통합 타입 정의됨 |
+| `getStarted.codeSnippet` | `TERMINAL_LINES[]` | ⚠️ Shape diverge | 인터페이스 shape 불일치 |
 
-### 3.3 Security Issues
+### 3.3 Content Centralization (§14.2)
 
-| Severity | Issue                                  | Status |
-| -------- | -------------------------------------- | ------ |
-| ✅       | 외부 사용자 입력 없음                  | Clean  |
-| ✅       | Security headers in next.config.ts     | 3+1 headers |
-| ℹ️       | CSP 미설정 (Engineering §9에서도 미체크) | N/A   |
+| Section | Status | Notes |
+| ------- | ------ | ----- |
+| Hero | ✅ `HERO_CONTENT` | 완전 분리 |
+| WhatIsPedal | ⚠️ Partial | `PEDAL_STEPS` 사용, 섹션 헤드라인은 인라인 |
+| WorkflowFlow | ⚠️ Partial | `NODES` 상수가 컴포넌트 내부에 정의 |
+| Features | ✅ `FEATURES` | 완전 분리 |
+| GetStarted | ⚠️ Partial | `TERMINAL_LINES` 사용, 헤드라인 인라인 |
+| Footer | ⚠️ Partial | `SITE_META.githubUrl` 사용, 링크 라벨 인라인 |
+
+### 3.4 File Structure (§13.1)
+
+| Expected | Actual | Status |
+| -------- | ------ | ------ |
+| `src/app/not-found.tsx` | ✅ 존재 | ✅ |
+| `public/og-image.png` | ✅ 존재 | ✅ |
+| `.prettierrc` | ✅ 존재 | ✅ |
+| `pnpm-lock.yaml` | `package-lock.json` | ℹ️ npm 사용 |
+| `.eslintrc.json` | `eslint.config.mjs` | ℹ️ flat config |
+| §13.2 Step 4 `AnimatedSection` 언급 | 삭제 안 됨 | ⚠️ 문서 잔존 |
+
+### 3.5 Dependencies (§2.3)
+
+| Package | Engineering | Actual | Status |
+| ------- | ----------- | ------ | ------ |
+| `next` | ^15.0.0 | 16.2.3 | ℹ️ Newer |
+| `prettier` | ^3.0.0 | ✅ 설치됨 | ✅ |
+| `prettier-plugin-tailwindcss` | latest | ✅ 설치됨 | ✅ |
+| Vitest / Testing Library | — | 설치됨 | ⚠️ 문서 미기재 |
+
+### 3.6 Design Tokens (§7.1)
+
+| Token | Status |
+| ----- | ------ |
+| `--color-bg-*`, `--color-accent-*`, `--color-text-*` | ✅ |
+| `--color-glass`, `--color-glass-border`, `--color-glass-hover` | ✅ |
+| `--gradient-accent`, `--gradient-glass` | ✅ |
+| `--shadow-glow-*`, `--shadow-glass-inset` | ✅ |
+
+### 3.7 Animation (§6.2, §6.3)
+
+| Item | Status | Notes |
+| ---- | ------ | ----- |
+| Hero 입장 애니메이션 | ✅ | `gsap.set()+to()` 패턴 |
+| Hero 패럴랙스 scrub | ✅ | |
+| WhatIsPedal 좌우 교차 | ✅ | |
+| WorkflowFlow SVG path drawing | ✅ | |
+| Features 카드 stagger | ✅ | 개별 trigger로 구현 |
+| GetStarted 터미널 타이핑 | ✅ | |
+| `prefers-reduced-motion` 지원 | ⚠️ | `getAnimationConfig()` 정의됨, 컴포넌트에 미연결 |
 
 ---
 
-## 4. Test Coverage
+## 4. Code Quality
 
-| Metric        | Result          | Status |
-| ------------- | --------------- | ------ |
-| Test Files    | 7 passed (7)    | ✅     |
-| Tests         | 44 passed (44)  | ✅     |
-| Build         | Clean           | ✅     |
+### 4.1 Build & Lint
+
+| Check | Result |
+| ----- | ------ |
+| `npm run build` | ✅ Clean |
+| `tsc --noEmit` | ✅ Clean |
+| `npx eslint src/` | ✅ Clean |
+
+### 4.2 Security
+
+| Item | Status |
+| ---- | ------ |
+| Security headers (X-Frame-Options 등) | ✅ |
+| CSP 미설정 | ℹ️ Engineering §9에서도 미체크 |
+
+---
+
+## 5. Test Coverage
+
+| Metric | Result | Status |
+| ------ | ------ | ------ |
+| Test Files | 7 passed (7) | ✅ |
+| Tests | 44 passed (44) | ✅ |
 
 ### Uncovered Areas
 
-- `WorkflowFlow.tsx` — SVG 렌더링 테스트 없음 (GSAP mock 한계)
+- `WorkflowFlow.tsx` — SVG 렌더링 테스트 없음
 - `GetStarted.tsx` — 컴포넌트 렌더링 테스트 없음
 - `Footer.tsx` — Server Component 테스트 없음
 - `SmoothScrollProvider.tsx` — Lenis 초기화 테스트 없음
 
 ---
 
-## 5. Convention Compliance
-
-### 5.1 TDD (conventions.md)
-
-| Requirement                   | Status            | Notes                                         |
-| ----------------------------- | ----------------- | --------------------------------------------- |
-| 테스트 먼저 작성 후 기능 구현 | ⚠️ Not followed   | 구현 커밋 후 테스트 커밋 (git log 확인)       |
-| Engineering 항목 테스트       | ✅ Followed        | 과도하지 않은 적절한 테스트 수                |
-| Analysis에서 테스트 수행      | ✅ Followed        | npm test 44/44 통과                           |
-
-### 5.2 Naming Conventions (§12.1)
-
-| Category          | Convention    | Files Checked | Compliance | Violations |
-| ----------------- | ------------- | :-----------: | :--------: | ---------- |
-| Component         | PascalCase    |      14       |   100%     | 없음       |
-| File (component)  | PascalCase.tsx |     14       |   100%     | 없음       |
-| File (utility)    | kebab-case.ts  |      1       |   100%     | 없음       |
-| CSS variable      | kebab-case    |      10       |   100%     | 없음       |
-| Constant          | UPPER_SNAKE   |       4       |   100%     | 없음       |
-
-### 5.3 Import Order (§12.2)
-
-전 컴포넌트에서 React/Next → Third-party → Internal → Types 순서 준수.
-
----
-
 ## 6. Severity-Weighted Match Rate
 
-### 6.1 Issue Summary by Severity
+### 6.1 Issue Summary
 
-| Severity    | Count | Weight | Weighted Score |
-| ----------- | :---: | :----: | :------------: |
-| 🔴 Critical |   1   |   x3   |       3        |
-| 🟡 Warning  |   8   |   x2   |      16        |
-| 🟢 Info     |   5   |   x1   |       5        |
-| **Total**   |  14   |        |      24        |
+| # | Severity | Issue |
+|---|----------|-------|
+| 1 | 🟡 Warning | `prefers-reduced-motion` 미연결 — `getAnimationConfig()` 구현됐으나 컴포넌트에서 미사용 |
+| 2 | 🟡 Warning | 섹션 헤드라인/링크 라벨 일부 인라인 (WhatIsPedal, WorkflowFlow, GetStarted, Footer) |
+| 3 | 🟡 Warning | `SiteContent.getStarted` shape 불일치 — 인터페이스와 실제 구현 diverge |
+| 4 | 🟡 Warning | Engineering §13.2 Step 4에 `AnimatedSection` 언급 잔존 |
+| 5 | ℹ️ Info | Engineering §2.3 의존성 목록 미업데이트 (next ^15, lucide 구버전, vitest 미기재) |
+| 6 | ℹ️ Info | Engineering §2.1 Pretendard vs §7.4 JetBrains Mono 내부 모순 |
+| 7 | ℹ️ Info | Engineering §6.2 코드 스니펫이 `from()` / `.hero-cta` 기준 (구현과 상이) |
+| 8 | ℹ️ Info | `lang="ko"` vs Engineering `lang="en"` (의도적 변경) |
+| 9 | ℹ️ Info | `package-lock.json` vs `pnpm-lock.yaml`, `eslint.config.mjs` vs `.eslintrc.json` |
+| 10 | ℹ️ Info | WorkflowFlow `NODES` 데이터가 컴포넌트 내부에 정의 (content.ts 미분리) |
+| 11 | ℹ️ Info | 테스트 미커버 영역 4개 (WorkflowFlow, GetStarted, Footer, SmoothScrollProvider) |
+| 12 | ℹ️ Info | TDD 순서 미준수 (과거 이력, 수정 불가) |
 
-### 6.2 Issue Details
+### 6.2 Weighted Score
 
-| # | Severity | Issue                                             |
-|---|----------|---------------------------------------------------|
-| 1 | 🔴       | `og-image.png` 미존재 — 메타데이터에서 참조하나 404 |
-| 2 | 🟡       | `AnimatedSection.tsx` 미구현 (§5.3, §13.1)        |
-| 3 | 🟡       | `SiteContent` 통합 타입 미구현 (§3.1)              |
-| 4 | 🟡       | Hero 텍스트 하드코딩 — §14.2 "하드코딩 없음" 위반  |
-| 5 | 🟡       | `not-found.tsx` 커스텀 404 미구현 (§8.1, §13.1)    |
-| 6 | 🟡       | `prettier` / `prettier-plugin-tailwindcss` 미설치  |
-| 7 | 🟡       | Design tokens 7개 미정의 (glass, gradient, shadow) |
-| 8 | 🟡       | Pretendard 폰트 미적용 (§2.1 diagram)              |
-| 9 | 🟡       | TDD 순서 미준수 (테스트 후작성)                     |
-| 10| 🟢       | `PedalStep.subtitle`, `Feature.accent` 필드 추가   |
-| 11| 🟢       | `lang="ko"` vs Engineering `lang="en"` (의도적)    |
-| 12| 🟢       | `<html className="dark">` 누락                    |
-| 13| 🟢       | `package-lock.json` vs `pnpm-lock.yaml`            |
-| 14| 🟢       | `Permissions-Policy` 헤더 추가 (긍정적 추가)       |
-
-### 6.3 Weighted Match Rate
+| Severity | Count | Weight | Score |
+| -------- | :---: | :----: | :---: |
+| 🔴 Critical | 0 | ×3 | 0 |
+| 🟡 Warning | 4 | ×2 | 8 |
+| ℹ️ Info | 8 | ×1 | 8 |
+| **Total** | 12 | | **16** |
 
 ```
-Total checked items:    42 (components 14 + data model 4 + files 7 + deps 4 + tokens 11 + convention 2)
+Total checked items:    42
 Max possible score:     42 × 3 = 126
-Weighted issue score:   24
-Weighted Match Rate:    (1 - 24/126) × 100 = 80.95%
+Weighted issue score:   16
+Weighted Match Rate:    (1 - 16/126) × 100 = 87.3%
 ```
 
-### 6.4 Iterate Decision
+### 6.3 Iterate Decision
 
 ```
 ┌──────────────────────────────────────────────────┐
-│  Weighted Match Rate: 80.95%                     │
-│  🔴 Critical Issues:  1                          │
+│  Weighted Match Rate: 87.3%                      │
+│  🔴 Critical Issues:  0                          │
 │                                                  │
 │  Decision: ❌ ITERATE REQUIRED                    │
-│  Reason:  Critical > 0 → FORCE ITERATE           │
-│           matchRate 80.95% < 90%                  │
+│  Reason:   matchRate 87.3% < 90%                 │
 └──────────────────────────────────────────────────┘
 ```
 
@@ -240,36 +222,27 @@ Weighted Match Rate:    (1 - 24/126) × 100 = 80.95%
 
 ## 7. Recommended Actions
 
-### 7.1 Immediate (Iterate — Critical)
+### 7.1 Iterate — Warning (Match Rate 90% 달성을 위해)
 
-| # | Priority | Item                      | Fix                                      |
-|---|----------|---------------------------|------------------------------------------|
-| 1 | 🔴       | OG 이미지 없음            | `public/og-image.png` 생성 또는 메타데이터에서 제거 |
+| # | Item | Fix |
+|---|------|-----|
+| 1 | `prefers-reduced-motion` 미연결 | 각 섹션 컴포넌트에서 `getAnimationConfig()` 호출, `enabled: false`면 애니메이션 스킵 |
+| 2 | 섹션 헤드라인 인라인 | `content.ts`에 섹션별 헤드라인 추가 |
+| 3 | `SiteContent.getStarted` shape | 인터페이스 수정 또는 Engineering 문서 업데이트 |
+| 4 | Engineering §13.2 `AnimatedSection` 잔존 | 해당 줄 삭제 |
 
-### 7.2 Short-term (Iterate — Warning)
+### 7.2 Engineering Document Updates Needed
 
-| # | Priority | Item                      | Fix                                      |
-|---|----------|---------------------------|------------------------------------------|
-| 2 | 🟡       | Hero 텍스트 하드코딩      | content.ts에 hero 섹션 데이터 추가        |
-| 3 | 🟡       | AnimatedSection 미구현    | 구현 또는 Engineering 문서에서 삭제        |
-| 4 | 🟡       | not-found.tsx 미구현      | Dark Glassmorphism 404 페이지 추가         |
-| 5 | 🟡       | SiteContent 통합 타입     | content.ts에 SiteContent 타입 추가         |
-| 6 | 🟡       | Design tokens 누락        | globals.css에 §7.1 토큰 추가              |
-| 7 | 🟡       | Prettier 미설치           | npm install + .prettierrc 생성             |
-| 8 | 🟡       | Pretendard 폰트           | §2.1 자체가 §7.4와 모순 → Engineering 수정 |
-| 9 | 🟡       | TDD 순서                  | 이미 수정 불가 (과거); 향후 준수           |
-
-### 7.3 Engineering Document Updates Needed
-
-- [ ] §2.1 Pretendard 언급 제거 또는 §7.4와 통일
-- [ ] §3.1 `PedalStep.subtitle`, `Feature.accent`, `TerminalLine` 반영
-- [ ] §2.3 next ^15 → ^16, lucide-react ^0.400 → ^1.x 업데이트
-- [ ] §2.3 vitest, @testing-library 등 테스트 의존성 추가
+- [ ] §2.3 의존성 버전 업데이트 (next ^16, lucide ^1.x, vitest 추가)
+- [ ] §2.1 Pretendard 제거 → JetBrains Mono로 통일
+- [ ] §6.2 Hero 코드 스니펫 실제 구현 반영
+- [ ] §13.2 Step 4 AnimatedSection 언급 삭제
 
 ---
 
 ## Version History
 
-| Version | Date       | Changes          | Author            |
-| ------- | ---------- | ---------------- | ----------------- |
-| 0.1     | 2026-04-10 | Initial analysis | AI Agent (Cursor) |
+| Version | Date       | Changes | Author |
+| ------- | ---------- | ------- | ------ |
+| 0.1     | 2026-04-10 | Initial analysis — Match Rate 80.95%, ITERATE | AI Agent (Cursor) |
+| 0.2     | 2026-04-10 | Post-iterate re-analysis — Match Rate 87.3%, ITERATE | AI Agent (Cursor) |
