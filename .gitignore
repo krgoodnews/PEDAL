@@ -1,0 +1,5 @@
+# Landing page build artifacts
+landing/node_modules/
+landing/.next/
+landing/.env*.local
+landing/out/
