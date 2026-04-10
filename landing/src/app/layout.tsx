@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "PEDAL — AI Agent 개발 워크플로",
     description: "Plan → Engineering → Do → Analyze → Learn. AI Agent를 위한 구조화된 개발 워크플로.",
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-image.png", width: 1200, height: 634 }],
   },
   twitter: {
     card: "summary_large_image",

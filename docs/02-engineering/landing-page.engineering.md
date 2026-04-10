@@ -248,7 +248,6 @@ interface SiteContent {
 | `GetStarted`           | `src/components/sections/GetStarted.tsx` | Client   | 터미널 UI + GitHub CTA                             |
 | `Footer`               | `src/components/sections/Footer.tsx` | Server        | 라이선스, 링크                                     |
 | `GlassCard`            | `src/components/ui/GlassCard.tsx` | Client          | Glassmorphism 카드 (재사용)                        |
-| `AnimatedSection`      | `src/components/ui/AnimatedSection.tsx` | Client    | 범용 스크롤 트리거 래퍼                            |
 | `MeshGradient`         | `src/components/ui/MeshGradient.tsx` | Client       | CSS 기반 애니메이션 배경 그라디언트                 |
 | `TerminalBlock`        | `src/components/ui/TerminalBlock.tsx` | Client       | 코드 스니펫 터미널 UI                              |
 | `ScrollIndicator`      | `src/components/ui/ScrollIndicator.tsx` | Client    | 하단 스크롤 화살표 바운스                          |
@@ -730,7 +729,6 @@ landing/
 │   │   │   └── Footer.tsx
 │   │   └── ui/
 │   │       ├── GlassCard.tsx
-│   │       ├── AnimatedSection.tsx
 │   │       ├── MeshGradient.tsx
 │   │       ├── TerminalBlock.tsx
 │   │       └── ScrollIndicator.tsx

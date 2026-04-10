@@ -19,6 +19,17 @@
   --animate-float-medium: float-medium 15s ease-in-out infinite;
   --animate-float-fast: float-fast 10s ease-in-out infinite;
   --animate-bounce-slow: bounce-slow 2s ease-in-out infinite;
+
+  --color-glass: rgba(255, 255, 255, 0.05);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-glass-hover: rgba(255, 255, 255, 0.08);
+
+  --gradient-accent: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 50%, #ec4899 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+
+  --shadow-glow-cyan: 0 0 40px rgba(0, 212, 255, 0.15);
+  --shadow-glow-purple: 0 0 40px rgba(139, 92, 246, 0.15);
+  --shadow-glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 @keyframes float-slow {

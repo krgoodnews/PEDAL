@@ -163,7 +163,51 @@ export const TERMINAL_LINES: TerminalLine[] = [
   { type: "output", text: "✓ Plan phase started for user-auth" },
 ];
 
+export interface HeroStat {
+  value: string;
+  label: string;
+  accent: "cyan" | "purple" | "pink";
+}
+
+export interface SiteContent {
+  hero: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    workflowLabel: string;
+    ctaPrimary: { label: string; href: string };
+    ctaSecondary: { label: string; href: string };
+    stats: HeroStat[];
+  };
+  steps: PedalStep[];
+  features: Feature[];
+  terminal: TerminalLine[];
+  getStarted: {
+    title: string;
+    description: string;
+    githubCta: string;
+  };
+  footer: {
+    license: string;
+    links: { label: string; href: string }[];
+  };
+}
+
 export const SITE_META = {
   githubUrl: "https://github.com/krgoodnews/PEDAL",
   license: "Apache License 2.0",
+};
+
+export const HERO_CONTENT = {
+  badge: "AI Agent 개발 워크플로",
+  title: "PEDAL",
+  workflowLabel: "Plan → Engineering → Do → Analyze → Learn",
+  subtitle: "크로스 리뷰와 Wiki SSOT로 AI Agent의 품질을 보장하는 구조화된 워크플로",
+  ctaPrimary: { label: "GitHub에서 시작하기", href: SITE_META.githubUrl },
+  ctaSecondary: { label: "더 알아보기", href: "#what-is-pedal" },
+  stats: [
+    { value: "5", label: "단계 워크플로", accent: "cyan" as const },
+    { value: "2", label: "AI 크로스 리뷰", accent: "purple" as const },
+    { value: "90%", label: "품질 임계값", accent: "pink" as const },
+  ],
 };
