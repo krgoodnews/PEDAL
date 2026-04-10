@@ -30,9 +30,10 @@ export function Features() {
 
   useGSAP(
     () => {
-      gsap.from(".features-title", {
-        opacity: 0,
-        y: 40,
+      gsap.set(".features-title", { opacity: 0, y: 40 });
+      gsap.to(".features-title", {
+        opacity: 1,
+        y: 0,
         duration: 0.8,
         ease: "power2.out",
         scrollTrigger: {
@@ -42,20 +43,28 @@ export function Features() {
         },
       });
 
+      // 각 카드를 자기 자신의 위치 기준으로 개별 트리거
       const cards = gsap.utils.toArray<HTMLElement>(".feature-card");
-      gsap.from(cards, {
-        opacity: 0,
-        y: 60,
-        scale: 0.95,
-        duration: 0.6,
-        ease: "power2.out",
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 60%",
-          toggleActions: "play none none none",
-        },
+      cards.forEach((card) => {
+        gsap.set(card, { opacity: 0, y: 50, scale: 0.97 });
+        gsap.to(card, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 88%",
+            toggleActions: "play none none none",
+          },
+        });
       });
+
+      return () => {
+        gsap.set(".features-title", { clearProps: "all" });
+        cards.forEach((card) => gsap.set(card, { clearProps: "all" }));
+      };
     },
     { scope: sectionRef }
   );
