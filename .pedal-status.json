@@ -1,19 +1,19 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-10T06:12:31Z",
-  "activeFeatures": ["landing-page"],
-  "primaryFeature": "landing-page",
+  "lastUpdated": "2026-04-10T06:22:46Z",
+  "activeFeatures": [],
+  "primaryFeature": null,
   "features": {
     "landing-page": {
-      "phase": "learn",
-      "status": "completed",
-      "updatedAt": "2026-04-10T06:12:31Z",
+      "phase": "archived",
+      "status": "archived",
+      "updatedAt": "2026-04-10T06:22:46Z",
       "description": "PEDAL 소개 랜딩 페이지 (Dark Glassmorphism + 스크롤 애니메이션)"
     }
   },
   "session": {
     "startedAt": "2026-04-10T04:23:53Z",
-    "lastActivity": "2026-04-10T06:12:31Z"
+    "lastActivity": "2026-04-10T06:22:46Z"
   },
   "history": [
     {
@@ -44,37 +44,43 @@
       "timestamp": "2026-04-10T04:47:19Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Do phase — Next.js 16 + GSAP + Lenis + Dark Glassmorphism. Build clean, tsc clean, ESLint clean."
+      "details": "Completed Do phase — Next.js 16 + GSAP + Lenis + Dark Glassmorphism."
     },
     {
       "timestamp": "2026-04-10T05:10:00Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Analyze v0.1 — Weighted Match Rate 80.95%, 1 Critical (og-image), 8 Warnings. Decision: ITERATE REQUIRED."
+      "details": "Analyze v0.1 — 80.95%, ITERATE"
     },
     {
       "timestamp": "2026-04-10T05:20:00Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Iterate — all 8 gaps resolved."
+      "details": "Iterate — all gaps resolved"
     },
     {
       "timestamp": "2026-04-10T05:55:00Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Analyze v0.2 — Match Rate 87.3%, 0 Critical, 4 Warning. Decision: ITERATE REQUIRED."
+      "details": "Analyze v0.2 — 87.3%, ITERATE"
     },
     {
       "timestamp": "2026-04-10T06:05:38Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Analyze v0.3 — Match Rate 91.3%, 0 Critical, 1 Warning. Decision: PASS."
+      "details": "Analyze v0.3 — 91.3%, PASS"
     },
     {
       "timestamp": "2026-04-10T06:12:31Z",
       "action": "phase_progression",
       "feature": "landing-page",
-      "details": "Completed Learn phase — Wiki 4 pages created (index, overview, landing-page, bug-patterns), completion report written, cross-review PASS."
+      "details": "Learn — Wiki 4 pages, completion report, cross-review PASS"
+    },
+    {
+      "timestamp": "2026-04-10T06:22:46Z",
+      "action": "phase_progression",
+      "feature": "landing-page",
+      "details": "Archived — PEDAL artifacts moved to docs/archived/landing-page/, review files removed"
     }
   ]
 }
