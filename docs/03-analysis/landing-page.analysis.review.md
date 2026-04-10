@@ -1,26 +1,22 @@
-# landing-page Analysis Review (v0.2)
+# landing-page Analysis Review
 
 > **Reviewed by**: Gemini CLI
 > **Date**: 2026-04-10
-> **Document**: docs/03-analysis/landing-page.analysis.md (v0.2)
-
-## Critical
-
-- (None) — The analysis correctly identifies 0 Critical issues in the current implementation. OG image, 404 page, and build blockers from v0.1 are all resolved.
+> **Document**: docs/03-analysis/landing-page.analysis.md
 
 ## Warning
 
-- **`prefers-reduced-motion` severity** — The analysis classifies this as Warning. For a public marketing site, some teams treat accessibility/motion policy as Critical. The current classification is acceptable given this is a documentation/portfolio site, but worth flagging for the team's consideration.
-- **`SiteContent.getStarted` shape divergence** — Correctly identified as Warning. The interface defines `codeSnippet`/`githubUrl` but implementation uses `TERMINAL_LINES[]` + different field names. This should be resolved in the next iterate to prevent future confusion.
+- **Understated Severity of Test Gaps** — The analysis marks missing test coverage for 5 components (including core logic like `WorkflowFlow.tsx` and `SmoothScrollProvider.tsx`) as "Info" (Severity ℹ️). Given the project's mandate that "Validation is the only path to finality," these should be elevated to "Warning" (Severity 🟡) to ensure high-risk UI/Animation logic is verified before final Learn phase. — [ref](https://testing-library.com/docs/guiding-principles/)
 
 ## Info / Suggestions
 
-- **Match Rate calculation** — The 87.3% calculation is sound. The denominator (42 items) is consistent with v0.1, enabling meaningful comparison.
-- **Engineering doc debt** — The analysis correctly flags §2.3, §2.1, §6.2, §13.2 as needing updates. These are low-risk but should be addressed before the Learn phase to keep the Engineering doc as a reliable reference.
-- **Test gap** — WorkflowFlow, GetStarted, Footer, SmoothScrollProvider remain untested. Given conventions.md guidance ("너무 많은 테스트 코드를 작성하지 말 것"), the current coverage is acceptable, but the analysis correctly notes these as Info items.
+- **Font Consistency (Engineering §2.1)** — The analyst correctly identified the discrepancy between Pretendard and JetBrains Mono. This update to the Engineering doc is critical for maintaining it as the SSOT.
+- **CSP Missing** — While noted as "Info," adding a basic CSP is a best practice even for static sites to prevent potential XSS from third-party scripts (e.g., analytics). — [ref](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
+- **Language Mismatch** — The catch regarding `lang="ko"` vs `lang="en"` is excellent, as it aligns the technical implementation with the user's localized intent (Korean content).
+- **Match Rate Calculation** — The weighted match rate calculation is accurate and follows the PEDAL methodology correctly.
 
 ## Verdict
 
-**PASS**
+✅ **PASS** (with recommendations)
 
-The v0.2 analysis is accurate, well-structured, and provides a clear data-driven basis for the next iterate. The 87.3% match rate and 4 Warning items correctly trigger ITERATE REQUIRED. The prioritization of `prefers-reduced-motion` and content centralization as the key items to resolve is sound.
+The analysis is high-quality and accurately reflects the state of the codebase. The "PASS" verdict is justified as the primary functional and visual requirements from the prompt are met, and the minor discrepancies do not block the delivery of a high-quality landing page.

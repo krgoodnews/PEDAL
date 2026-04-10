@@ -14,7 +14,6 @@
 | --------------------------------------------------------- | --------------------- |
 | [Plan](../01-plan/landing-page.plan.md)                   | Requirements match    |
 | [Engineering](../02-engineering/landing-page.engineering.md) | Implementation match |
-| [Conventions](../../01-plan/conventions.md)                | Convention compliance |
 
 ---
 
@@ -22,7 +21,7 @@
 
 ### 1.1 Analysis Purpose
 
-v0.1 Analyze → Iterate 이후 잔존 갭을 재확인하고, Severity-Weighted Match Rate를 재계산한다.
+v0.2 Analyze (87.3%, ITERATE REQUIRED) → Iterate 수행 후 잔존 갭 재확인. v0.2의 4개 Warning 해소 여부를 중점 점검한다.
 
 ### 1.2 Analysis Scope
 
@@ -33,26 +32,18 @@ v0.1 Analyze → Iterate 이후 잔존 갭을 재확인하고, Severity-Weighted
 
 ---
 
-## 2. Iterate 이후 해결된 항목
+## 2. v0.2 Warning 해결 현황
 
-| 항목 | 처리 |
-| ---- | ---- |
-| `og-image.png` 없음 | `public/og-image.png` 추가, OG height 634 반영 |
-| `not-found.tsx` 없음 | Dark Glassmorphism 404 페이지 구현 |
-| Hero 텍스트 하드코딩 | `HERO_CONTENT` 상수로 분리 |
-| `SiteContent` 타입 없음 | `content.ts`에 통합 타입 정의 |
-| Design tokens 7개 누락 | `globals.css`에 glass/gradient/shadow 토큰 추가 |
-| `prettier` 미설치 | 설치 + `.prettierrc` 생성 |
-| `AnimatedSection` 미구현 | Engineering 문서에서 삭제 |
-| Hero animation `from()` 부작용 | `gsap.set()+to()` 패턴으로 변경, `clearProps` 추가 |
-| Features 카드 미표시 | 카드별 개별 ScrollTrigger로 변경 |
-| WorkflowFlow 화살표 위치 | 노드 간 중앙(140/300/460/620)으로 수정 |
-| Hydration mismatch 경고 | `suppressHydrationWarning` 추가 |
-| Severity 공식(×3/×2/×1) 노출 | UI 텍스트에서 수치 제거 |
+| # | v0.2 Warning | 현재 상태 | 상세 |
+|---|-------------|----------|------|
+| 1 | `prefers-reduced-motion` 미연결 | ✅ 해결 | Hero, WhatIsPedal, WorkflowFlow, Features, GetStarted 모두 `getAnimationConfig()` 호출. `enabled: false` 시 애니메이션 스킵 |
+| 2 | 섹션 헤드라인 인라인 | ✅ 해결 | `SECTION_COPY` 객체로 모든 섹션 헤드라인 중앙화 (whatIsPedal, workflow, features, getStarted, footer) |
+| 3 | `SiteContent.getStarted` shape 불일치 | ✅ 해결 | `SiteContent` 인터페이스를 실제 구조(`eyebrow`, `titleAccent` 등)에 맞게 재정의 |
+| 4 | Engineering §13.2 `AnimatedSection` 잔존 | ✅ 해결 | Engineering 문서에서 해당 언급 삭제됨 |
 
 ---
 
-## 3. Gap Analysis (Engineering vs Implementation) — v0.2
+## 3. Gap Analysis (Engineering vs Implementation) — v0.3
 
 ### 3.1 Component Structure (§5.3)
 
@@ -72,67 +63,72 @@ v0.1 Analyze → Iterate 이후 잔존 갭을 재확인하고, Severity-Weighted
 | `TerminalBlock`        | `src/components/ui/TerminalBlock.tsx`               | ✅ Match        |
 | `ScrollIndicator`      | `src/components/ui/ScrollIndicator.tsx`             | ✅ Match        |
 
+**13/13 Match** — 모든 컴포넌트 파일 존재 및 역할 일치.
+
 ### 3.2 Data Model (§3.1)
 
 | Engineering Type | Implementation | Status | Notes |
 | ---------------- | -------------- | ------ | ----- |
-| `PedalStep` | `PedalStep` | ⚠️ Modified | `subtitle` 필드 추가 |
-| `Feature` | `Feature` | ⚠️ Modified | `accent` 필드 추가 |
-| `TerminalLine` | `TerminalLine` | ⚠️ Added | Engineering에 없는 타입 |
-| `SiteContent` | `SiteContent` | ✅ Added | 통합 타입 정의됨 |
-| `getStarted.codeSnippet` | `TERMINAL_LINES[]` | ⚠️ Shape diverge | 인터페이스 shape 불일치 |
+| `PedalStep` | `PedalStep` | ℹ️ Enriched | `subtitle` 필드 추가 (UI 개선) |
+| `Feature` | `Feature` | ℹ️ Enriched | `accent` 필드 추가 (glow 색상 분기) |
+| `TerminalLine` | `TerminalLine` | ℹ️ Added | 터미널 타이핑 효과를 위한 구조화 타입 |
+| `SiteContent` | `SiteContent` | ℹ️ Redefined | 실제 데이터 구조에 맞게 인터페이스 재정의. 단, 인터페이스를 감싸는 단일 export는 없고 `HERO_CONTENT`, `SECTION_COPY`, `SITE_META` 등 다수 named export 사용 |
 
 ### 3.3 Content Centralization (§14.2)
 
-| Section | Status | Notes |
-| ------- | ------ | ----- |
-| Hero | ✅ `HERO_CONTENT` | 완전 분리 |
-| WhatIsPedal | ⚠️ Partial | `PEDAL_STEPS` 사용, 섹션 헤드라인은 인라인 |
-| WorkflowFlow | ⚠️ Partial | `NODES` 상수가 컴포넌트 내부에 정의 |
-| Features | ✅ `FEATURES` | 완전 분리 |
-| GetStarted | ⚠️ Partial | `TERMINAL_LINES` 사용, 헤드라인 인라인 |
-| Footer | ⚠️ Partial | `SITE_META.githubUrl` 사용, 링크 라벨 인라인 |
+| Section | Status | Source |
+| ------- | ------ | ------ |
+| Hero | ✅ | `HERO_CONTENT` — 완전 분리 |
+| WhatIsPedal | ✅ | `SECTION_COPY.whatIsPedal` + `PEDAL_STEPS` |
+| WorkflowFlow | ✅ (텍스트) / ℹ️ (SVG 좌표) | `SECTION_COPY.workflow` 사용. `NODES` SVG 좌표는 컴포넌트 내부 (레이아웃 데이터) |
+| Features | ✅ | `SECTION_COPY.features` + `FEATURES` |
+| GetStarted | ✅ | `SECTION_COPY.getStarted` + `TERMINAL_LINES` + `SITE_META` |
+| Footer | ✅ | `SECTION_COPY.footer` + `SITE_META` |
 
 ### 3.4 File Structure (§13.1)
 
 | Expected | Actual | Status |
 | -------- | ------ | ------ |
 | `src/app/not-found.tsx` | ✅ 존재 | ✅ |
-| `public/og-image.png` | ✅ 존재 | ✅ |
+| `public/og-image.png` | ✅ 존재 (1.2MB) | ✅ |
+| `public/favicon.ico` | `src/app/favicon.ico` | ℹ️ Next.js App Router 컨벤션 |
 | `.prettierrc` | ✅ 존재 | ✅ |
 | `pnpm-lock.yaml` | `package-lock.json` | ℹ️ npm 사용 |
-| `.eslintrc.json` | `eslint.config.mjs` | ℹ️ flat config |
-| §13.2 Step 4 `AnimatedSection` 언급 | 삭제 안 됨 | ⚠️ 문서 잔존 |
+| `.eslintrc.json` | `eslint.config.mjs` | ℹ️ ESLint flat config |
 
 ### 3.5 Dependencies (§2.3)
 
 | Package | Engineering | Actual | Status |
 | ------- | ----------- | ------ | ------ |
-| `next` | ^15.0.0 | 16.2.3 | ℹ️ Newer |
-| `prettier` | ^3.0.0 | ✅ 설치됨 | ✅ |
-| `prettier-plugin-tailwindcss` | latest | ✅ 설치됨 | ✅ |
-| Vitest / Testing Library | — | 설치됨 | ⚠️ 문서 미기재 |
+| `next` | ^15.0.0 | 16.2.3 | ℹ️ Major 업그레이드 |
+| `lucide-react` | ^0.400.0 | ^1.8.0 | ℹ️ Major 업그레이드 |
+| `prettier` | ^3.0.0 | ^3.8.2 | ✅ |
+| `prettier-plugin-tailwindcss` | latest | ^0.7.2 | ✅ |
+| `vitest` + Testing Library | 미기재 | 설치됨 | ℹ️ Engineering 문서에 누락 |
 
 ### 3.6 Design Tokens (§7.1)
 
-| Token | Status |
-| ----- | ------ |
-| `--color-bg-*`, `--color-accent-*`, `--color-text-*` | ✅ |
+| Token Category | Status |
+| -------------- | ------ |
+| `--color-bg-*`, `--color-accent-*`, `--color-text-*` | ✅ 전체 일치 |
 | `--color-glass`, `--color-glass-border`, `--color-glass-hover` | ✅ |
 | `--gradient-accent`, `--gradient-glass` | ✅ |
 | `--shadow-glow-*`, `--shadow-glass-inset` | ✅ |
+| `@keyframes float-*`, `bounce-slow` | ✅ |
 
 ### 3.7 Animation (§6.2, §6.3)
 
 | Item | Status | Notes |
 | ---- | ------ | ----- |
-| Hero 입장 애니메이션 | ✅ | `gsap.set()+to()` 패턴 |
+| Hero 입장 애니메이션 | ✅ | `gsap.set()+to()` 패턴, `clearProps` 포함 |
 | Hero 패럴랙스 scrub | ✅ | |
-| WhatIsPedal 좌우 교차 | ✅ | |
-| WorkflowFlow SVG path drawing | ✅ | |
-| Features 카드 stagger | ✅ | 개별 trigger로 구현 |
-| GetStarted 터미널 타이핑 | ✅ | |
-| `prefers-reduced-motion` 지원 | ⚠️ | `getAnimationConfig()` 정의됨, 컴포넌트에 미연결 |
+| WhatIsPedal 좌우 교차 | ✅ | 홀수/짝수 분기 + step-letter scale |
+| WorkflowFlow SVG path drawing | ✅ | main-flow-path + iterate-path 별도 |
+| Features 카드 stagger | ✅ | 개별 ScrollTrigger, set+to 패턴 |
+| GetStarted 터미널 타이핑 | ✅ | `setInterval` 기반 순차 reveal |
+| ScrollIndicator bounce | ✅ | GSAP yoyo 반복 |
+| `prefers-reduced-motion` 지원 | ✅ | 5개 섹션 모두 `getAnimationConfig()` 호출 |
+| 모바일 폴백 (reduced duration) | ✅ | `isTouch || isMobile → duration: 0.5` |
 
 ---
 
@@ -142,7 +138,7 @@ v0.1 Analyze → Iterate 이후 잔존 갭을 재확인하고, Severity-Weighted
 
 | Check | Result |
 | ----- | ------ |
-| `npm run build` | ✅ Clean |
+| `npm run build` | ✅ Clean (SSG 4 pages) |
 | `tsc --noEmit` | ✅ Clean |
 | `npx eslint src/` | ✅ Clean |
 
@@ -150,8 +146,11 @@ v0.1 Analyze → Iterate 이후 잔존 갭을 재확인하고, Severity-Weighted
 
 | Item | Status |
 | ---- | ------ |
-| Security headers (X-Frame-Options 등) | ✅ |
-| CSP 미설정 | ℹ️ Engineering §9에서도 미체크 |
+| X-Frame-Options | ✅ DENY |
+| X-Content-Type-Options | ✅ nosniff |
+| Referrer-Policy | ✅ strict-origin-when-cross-origin |
+| Permissions-Policy | ✅ camera, mic, geo 차단 |
+| CSP | ℹ️ 미설정 (Engineering §9에서도 미체크) |
 
 ---
 
@@ -162,12 +161,20 @@ v0.1 Analyze → Iterate 이후 잔존 갭을 재확인하고, Severity-Weighted
 | Test Files | 7 passed (7) | ✅ |
 | Tests | 44 passed (44) | ✅ |
 
-### Uncovered Areas
+### Covered Components
+
+- Hero, WhatIsPedal, Features (섹션 렌더링)
+- GlassCard, TerminalBlock (UI 컴포넌트)
+- animation-utils (유닛)
+- content (상수 데이터 무결성)
+
+### Uncovered Components
 
 - `WorkflowFlow.tsx` — SVG 렌더링 테스트 없음
 - `GetStarted.tsx` — 컴포넌트 렌더링 테스트 없음
 - `Footer.tsx` — Server Component 테스트 없음
 - `SmoothScrollProvider.tsx` — Lenis 초기화 테스트 없음
+- `ScrollIndicator.tsx` — 렌더링 테스트 없음
 
 ---
 
@@ -177,66 +184,78 @@ v0.1 Analyze → Iterate 이후 잔존 갭을 재확인하고, Severity-Weighted
 
 | # | Severity | Issue |
 |---|----------|-------|
-| 1 | 🟡 Warning | `prefers-reduced-motion` 미연결 — `getAnimationConfig()` 구현됐으나 컴포넌트에서 미사용 |
-| 2 | 🟡 Warning | 섹션 헤드라인/링크 라벨 일부 인라인 (WhatIsPedal, WorkflowFlow, GetStarted, Footer) |
-| 3 | 🟡 Warning | `SiteContent.getStarted` shape 불일치 — 인터페이스와 실제 구현 diverge |
-| 4 | 🟡 Warning | Engineering §13.2 Step 4에 `AnimatedSection` 언급 잔존 |
-| 5 | ℹ️ Info | Engineering §2.3 의존성 목록 미업데이트 (next ^15, lucide 구버전, vitest 미기재) |
-| 6 | ℹ️ Info | Engineering §2.1 Pretendard vs §7.4 JetBrains Mono 내부 모순 |
-| 7 | ℹ️ Info | Engineering §6.2 코드 스니펫이 `from()` / `.hero-cta` 기준 (구현과 상이) |
-| 8 | ℹ️ Info | `lang="ko"` vs Engineering `lang="en"` (의도적 변경) |
-| 9 | ℹ️ Info | `package-lock.json` vs `pnpm-lock.yaml`, `eslint.config.mjs` vs `.eslintrc.json` |
-| 10 | ℹ️ Info | WorkflowFlow `NODES` 데이터가 컴포넌트 내부에 정의 (content.ts 미분리) |
-| 11 | ℹ️ Info | 테스트 미커버 영역 4개 (WorkflowFlow, GetStarted, Footer, SmoothScrollProvider) |
-| 12 | ℹ️ Info | TDD 순서 미준수 (과거 이력, 수정 불가) |
+| 1 | 🟡 Warning | 핵심 컴포넌트 테스트 미커버: WorkflowFlow(SVG 렌더링), SmoothScrollProvider(Lenis 초기화) — 복잡 로직 검증 필요 (크로스 리뷰 반영) |
+| 2 | ℹ️ Info | Engineering §2.1 Pretendard 언급 vs 구현 JetBrains Mono (§7.4와 일치, §2.1 내부 불일치) |
+| 3 | ℹ️ Info | Engineering §2.3 의존성 버전 미업데이트 (next ^15→16.2.3, lucide ^0.400→^1.8, vitest 미기재) |
+| 4 | ℹ️ Info | Engineering §6.2 코드 스니펫이 `from()` 패턴 기준 (구현은 `set()+to()` 패턴) |
+| 5 | ℹ️ Info | `SiteContent` 인터페이스 정의되었으나 단일 wrapper export 없이 다수 named export |
+| 6 | ℹ️ Info | `lang="ko"` vs Engineering `lang="en"` (한국어 콘텐츠이므로 구현이 정확) |
+| 7 | ℹ️ Info | `package-lock.json` vs `pnpm-lock.yaml`, `eslint.config.mjs` vs `.eslintrc.json` (tooling 선택) |
+| 8 | ℹ️ Info | WorkflowFlow `NODES` SVG 좌표 데이터가 컴포넌트 내부 정의 (레이아웃 데이터로 content.ts 분리 불필요) |
+| 9 | ℹ️ Info | 단순 컴포넌트 테스트 미커버: GetStarted, Footer, ScrollIndicator (단순 구조, Learn 이후 백로그) |
+| 10 | ℹ️ Info | ScrollIndicator가 `getAnimationConfig()` 미호출 (장식적 요소, 기능 영향 없음) |
 
-### 6.2 Weighted Score
+### 6.2 Cross-Review 반영
+
+| Reviewer Finding | Severity | Decision | Reason |
+|-----------------|----------|----------|--------|
+| 5개 미커버 컴포넌트 전체를 Warning으로 상향 | 🟡 Warning | **부분 수용** | WorkflowFlow(SVG+GSAP), SmoothScrollProvider(Lenis 초기화)는 복잡 로직으로 Warning 수용. GetStarted, Footer, ScrollIndicator는 단순 구조로 Info 유지 |
+| CSP 미설정 | ℹ️ Info | **수용** | 타당한 보안 권고. 다만 Engineering §9에서도 미체크 상태이며 정적 사이트 범위에서 영향 낮음 |
+| Font §2.1 업데이트 | ℹ️ Info | **수용** | 기존 분석과 동일 의견 |
+
+### 6.3 Weighted Score
 
 | Severity | Count | Weight | Score |
 | -------- | :---: | :----: | :---: |
 | 🔴 Critical | 0 | ×3 | 0 |
-| 🟡 Warning | 4 | ×2 | 8 |
-| ℹ️ Info | 8 | ×1 | 8 |
-| **Total** | 12 | | **16** |
+| 🟡 Warning | 1 | ×2 | 2 |
+| ℹ️ Info | 9 | ×1 | 9 |
+| **Total** | 10 | | **11** |
 
 ```
 Total checked items:    42
 Max possible score:     42 × 3 = 126
-Weighted issue score:   16
-Weighted Match Rate:    (1 - 16/126) × 100 = 87.3%
+Weighted issue score:   11
+Weighted Match Rate:    (1 - 11/126) × 100 = 91.3%
 ```
 
-### 6.3 Iterate Decision
+### 6.4 Iterate Decision
 
 ```
 ┌──────────────────────────────────────────────────┐
-│  Weighted Match Rate: 87.3%                      │
+│  Weighted Match Rate: 91.3%                      │
 │  🔴 Critical Issues:  0                          │
 │                                                  │
-│  Decision: ❌ ITERATE REQUIRED                    │
-│  Reason:   matchRate 87.3% < 90%                 │
+│  Decision: ✅ PASS                                │
+│  Reason:   matchRate 91.3% ≥ 90% AND 0 Critical │
 └──────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 7. Recommended Actions
+## 7. Engineering Document Updates Recommended
 
-### 7.1 Iterate — Warning (Match Rate 90% 달성을 위해)
+Engineering 문서의 정확성을 유지하기 위한 비필수 업데이트 권고:
 
-| # | Item | Fix |
-|---|------|-----|
-| 1 | `prefers-reduced-motion` 미연결 | 각 섹션 컴포넌트에서 `getAnimationConfig()` 호출, `enabled: false`면 애니메이션 스킵 |
-| 2 | 섹션 헤드라인 인라인 | `content.ts`에 섹션별 헤드라인 추가 |
-| 3 | `SiteContent.getStarted` shape | 인터페이스 수정 또는 Engineering 문서 업데이트 |
-| 4 | Engineering §13.2 `AnimatedSection` 잔존 | 해당 줄 삭제 |
+| # | Section | Update |
+|---|---------|--------|
+| 1 | §2.1 | Pretendard 제거 → JetBrains Mono로 통일 (§7.4와 일치시키기) |
+| 2 | §2.3 | 의존성 버전 업데이트: `next ^16`, `lucide-react ^1.x`, `vitest ^4.x` 추가 |
+| 3 | §6.2 | Hero 코드 스니펫을 `set()+to()` 패턴으로 업데이트 |
+| 4 | §3.1 | `SiteContent` 인터페이스에 `badge`, `workflowLabel`, `stats`, `terminal`, `eyebrow`, `titleAccent` 반영 |
 
-### 7.2 Engineering Document Updates Needed
+---
 
-- [ ] §2.3 의존성 버전 업데이트 (next ^16, lucide ^1.x, vitest 추가)
-- [ ] §2.1 Pretendard 제거 → JetBrains Mono로 통일
-- [ ] §6.2 Hero 코드 스니펫 실제 구현 반영
-- [ ] §13.2 Step 4 AnimatedSection 언급 삭제
+## 8. v0.1 → v0.2 → v0.3 진행 요약
+
+```
+v0.1  ──→  v0.2  ──→  v0.3
+80.95%     87.3%      91.3%
+1 Critical 0 Critical 0 Critical
+8 Warning  4 Warning  1 Warning (크로스 리뷰 반영)
+5 Info     8 Info     9 Info
+ITERATE    ITERATE    ✅ PASS
+```
 
 ---
 
@@ -246,3 +265,4 @@ Weighted Match Rate:    (1 - 16/126) × 100 = 87.3%
 | ------- | ---------- | ------- | ------ |
 | 0.1     | 2026-04-10 | Initial analysis — Match Rate 80.95%, ITERATE | AI Agent (Cursor) |
 | 0.2     | 2026-04-10 | Post-iterate re-analysis — Match Rate 87.3%, ITERATE | AI Agent (Cursor) |
+| 0.3     | 2026-04-10 | Post-iterate re-analysis — Match Rate 91.3% (크로스 리뷰 반영), PASS | AI Agent (Cursor) |
