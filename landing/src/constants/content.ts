@@ -211,7 +211,8 @@ export const SECTION_COPY = {
     eyebrow: "Workflow",
     title: "사이클이 돌수록",
     titleAccent: "더 나은 코드",
-    description: "품질 임계값 미만이거나 높은 중요도 이슈가 있으면 Iterate가 강제됩니다. 임계값에 도달할 때까지 자동 반복합니다.",
+    description:
+      "품질 임계값 미만이거나 높은 중요도 이슈가 있으면 Iterate가 강제됩니다. 임계값에 도달할 때까지 자동 반복합니다.",
   },
   features: {
     eyebrow: "Features",
@@ -230,8 +231,7 @@ export const SECTION_COPY = {
   footer: {
     links: [
       { label: "GitHub", href: "" },
-      { label: "Docs", path: "/blob/main/.pedal/PEDAL.md" },
-      { label: "README", path: "/blob/main/README.md" },
+      { label: "Docs", path: "/blob/master/.pedal/PEDAL.md" },
     ],
   },
 };
