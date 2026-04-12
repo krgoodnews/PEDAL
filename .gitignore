@@ -3,3 +3,4 @@ landing/node_modules/
 landing/.next/
 landing/.env*.local
 landing/out/
+.DS_Store
