@@ -61,6 +61,7 @@ After receiving the review, **critically evaluate** each finding. Accept valid p
 
 ## Cursor-specific
 
+- **Convention Compliance (Mandatory)**: Always read `docs/wiki/CONVENTIONS.md` during Plan, Engineering, Do, and Analyze phases to ensure strict adherence to project standards.
 - Do **not** auto-switch to "Plan Mode" or similar isolated modes when writing the Plan; stay in normal agent mode and report progress (see PEDAL.md **plan** section).
 - Prefer reading `.pedal/PEDAL.md` at the start of a multi-step PEDAL task so steps stay aligned with the single source of truth.
 

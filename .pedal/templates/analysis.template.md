@@ -26,7 +26,7 @@ variables:
 | --------------------------------------------------------- | --------------------- |
 | [Plan](../01-plan/{feature}.plan.md)                      | Requirements match    |
 | [Engineering](../02-engineering/{feature}.engineering.md) | Implementation match  |
-| [Conventions](../01-plan/conventions.md)                  | Convention compliance |
+| [Conventions](../wiki/CONVENTIONS.md)                  | Convention compliance |
 
 ---
 
@@ -192,7 +192,7 @@ variables:
 
 ## 7. Convention Compliance
 
-> Reference: `docs/01-plan/conventions.md` if available
+> Reference: `docs/wiki/CONVENTIONS.md` if available
 
 ### 7.1 Naming Convention Check
 

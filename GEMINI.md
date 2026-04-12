@@ -76,22 +76,26 @@ Execute each phase according to **Action Details** in [.pedal/PEDAL.md](.pedal/P
 When Gemini CLI is the main agent authoring PEDAL documents, **Cursor CLI** acts as the reviewer. After each document-producing phase, run:
 
 ```bash
-agent -p "Review the file {path_to_document}. Also read {path_to_prompt_log} for the user's original intent. You are a critical reviewer. Follow the protocol in .pedal/REVIEW.md. Write your review to {path_to_review_output}." --model "composer 2"
+agent -p "Review the file {path_to_document}. Also read {path_to_prompt_log} for the user's original intent. You are a critical reviewer. Follow the protocol in .pedal/REVIEW.md. Write your review to {path_to_review_output}."
 ```
 
 **Examples:**
 
 ```bash
 # After Plan phase
-agent -p "Review docs/01-plan/user-auth.plan.md. Also read docs/01-plan/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/01-plan/user-auth.plan.review.md" --model "composer 2"
+agent -p "Review docs/01-plan/user-auth.plan.md. Also read docs/01-plan/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/01-plan/user-auth.plan.review.md"
 
 # After Engineering phase
-agent -p "Review docs/02-engineering/user-auth.engineering.md. Also read docs/01-plan/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/02-engineering/user-auth.engineering.review.md" --model "composer 2"
+agent -p "Review docs/02-engineering/user-auth.engineering.md. Also read docs/01-plan/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/02-engineering/user-auth.engineering.review.md"
 ```
 
 After receiving the review, critically evaluate each finding. Accept valid points, reject incorrect ones with justification. See [.pedal/REVIEW.md](.pedal/REVIEW.md) for full protocol.
 
 ## Gemini-specific
+
+### Convention Compliance
+
+- **Mandatory**: Always read `docs/wiki/CONVENTIONS.md` during Plan, Engineering, Do, and Analyze phases to ensure strict adherence to project standards.
 
 ### Notifications
 
