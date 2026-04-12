@@ -101,7 +101,7 @@ variables:
 Check which conventions already exist in the project:
 
 - [ ] Project config file has coding conventions section
-- [ ] `docs/01-plan/conventions.md` exists
+- [ ] `docs/wiki/CONVENTIONS.md` exists
 - [ ] `CONVENTIONS.md` exists at project root
 - [ ] Linter configuration exists
 - [ ] Formatter configuration exists

@@ -1,9 +1,15 @@
 {
   "version": "2.0",
   "lastUpdated": "2026-04-10T06:22:46Z",
-  "activeFeatures": [],
-  "primaryFeature": null,
+  "activeFeatures": ["conventions"],
+  "primaryFeature": "conventions",
   "features": {
+    "conventions": {
+      "phase": "analyze",
+      "status": "active",
+      "updatedAt": "2026-04-12T03:21:40Z",
+      "description": "PEDAL 개발 컨벤션 SSOT(docs/wiki/CONVENTIONS.md) 정립 및 템플릿/프롬프트 업데이트"
+    },
     "landing-page": {
       "phase": "archived",
       "status": "archived",
@@ -16,6 +22,12 @@
     "lastActivity": "2026-04-10T06:22:46Z"
   },
   "history": [
+    {
+      "timestamp": "2026-04-12T03:24:09Z",
+      "action": "phase_progression",
+      "feature": "conventions",
+      "details": "Analyze phase completed (100% match). Ready for Learn."
+    },
     {
       "timestamp": "2026-04-10T04:23:53Z",
       "action": "phase_start",

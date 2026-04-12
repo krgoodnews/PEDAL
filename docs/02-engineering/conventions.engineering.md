@@ -27,7 +27,7 @@ variables:
 | ---------------------------------------- | --------- |
 | [Wiki (SSOT)](../wiki/index.md)          | ✅ |
 | [Plan](../01-plan/conventions.plan.md)     | ✅ |
-| [Conventions](../wiki/conventions.md) | 예정 |
+| [Conventions](../wiki/CONVENTIONS.md) | 예정 |
 | [Prompt](../01-plan/conventions.prompt.md) | ✅ |
 
 ---
@@ -52,9 +52,9 @@ variables:
 ### 2.1 File Move & Link Update
 
 ```
-(기존) 01-plan/conventions.md  ───이동───▶ docs/wiki/conventions.md
+(기존) 01-plan/conventions.md  ───이동───▶ docs/wiki/CONVENTIONS.md
 
-docs/wiki/index.md ───링크추가───▶ docs/wiki/conventions.md
+docs/wiki/index.md ───링크추가───▶ docs/wiki/CONVENTIONS.md
 ```
 
 ### 2.2 Prompt & Template Update Flow
@@ -62,7 +62,7 @@ docs/wiki/index.md ───링크추가───▶ docs/wiki/conventions.md
 ```
 PEDAL Templates ─────────┐
  (.pedal/templates/*)    │
-                         ├─일괄 수정(sed/replace)──▶ "docs/wiki/conventions.md" 참조로 통일
+                         ├─일괄 수정(sed/replace)──▶ "docs/wiki/CONVENTIONS.md" 참조로 통일
 Agent Instructions ──────┤
  (.pedal/PEDAL.md,       │
   GEMINI.md,             │
@@ -75,13 +75,13 @@ Agent Instructions ──────┤
 
 ### 3.1 Migration (이동 및 인덱싱)
 
-1. `mv 01-plan/conventions.md docs/wiki/conventions.md` (혹은 내용 복사 후 기존 파일 삭제)
+1. `mv 01-plan/conventions.md docs/wiki/CONVENTIONS.md` (혹은 내용 복사 후 기존 파일 삭제)
 2. `docs/wiki/index.md`의 목차 테이블에 다음 행 추가:
    `| [conventions](conventions.md) | 개발 컨벤션 및 TDD 지침 (필수 참조) | 2026-04-12 |`
 
 ### 3.2 Template Updates
 
-다음에 나열된 파일 내에서 `docs/01-plan/conventions.md` (또는 `01-plan/conventions.md`) 텍스트를 검색하여 `docs/wiki/conventions.md`로 치환:
+다음에 나열된 파일 내에서 `docs/01-plan/conventions.md` (또는 `01-plan/conventions.md`) 텍스트를 검색하여 `docs/wiki/CONVENTIONS.md`로 치환:
 - `.pedal/templates/plan.template.md` (관련 Section: `6.1`, `6.2` 부근)
 - `.pedal/templates/engineering.template.md` (관련 Section: `9`, `10` 부근)
 - `.pedal/templates/analysis.template.md` (존재할 경우)
@@ -90,14 +90,14 @@ Agent Instructions ──────┤
 
 **1. `.pedal/PEDAL.md`**
 - `Phase` 별 가이드 라인 중:
-  - `Plan`, `Engineering`, `Do`, `Analyze` 단계 설명에 "Read wiki: `docs/wiki/conventions.md`를 반드시 확인하여 코딩 컨벤션 및 TDD 지침을 준수할 것" 내용 삽입 또는 기존 위키 읽기(Read wiki) 항목에 명시적 추가.
+  - `Plan`, `Engineering`, `Do`, `Analyze` 단계 설명에 "Read wiki: `docs/wiki/CONVENTIONS.md`를 반드시 확인하여 코딩 컨벤션 및 TDD 지침을 준수할 것" 내용 삽입 또는 기존 위키 읽기(Read wiki) 항목에 명시적 추가.
 
 **2. `GEMINI.md`**
 - `Gemini Added Memories` 섹션 등에 추가:
-  - "PEDAL 워크플로 진행 시 (특히 Plan, Engineering, Do, Analyze) `docs/wiki/conventions.md`를 필수적으로 참조하여 컨벤션을 지킬 것."
+  - "PEDAL 워크플로 진행 시 (특히 Plan, Engineering, Do, Analyze) `docs/wiki/CONVENTIONS.md`를 필수적으로 참조하여 컨벤션을 지킬 것."
 
 **3. `.cursor/rules/pedal.mdc`**
-- 파일 존재 시, Context 범위나 Review / Execution Rule에 `docs/wiki/conventions.md` 필독 조항 추가.
+- 파일 존재 시, Context 범위나 Review / Execution Rule에 `docs/wiki/CONVENTIONS.md` 필독 조항 추가.
 
 ---
 
@@ -107,14 +107,14 @@ Agent Instructions ──────┤
 
 | Type             | Target         | Verification Method          |
 | ---------------- | -------------- | ------------- |
-| File Check       | File Tree      | `ls docs/wiki/conventions.md` |
+| File Check       | File Tree      | `ls docs/wiki/CONVENTIONS.md` |
 | Link Check       | index.md       | Check markdown link format |
 | Replace Check    | Templates      | `grep -r "01-plan/conventions.md" .pedal/` 결과가 없어야 함 |
 | Instruction Check| PEDAL.md 등    | `grep -r "conventions.md" .pedal/PEDAL.md GEMINI.md` 결과 확인 |
 
 ### 4.2 Test Cases (Key)
 
-- [ ] `docs/wiki/conventions.md`로 내용이 손실 없이 이전되었는가?
+- [ ] `docs/wiki/CONVENTIONS.md`로 내용이 손실 없이 이전되었는가?
 - [ ] 에이전트가 템플릿을 생성할 때 참조하는 경로가 전부 올바른 위키 경로인가?
 
 ---

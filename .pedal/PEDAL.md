@@ -44,7 +44,7 @@ Use natural language or your tool's command style. Conceptually:
 ### plan (Plan)
 
 1. Sync main branch and create a feature branch `feature/{feature}` or `fix/{feature}` when appropriate.
-2. **Read wiki**: if `docs/wiki/index.md` exists, read it and any relevant pages to understand current project state before planning.
+2. **Read wiki**: if `docs/wiki/index.md` exists, read it and any relevant pages (especially `docs/wiki/CONVENTIONS.md` for coding standards) to understand current project state before planning.
 3. **Create prompt log**: write `docs/01-plan/{feature}.prompt.md` with the user's original request (see Prompt Log below).
 4. Ensure `docs/01-plan/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
 5. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
@@ -56,7 +56,7 @@ Use natural language or your tool's command style. Conceptually:
 ### engineering (Engineering)
 
 1. Require an approved Plan document.
-2. **Read wiki**: read `docs/wiki/index.md` and relevant pages (architecture, APIs, data models) for context on existing system.
+2. **Read wiki**: read `docs/wiki/index.md` and relevant pages (architecture, APIs, data models, and `docs/wiki/CONVENTIONS.md`) for context on existing system and standards.
 3. **Append to prompt log** if the user provided new direction or scope changes.
 4. Create `docs/02-engineering/{feature}.engineering.md` from `templates/engineering.template.md`.
 5. Include ASCII art for expected UI where relevant.
@@ -69,7 +69,7 @@ Use natural language or your tool's command style. Conceptually:
 Do produces **code**, not a PEDAL document. Follow the Engineering document.
 
 1. Require Engineering document.
-2. **Read wiki**: read `docs/wiki/bug-patterns.md` (if exists) to avoid known mistakes. Optionally read other relevant wiki pages for conventions and module boundaries.
+2. **Read wiki**: read `docs/wiki/bug-patterns.md` and `docs/wiki/CONVENTIONS.md` (if exists) to avoid known mistakes and follow standards. Optionally read other relevant wiki pages for module boundaries.
 3. **Append to prompt log** if the user provided new direction or scope changes.
 4. Implement per Engineering (architecture, data model, API, etc.).
 5. Complete **Self-Review Criteria** (Section 12 in `engineering.template.md`) before Analyze.

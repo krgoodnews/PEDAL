@@ -11,3 +11,9 @@ PEDAL 워크플로에 Convention을 넣고 싶어.
 - 개발 완료 후에 테스트 실행. 실패할 경우 원인 파악 후 해결
 - 너무 많은 테스트 코드를 작성하지 말 것. PEDAL-Engineering 단계에 있는 항목과, Iterate 하게 될 때의 버그의 원인에 대해서만 테스트 코드를 작성해도 충분함.
 - Analysis 단계에서 테스트를 수행할 것.)
+
+## [Iterate] 2026-04-12T05:29:37Z
+
+conventions 파일 이름을 대문자로 변경해줘. 
+- as-is: conventions.md
+- to-be: CONVENTIONS.md

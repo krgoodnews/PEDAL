@@ -45,10 +45,10 @@ variables:
 
 ### 2.1 In Scope
 
-- [ ] 기존 루트 `01-plan/conventions.md` 파일을 `docs/wiki/conventions.md` 로 이동
+- [ ] 기존 루트 `01-plan/conventions.md` 파일을 `docs/wiki/CONVENTIONS.md` 로 이동
 - [ ] `docs/wiki/index.md` 에 `conventions.md` 링크 추가
-- [ ] `.pedal/templates/` 하위의 모든 템플릿 파일(`plan.template.md`, `engineering.template.md`, `analysis.template.md` 등)에서 기존의 유령 경로(`docs/01-plan/conventions.md`)를 `docs/wiki/conventions.md` 로 수정
-- [ ] 워크플로를 주도하는 에이전트 지침(`.pedal/PEDAL.md`, `GEMINI.md`, `.cursor/rules/pedal.mdc`)에 `docs/wiki/conventions.md` 필수 참조 명시
+- [ ] `.pedal/templates/` 하위의 모든 템플릿 파일(`plan.template.md`, `engineering.template.md`, `analysis.template.md` 등)에서 기존의 유령 경로(`docs/01-plan/conventions.md`)를 `docs/wiki/CONVENTIONS.md` 로 수정
+- [ ] 워크플로를 주도하는 에이전트 지침(`.pedal/PEDAL.md`, `GEMINI.md`, `.cursor/rules/pedal.mdc`)에 `docs/wiki/CONVENTIONS.md` 필수 참조 명시
 
 ### 2.2 Out of Scope
 
@@ -62,9 +62,9 @@ variables:
 
 | ID    | Requirement | Priority | Status |
 | ----- | ----------- | -------- | ------ |
-| FR-01 | `docs/wiki/conventions.md` 생성 및 기존 내용 마이그레이션 | High | Pending |
+| FR-01 | `docs/wiki/CONVENTIONS.md` 생성 및 기존 내용 마이그레이션 | High | Pending |
 | FR-02 | 워크플로 템플릿(`plan`, `engineering`, `analysis` 등)에서 컨벤션 문서 참조 경로 수정 | High | Pending |
-| FR-03 | AI 에이전트 지침 문서(`.pedal/PEDAL.md`, `GEMINI.md`, `.cursor/rules/pedal.mdc`)의 Plan, Engineering, Do, Analyze 단계에 `docs/wiki/conventions.md` 필수 확인 명시 | Medium | Pending |
+| FR-03 | AI 에이전트 지침 문서(`.pedal/PEDAL.md`, `GEMINI.md`, `.cursor/rules/pedal.mdc`)의 Plan, Engineering, Do, Analyze 단계에 `docs/wiki/CONVENTIONS.md` 필수 확인 명시 | Medium | Pending |
 
 ### 3.2 Non-Functional Requirements
 
@@ -78,8 +78,8 @@ variables:
 
 ### 4.1 Definition of Done
 
-- [ ] `docs/wiki/conventions.md` 위치에 컨벤션 내용이 안전하게 이동됨
-- [ ] 워크플로 템플릿 파일이 `docs/wiki/conventions.md` 를 참조하도록 일괄 업데이트됨
+- [ ] `docs/wiki/CONVENTIONS.md` 위치에 컨벤션 내용이 안전하게 이동됨
+- [ ] 워크플로 템플릿 파일이 `docs/wiki/CONVENTIONS.md` 를 참조하도록 일괄 업데이트됨
 - [ ] 관련 AI 지침(`.pedal/PEDAL.md`, `GEMINI.md`, `.cursor/rules/pedal.mdc`) 업데이트 완료
 - [ ] 기존 `01-plan/conventions.md` 위치에 혼선 방지를 위한 안내 문구(stub) 남기기 또는 파일 삭제
 
@@ -99,7 +99,7 @@ variables:
 
 - [ ] Project config file has coding conventions section
 - [ ] `docs/01-plan/conventions.md` exists (실제로는 루트 `01-plan/conventions.md` 존재)
-- [ ] `docs/wiki/conventions.md` (생성 예정)
+- [ ] `docs/wiki/CONVENTIONS.md` (생성 예정)
 
 ### 6.2 Conventions to Define/Verify
 

@@ -27,7 +27,7 @@ variables:
 | ---------------------------------------- | --------- |
 | [Wiki (SSOT)](../wiki/index.md)          | ✅/❌/N/A |
 | [Plan](../01-plan/{feature}.plan.md)     | ✅/❌/N/A |
-| [Conventions](../01-plan/conventions.md) | ✅/❌/N/A |
+| [Conventions](../wiki/CONVENTIONS.md) | ✅/❌/N/A |
 | [Prompt](../01-plan/{feature}.prompt.md) | ✅/❌/N/A |
 
 ---
@@ -234,7 +234,7 @@ Home → Login → Dashboard → Use Feature → View Results
 
 ## 9. Architecture
 
-> Reference: `docs/01-plan/conventions.md` if available
+> Reference: `docs/wiki/CONVENTIONS.md` if available
 
 ### 9.1 Layer Structure
 
@@ -275,7 +275,7 @@ Home → Login → Dashboard → Use Feature → View Results
 
 ## 10. Coding Convention Reference
 
-> Reference: `docs/01-plan/conventions.md` if available. Adapt to the project's language and framework.
+> Reference: `docs/wiki/CONVENTIONS.md` if available. Adapt to the project's language and framework.
 
 ### 10.1 Naming Conventions
 
