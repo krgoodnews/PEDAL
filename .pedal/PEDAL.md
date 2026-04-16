@@ -278,7 +278,9 @@ The main agent must **not** blindly accept the review:
 
 - **Accept** valid findings and update the document.
 - **Reject with justification** findings that are incorrect or out of scope.
-- **All Critical items** from the review must be addressed (accepted or rejected with reason) before proceeding.
+- **Review limit**: The review process is limited to a **maximum of 2 rounds**.
+- **2nd round trigger**: A 2nd round is only required if the first review contains **Critical** items that are accepted and fixed.
+- **Cycle termination**: After the 2nd round, the review loop ends. If Critical items remain unresolved, report to the user and wait for instructions.
 
 Full protocol, reviewer role definition, output format, and severity table: [REVIEW.md](REVIEW.md).
 
