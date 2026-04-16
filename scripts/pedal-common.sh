@@ -39,7 +39,20 @@ get_default_branch() {
   echo "${branch}"
 }
 
-# 4. Shared State Path
+# 4. Workspace & Repo Context
+get_workspace_root() {
+  local repo_root
+  repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  dirname "${repo_root}"
+}
+
+get_repo_name() {
+  local repo_root
+  repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  basename "${repo_root}"
+}
+
+# 5. Shared State Path
 get_shared_state_path() {
   local repo_root
   repo_root=$(git rev-parse --show-toplevel 2>/dev/null)

@@ -96,6 +96,8 @@ After receiving the review, critically evaluate each finding. Accept valid point
 ### 2-Tier State Management
 
 - **Mandatory**: All state updates must be performed using `scripts/pedal-sync.sh`. 
+- **Automatic Worktrees**: `/pedal plan` automatically creates a git worktree in the parent directory (`../{repo}-{feature}`). 
+- **Cleanup**: `/pedal archive` automatically removes the worktree and prunes git metadata.
 - **Shared State**: `.pedal-status.shared.json` (Git-tracked)
 - **Runtime State**: `~/.pedal/<repo-id>/runtime.json` (Local-only, managed via script)
 - **Concurrency**: The script handles advisory locking and JSON merging to prevent data loss in parallel workflows.
