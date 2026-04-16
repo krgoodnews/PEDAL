@@ -56,7 +56,7 @@ variables:
 ```
 ┌──────────────────────────────────────────┐
 │              Dashboard Page              │
-│    (landing/src/app/dashboard/page.tsx)  │
+│         (dashboard/src/app/page.tsx)     │
 │          [ 'use client' ]                │
 └──────────────────┬───────────────────────┘
                    │
@@ -92,9 +92,9 @@ Next.js (Client) → fetch(API, { cache: 'no-store' }) → MCP Server → Respon
 
 | Layer              | Responsibility                                    | Location                           |
 | ------------------ | ------------------------------------------------- | ---------------------------------- |
-| **Presentation**   | UI, components, page logic                        | `landing/src/app/dashboard/`, `landing/src/components/dashboard/` |
-| **Domain (Types)** | PEDAL status entities, Enums                      | `landing/src/lib/types.ts`         |
-| **Infrastructure** | API fetch logic, Error handling                   | `landing/src/lib/api.ts`           |
+| **Presentation**   | UI, components, page logic                        | `dashboard/src/app/`, `dashboard/src/components/dashboard/` |
+| **Domain (Types)** | PEDAL status entities, Enums                      | `dashboard/src/lib/types.ts`       |
+| **Infrastructure** | API fetch logic, Error handling                   | `dashboard/src/lib/api.ts`         |
 
 ---
 
@@ -103,7 +103,7 @@ Next.js (Client) → fetch(API, { cache: 'no-store' }) → MCP Server → Respon
 ### 3.1 Entity Definition (Aligned with .pedal/PEDAL.md)
 
 ```typescript
-// landing/src/lib/types.ts
+// dashboard/src/lib/types.ts
 
 export type PedalPhase = 'plan' | 'engineering' | 'do' | 'analyze' | 'iterate' | 'learn' | 'archived';
 
@@ -191,8 +191,8 @@ export interface PedalStatusResponse {
 
 - **Test Runner**: Vitest
 - **Testing Library**: React Testing Library (@testing-library/react)
-- **File Placement**: `landing/src/test/components/dashboard/` (UI 테스트) 및 `landing/src/test/unit/api.test.ts` (로직 테스트).
-
+- **File Placement**: `dashboard/src/test/components/dashboard/` (UI 테스트) 및 `dashboard/src/test/unit/api.test.ts` (로직 테스트).
+...
 ### 8.2 Test Cases (Key)
 
 - [ ] **Data Mapping Test**: `PedalStatusResponse` 모의 데이터 주입 시 7개 컬럼에 정확히 배분되는지 확인.
@@ -206,8 +206,8 @@ export interface PedalStatusResponse {
 ### 9.1 File Structure
 
 ```
-landing/src/
-├── app/dashboard/page.tsx (use client)
+dashboard/src/
+├── app/page.tsx (use client)
 ├── components/dashboard/ (Board, Column, Card, Header)
 ├── lib/ (api.ts, types.ts)
 └── test/ (components/dashboard/, unit/api.test.ts)
@@ -220,7 +220,7 @@ landing/src/
 - [ ] `cache: 'no-store'`가 적용된 클라이언트 Fetch 방식인가?
 - [ ] `.pedal/PEDAL.md` 스키마(v2.0)와 데이터 모델이 일치하는가?
 - [ ] 키보드 내비게이션 및 ARIA 라벨이 적용되었는가?
-- [ ] Vitest 기반 테스트 코드가 `landing/src/test/` 하위에 작성되었는가?
+- [ ] Vitest 기반 테스트 코드가 `dashboard/src/test/` 하위에 작성되었는가?
 
 ---
 

@@ -44,7 +44,7 @@ PEDAL 프로젝트의 각 피처 상태를 시각적으로 파악할 수 있는 
 
 ### 2.1 In Scope
 
-- [ ] Next.js (landing 앱 내) 기반의 대시보드 페이지 (`/dashboard`) 구현
+- [ ] 독립된 Next.js 웹 앱 (`dashboard` 폴더) 구축
 - [ ] MCP 서버의 `/api/status` API 연동 (Read-only)
 - [ ] PEDAL 워크플로 단계별 칸반 컬럼 (Plan, Engineering, Do, Analyze, Learn, Archived) 구현
 - [ ] 각 피처를 카드로 표시하고 상세 정보(업데이트 시간, 설명 등) 노출
@@ -55,6 +55,7 @@ PEDAL 프로젝트의 각 피처 상태를 시각적으로 파악할 수 있는 
 - 대시보드에서의 직접적인 상태 변경 (POST 요청) - 다음 단계 예정
 - 사용자 인증 및 권한 관리 (현재는 로컬/인트라넷 기반 가정)
 - 멀티 프로젝트 지원
+- landing 페이지와의 통합 (완전 분리 운영)
 
 ---
 
@@ -86,7 +87,7 @@ PEDAL 프로젝트의 각 피처 상태를 시각적으로 파악할 수 있는 
 
 ### 4.1 Definition of Done
 
-- [ ] `/dashboard` 경로에서 칸반 보드 정상 노출
+- [ ] `dashboard` 프로젝트 루트 경로(`/`)에서 칸반 보드 정상 노출
 - [ ] MCP 서버 API 응답 데이터가 UI상에 누락 없이 매핑됨
 - [ ] 각 카드가 해당 단계의 컬럼에 위치함
 - [ ] 브라우저 개발자 도구에서 콘솔 에러 없음
@@ -98,7 +99,7 @@ PEDAL 프로젝트의 각 피처 상태를 시각적으로 파악할 수 있는 
 
 | Risk     | Impact          | Likelihood      | Mitigation        |
 | -------- | --------------- | --------------- | ----------------- |
-| CORS 이슈 | High            | Medium          | 개발 시에는 와일드카드 허용, 운영 시에는 특정 오리진으로 제한 정책 적용 |
+| CORS 이슈 | High            | Medium          | 개발 시에는 와일드카드 허용, 운영 시에는 특정 오리진으로  제한 정책 적용 |
 | API 통신 장애 | Medium          | Low             | 에러 핸들링 UI 및 재시도 로직 구현 |
 | 과도한 애니메이션 | Low             | Low             | GSAP 사용 시 접근성 옵션 고려 및 필수 기능 구현 우선 |
 
@@ -134,9 +135,10 @@ PEDAL 프로젝트의 각 피처 상태를 시각적으로 파악할 수 있는 
 
 1. [ ] Write engineering document (`mcp-kanban.engineering.md`)
 2. [ ] Team review and approval (Cursor Review Round 2)
-3. [ ] Start implementation in `landing/src/app/dashboard`
+3. [ ] Start implementation in `dashboard/src/app`
 
 ---
+
 
 ## Version History
 

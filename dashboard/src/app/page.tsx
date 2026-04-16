@@ -5,7 +5,7 @@ import { fetchPedalStatus } from '@/lib/api';
 import { PedalStatusResponse } from '@/lib/types';
 import KanbanBoard from '@/components/dashboard/KanbanBoard';
 import StatusHeader from '@/components/dashboard/StatusHeader';
-import MeshGradient from '@/components/ui/MeshGradient';
+import { MeshGradient } from '@/components/ui/MeshGradient';
 
 export default function DashboardPage() {
   const [data, setData] = useState<PedalStatusResponse | null>(null);

@@ -99,12 +99,6 @@ export function Hero() {
             </svg>
           </a>
           <a
-            href={HERO_CONTENT.ctaDashboard.href}
-            className="hero-cta-btn glass inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white/80 transition-all duration-300 hover:text-white hover:bg-white/10"
-          >
-            {HERO_CONTENT.ctaDashboard.label}
-          </a>
-          <a
             href={HERO_CONTENT.ctaSecondary.href}
             className="hero-cta-btn glass inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white/80 transition-all duration-300 hover:text-white hover:bg-white/10"
           >

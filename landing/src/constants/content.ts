@@ -243,7 +243,6 @@ export const HERO_CONTENT = {
   subtitle: "크로스 리뷰와 Wiki SSOT로 AI Agent의 품질을 보장하는 구조화된 워크플로",
   ctaPrimary: { label: "GitHub에서 시작하기", href: SITE_META.githubUrl },
   ctaSecondary: { label: "더 알아보기", href: "#what-is-pedal" },
-  ctaDashboard: { label: "Dashboard", href: "/dashboard" },
   stats: [
     { value: "5", label: "단계 워크플로", accent: "cyan" as const },
     { value: "크로스 리뷰", label: "다른 AI 모델의 비판적 검토", accent: "purple" as const },
