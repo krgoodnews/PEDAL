@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-16T08:12:58Z",
+  "lastUpdated": "2026-04-16T10:42:06Z",
   "features": {
     "stress-2": {
       "phase": "step-10",
@@ -49,6 +49,12 @@
       "status": "in_progress",
       "updatedAt": "2026-04-16T08:11:32Z",
       "description": "Manual archive status update"
+    },
+    "notification-fix": {
+      "phase": "learn",
+      "status": "in_progress",
+      "updatedAt": "2026-04-16T10:42:06Z",
+      "description": "Completed learn phase: Wiki updated, final report written"
     }
   },
   "history": [
@@ -225,6 +231,54 @@
       "action": "phase_progression",
       "feature": "state-separation",
       "details": "Moved to archived: Archiving state-separation feature"
+    },
+    {
+      "timestamp": "2026-04-16T10:35:03Z",
+      "action": "phase_start",
+      "feature": "notification-fix",
+      "details": "Plan phase started (Worktree created)"
+    },
+    {
+      "timestamp": "2026-04-16T10:35:14Z",
+      "action": "phase_start",
+      "feature": "notification-fix",
+      "details": "Plan phase started (Worktree created)"
+    },
+    {
+      "timestamp": "2026-04-16T10:35:35Z",
+      "action": "phase_start",
+      "feature": "notification-fix",
+      "details": "Plan phase started: Fix notification variable substitution, focus issues, and update reviewer command"
+    },
+    {
+      "timestamp": "2026-04-16T10:35:46Z",
+      "action": "phase_progression",
+      "feature": "notification-fix",
+      "details": "Moved to engineering: Design fix for notification variables and focus logic"
+    },
+    {
+      "timestamp": "2026-04-16T10:35:55Z",
+      "action": "phase_progression",
+      "feature": "notification-fix",
+      "details": "Moved to do: Implementing notification and reviewer command fixes"
+    },
+    {
+      "timestamp": "2026-04-16T10:36:14Z",
+      "action": "phase_progression",
+      "feature": "notification-fix",
+      "details": "Moved to analyze: Analyzing fixes for notification and reviewer command"
+    },
+    {
+      "timestamp": "2026-04-16T10:36:25Z",
+      "action": "phase_progression",
+      "feature": "notification-fix",
+      "details": "Moved to learn: Notification and reviewer fix cycle complete. Ready for learn phase."
+    },
+    {
+      "timestamp": "2026-04-16T10:42:06Z",
+      "action": "phase_progression",
+      "feature": "notification-fix",
+      "details": "Moved to learn: Completed learn phase: Wiki updated, final report written"
     }
   ]
 }

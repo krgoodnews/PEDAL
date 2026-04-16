@@ -182,70 +182,96 @@ case "$1" in
   plan)
     shift
     FEATURE=""
+    NO_WORKTREE=false
+    DESC="New feature started"
     while [[ $# -gt 0 ]]; do
       case $1 in
         --feature) FEATURE="$2"; shift ;;
+        --no-worktree) NO_WORKTREE=true ;;
+        --desc) DESC="$2"; shift ;;
       esac
       shift
     done
 
     if [ -z "${FEATURE}" ]; then
-      echo "Usage: pedal-sync plan --feature {id}"
+      echo "Usage: pedal-sync plan --feature {id} [--no-worktree] [--desc {d}]"
       exit 1
     fi
 
     acquire_lock
     trap release_lock EXIT
 
-    WORKSPACE_ROOT=$(get_workspace_root)
-    REPO_NAME=$(get_repo_name)
-    TARGET_PATH="${WORKSPACE_ROOT}/${REPO_NAME}-${FEATURE}"
-    BRANCH="feature/${FEATURE}"
-
-    echo "Planning feature: ${FEATURE}..."
-    echo "Target path: ${TARGET_PATH}"
-
-    if [ -d "${TARGET_PATH}" ]; then
-      echo "Error: Directory ${TARGET_PATH} already exists." >&2
-      exit 1
-    fi
-
-    if git worktree list | grep -q "${TARGET_PATH}"; then
-      echo "Error: Worktree at ${TARGET_PATH} is already registered." >&2
-      exit 1
-    fi
-
-    # Create worktree
-    echo "Creating git worktree..."
-    if git rev-parse --verify "${BRANCH}" >/dev/null 2>&1; then
-      echo "Branch ${BRANCH} already exists. Using existing branch."
-      git worktree add "${TARGET_PATH}" "${BRANCH}"
-    else
-      echo "Creating new branch ${BRANCH}..."
-      git worktree add "${TARGET_PATH}" -b "${BRANCH}"
-    fi
-
-    # Initialize state
     CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    NEW_SHARED_DATA=$(jq -n \
-      --arg feature "${FEATURE}" \
-      --arg time "${CURRENT_TIME}" \
-      '{
-        "lastUpdated": $time,
-        "features": { ($feature): { "phase": "plan", "status": "in_progress", "updatedAt": $time, "description": "New feature started via auto-worktree" } },
-        "history": [{ "timestamp": $time, "action": "phase_start", "feature": $feature, "details": "Plan phase started (Worktree created)" }]
-      }')
 
-    merge_shared_state "${NEW_SHARED_DATA}"
-    
-    # Update runtime state with the correct path
-    (cd "${TARGET_PATH}" && update_runtime_state "${FEATURE}" "plan")
+    if [ "$NO_WORKTREE" = true ]; then
+      echo "Planning feature: ${FEATURE} (No worktree)..."
+      
+      NEW_SHARED_DATA=$(jq -n \
+        --arg feature "${FEATURE}" \
+        --arg time "${CURRENT_TIME}" \
+        --arg desc "${DESC}" \
+        '{
+          "lastUpdated": $time,
+          "features": { ($feature): { "phase": "plan", "status": "in_progress", "updatedAt": $time, "description": $desc } },
+          "history": [{ "timestamp": $time, "action": "phase_start", "feature": $feature, "details": ("Plan phase started: " + $desc) }]
+        }')
+      merge_shared_state "${NEW_SHARED_DATA}"
+      update_runtime_state "${FEATURE}" "plan"
+      
+      echo "--------------------------------------------------------"
+      echo "Feature ${FEATURE} is ready in the current directory!"
+      echo "--------------------------------------------------------"
+    else
+      WORKSPACE_ROOT=$(get_workspace_root)
+      REPO_NAME=$(get_repo_name)
+      TARGET_PATH="${WORKSPACE_ROOT}/${REPO_NAME}-${FEATURE}"
+      BRANCH="feature/${FEATURE}"
 
-    echo "--------------------------------------------------------"
-    echo "Feature ${FEATURE} is ready!"
-    echo "Please move to the worktree directory to start working:"
-    echo "cd ${TARGET_PATH}"
-    echo "--------------------------------------------------------"
+      echo "Planning feature: ${FEATURE}..."
+      echo "Target path: ${TARGET_PATH}"
+
+      if [ -d "${TARGET_PATH}" ]; then
+        echo "Error: Directory ${TARGET_PATH} already exists." >&2
+        exit 1
+      fi
+
+      if git worktree list | grep -q "${TARGET_PATH}"; then
+        echo "Error: Worktree at ${TARGET_PATH} is already registered." >&2
+        exit 1
+      fi
+
+      # Create worktree
+      echo "Creating git worktree..."
+      if git rev-parse --verify "${BRANCH}" >/dev/null 2>&1; then
+        echo "Branch ${BRANCH} already exists. Using existing branch."
+        git worktree add "${TARGET_PATH}" "${BRANCH}"
+      else
+        echo "Creating new branch ${BRANCH}..."
+        git worktree add "${TARGET_PATH}" -b "${BRANCH}"
+      fi
+
+      # Initialize state
+      NEW_SHARED_DATA=$(jq -n \
+        --arg feature "${FEATURE}" \
+        --arg time "${CURRENT_TIME}" \
+        --arg desc "${DESC}" \
+        '{
+          "lastUpdated": $time,
+          "features": { ($feature): { "phase": "plan", "status": "in_progress", "updatedAt": $time, "description": $desc } },
+          "history": [{ "timestamp": $time, "action": "phase_start", "feature": $feature, "details": ("Plan phase started: " + $desc + " (Worktree created)") }]
+        }')
+
+      merge_shared_state "${NEW_SHARED_DATA}"
+      
+      # Update runtime state with the correct path
+      (cd "${TARGET_PATH}" && update_runtime_state "${FEATURE}" "plan")
+
+      echo "--------------------------------------------------------"
+      echo "Feature ${FEATURE} is ready!"
+      echo "Please move to the worktree directory to start working:"
+      echo "cd ${TARGET_PATH}"
+      echo "--------------------------------------------------------"
+    fi
     ;;
 
   archive)
