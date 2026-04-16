@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-16T08:07:57Z",
+  "lastUpdated": "2026-04-16T08:11:32Z",
   "features": {
     "stress-2": {
       "phase": "step-10",
@@ -45,10 +45,10 @@
       "description": "New feature started via auto-worktree"
     },
     "auto-worktree": {
-      "phase": "learn",
+      "phase": "archived",
       "status": "in_progress",
-      "updatedAt": "2026-04-16T08:07:57Z",
-      "description": "Completed auto-worktree feature: Wiki integrated, final report written"
+      "updatedAt": "2026-04-16T08:11:32Z",
+      "description": "Manual archive status update"
     }
   },
   "history": [
@@ -213,6 +213,12 @@
       "action": "phase_progression",
       "feature": "auto-worktree",
       "details": "Moved to learn: Completed auto-worktree feature: Wiki integrated, final report written"
+    },
+    {
+      "timestamp": "2026-04-16T08:11:32Z",
+      "action": "phase_progression",
+      "feature": "auto-worktree",
+      "details": "Moved to archived: Manual archive status update"
     }
   ]
 }
