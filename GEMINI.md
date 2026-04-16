@@ -89,7 +89,14 @@ agent --model auto -p "Review docs/01-plan/user-auth.plan.md. Also read docs/01-
 agent --model auto -p "Review docs/02-engineering/user-auth.engineering.md. Also read docs/01-plan/user-auth.prompt.md for original intent. You are a critical reviewer. Follow .pedal/REVIEW.md. Write review to docs/02-engineering/user-auth.engineering.review.md"
 ```
 
-After receiving the review, critically evaluate each finding. Accept valid points, reject incorrect ones with justification. See [.pedal/REVIEW.md](.pedal/REVIEW.md) for full protocol.
+After receiving the review, critically evaluate each finding. Accept valid points, reject incorrect ones with justification. 
+
+**Review Round Rules:**
+1. **Max 2 rounds**: The review process is limited to a **maximum of 2 rounds** per document.
+2. **Conditional 2nd round**: A 2nd round is only required if the first review contains **Critical** items that you accept and fix.
+3. **Loop termination**: After the 2nd round, the review loop ends regardless of the outcome. If Critical items remain unresolved, report them to the user and wait for instructions.
+
+See [.pedal/REVIEW.md](.pedal/REVIEW.md) for full protocol.
 
 ## Gemini-specific
 

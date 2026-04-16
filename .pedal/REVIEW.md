@@ -95,7 +95,11 @@ The main agent must **not** blindly accept the review. Instead:
 3. **Accept** findings that are valid and improve the document.
 4. **Reject with justification** findings that are incorrect, out of scope, or based on misunderstanding. Add a brief rationale to the document or commit message.
 5. **Update** the original document with accepted changes.
-6. **Proceed** to the next phase only after addressing all Critical items (accept or reject-with-reason).
+6. **Determine next round**: 
+   - **No Critical items**: If the review contains no 'Critical' items (after evaluation), the review process is finished. Proceed to the next phase.
+   - **Critical items found**: If 'Critical' items are accepted, fix them and request a **2nd round** of review.
+   - **Max limit (2 rounds)**: The review process is limited to a **maximum of 2 rounds**. After the 2nd round, the review loop ends regardless of the outcome.
+7. **Escalation**: If 'Critical' items remain unresolved after the 2nd round, report them to the user and wait for explicit instructions/approval before proceeding.
 
 ## Prompt log reference
 
