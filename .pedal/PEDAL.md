@@ -122,13 +122,13 @@ Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/
 
 ### archive (Archive)
 
-1. **Cleanup**: Execute `scripts/pedal-sync.sh archive --feature {feature}`. This removes the dedicated git worktree and prunes git metadata.
+1. **Move to Main Repository**: If currently working inside a worktree (`../{repo}-{feature}`), move back to the main repository root.
 2. Create `docs/archived/{feature}/`.
-3. Move PEDAL artifacts: plan, engineering, analysis, report (and wiki copy if you version it).
+3. Move PEDAL artifacts: plan, engineering, analysis, report, and the prompt log into the archived folder.
 4. **Remove** review files (`*.review.md`) and other non-PEDAL noise.
 5. Set feature to `archived` in `.pedal-status.shared.json`.
-6. Move prompt log together with other artifacts; it becomes part of the historical record.
-7. Example commit message: `chore: 🗃️ Archive {feature} PEDAL documents`
+6. Example commit message: `chore: 🗃️ Archive {feature} PEDAL documents`
+7. **Cleanup**: Execute `scripts/pedal-sync.sh archive --feature {feature}`. This removes the dedicated git worktree and prunes git metadata. **This must be the final step.**
 
 ### spec (Plan + Engineering)
 
