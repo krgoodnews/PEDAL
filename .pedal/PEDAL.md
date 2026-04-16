@@ -19,6 +19,15 @@
 
 Every phase that produces a PEDAL document goes through **cross-review** by a different AI agent. See [REVIEW.md](REVIEW.md) for the full protocol.
 
+## 2-Tier State Management
+
+To support parallel workflows (multiple worktrees/agents), PEDAL uses a split state architecture:
+
+1.  **Shared State (`.pedal-status.shared.json`)**: Git-tracked. Contains feature phases, status, and history. The single source of truth for the project's progress.
+2.  **Runtime State (`~/.pedal/<repo-id>/runtime.json`)**: Local-only (untracked). Contains active worktrees, agent PIDs, and last activity timestamps.
+
+**Mandatory**: All state transitions must be performed via `scripts/pedal-sync.sh` to ensure advisory locking and atomic JSON merging (via `jq`).
+
 ## Phases (actions)
 
 Use natural language or your tool's command style. Conceptually:
@@ -115,7 +124,7 @@ Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/
 1. Create `docs/archived/{feature}/`.
 2. Move PEDAL artifacts: plan, engineering, analysis, report (and wiki copy if you version it).
 3. **Remove** review files (`*.review.md`) and other non-PEDAL noise.
-4. Set feature to `archived` in `.pedal-status.json`.
+4. Set feature to `archived` in `.pedal-status.shared.json`.
 5. Move prompt log together with other artifacts; it becomes part of the historical record.
 6. Example commit message: `chore: 🗃️ Archive {feature} PEDAL documents`
 
@@ -371,7 +380,7 @@ weightedMatchRate = (1 - weightedScore / maxPossibleScore) × 100
 
 Any **Critical** issue -> iterate is **mandatory**, regardless of match rate threshold.
 
-## `.pedal-status.json` schema
+## `.pedal-status.shared.json` schema
 
 ```json
 {
@@ -434,7 +443,7 @@ PEDAL markdown (Plan, Engineering, Analysis, Report, Wiki) must use the **same l
 - Commit messages: `[type]: [gitmoji] [description]` with lowercase type (`feat`, `fix`, `docs`, `chore`, `style`, `refactor`, ...).
 - PR titles follow the same Gitmoji convention when opening PRs.
 - For parallel features, prefer isolated branches/worktrees.
-- Timestamps in `.pedal-status.json`: use real system time (e.g. `date -u +"%Y-%m-%dT%H:%M:%SZ"`), not fake sequences.
+- Timestamps in `.pedal-status.shared.json`: use real system time (e.g. `date -u +"%Y-%m-%dT%H:%M:%SZ"`), not fake sequences.
 
 ### Phase guidance
 

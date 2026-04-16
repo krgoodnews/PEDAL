@@ -1,0 +1,356 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-04-16T07:38:59Z",
+  "features": {
+    "stress-2": {
+      "phase": "step-10",
+      "status": "in_progress",
+      "updatedAt": "2026-04-16T07:34:08Z",
+      "description": "stress test 2-10"
+    },
+    "stress-1": {
+      "phase": "step-10",
+      "status": "in_progress",
+      "updatedAt": "2026-04-16T07:34:07Z",
+      "description": "stress test 1-10"
+    },
+    "stress-4": {
+      "phase": "step-10",
+      "status": "in_progress",
+      "updatedAt": "2026-04-16T07:34:10Z",
+      "description": "stress test 4-10"
+    },
+    "stress-5": {
+      "phase": "step-10",
+      "status": "in_progress",
+      "updatedAt": "2026-04-16T07:34:10Z",
+      "description": "stress test 5-10"
+    },
+    "stress-3": {
+      "phase": "step-10",
+      "status": "in_progress",
+      "updatedAt": "2026-04-16T07:34:11Z",
+      "description": "stress test 3-10"
+    },
+    "state-separation": {
+      "phase": "learn",
+      "status": "in_progress",
+      "updatedAt": "2026-04-16T07:38:59Z",
+      "description": "Final report updated with review feedback and verified"
+    }
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-16T07:34:03Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-1: stress test 2-1"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:03Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-2: stress test 2-2"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:03Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-3: stress test 2-3"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:04Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-1: stress test 1-1"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:04Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-2: stress test 1-2"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:04Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-3: stress test 1-3"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:04Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-4: stress test 1-4"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:04Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-4: stress test 2-4"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:04Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-1: stress test 4-1"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:04Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-2: stress test 4-2"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:04Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-3: stress test 4-3"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:05Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-5: stress test 1-5"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:05Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-6: stress test 1-6"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:05Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-7: stress test 1-7"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:05Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-8: stress test 1-8"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:05Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-5: stress test 2-5"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:05Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-6: stress test 2-6"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:05Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-7: stress test 2-7"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:05Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-4: stress test 4-4"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:06Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-8: stress test 2-8"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:06Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-1: stress test 3-1"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:06Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-2: stress test 3-2"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:06Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-1: stress test 5-1"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:06Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-2: stress test 5-2"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:06Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-3: stress test 5-3"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:06Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-4: stress test 5-4"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:07Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-10: stress test 1-10"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:07Z",
+      "action": "phase_progression",
+      "feature": "stress-1",
+      "details": "Moved to step-9: stress test 1-9"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:07Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-3: stress test 3-3"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:07Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-4: stress test 3-4"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:07Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-5: stress test 4-5"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:07Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-6: stress test 4-6"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:07Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-7: stress test 4-7"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:07Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-8: stress test 4-8"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:08Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-10: stress test 2-10"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:08Z",
+      "action": "phase_progression",
+      "feature": "stress-2",
+      "details": "Moved to step-9: stress test 2-9"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:08Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-5: stress test 5-5"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:08Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-6: stress test 5-6"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:09Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-5: stress test 3-5"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:09Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-6: stress test 3-6"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:09Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-7: stress test 3-7"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:09Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-8: stress test 3-8"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:09Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-9: stress test 4-9"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:09Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-7: stress test 5-7"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:09Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-8: stress test 5-8"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:10Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-9: stress test 3-9"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:10Z",
+      "action": "phase_progression",
+      "feature": "stress-4",
+      "details": "Moved to step-10: stress test 4-10"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:10Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-10: stress test 5-10"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:10Z",
+      "action": "phase_progression",
+      "feature": "stress-5",
+      "details": "Moved to step-9: stress test 5-9"
+    },
+    {
+      "timestamp": "2026-04-16T07:34:11Z",
+      "action": "phase_progression",
+      "feature": "stress-3",
+      "details": "Moved to step-10: stress test 3-10"
+    },
+    {
+      "timestamp": "2026-04-16T07:36:37Z",
+      "action": "phase_progression",
+      "feature": "state-separation",
+      "details": "Moved to learn: Completed learn phase: Wiki updated, final report written"
+    },
+    {
+      "timestamp": "2026-04-16T07:38:59Z",
+      "action": "phase_progression",
+      "feature": "state-separation",
+      "details": "Moved to learn: Final report updated with review feedback and verified"
+    }
+  ]
+}

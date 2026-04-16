@@ -93,6 +93,13 @@ After receiving the review, critically evaluate each finding. Accept valid point
 
 ## Gemini-specific
 
+### 2-Tier State Management
+
+- **Mandatory**: All state updates must be performed using `scripts/pedal-sync.sh`. 
+- **Shared State**: `.pedal-status.shared.json` (Git-tracked)
+- **Runtime State**: `~/.pedal/<repo-id>/runtime.json` (Local-only, managed via script)
+- **Concurrency**: The script handles advisory locking and JSON merging to prevent data loss in parallel workflows.
+
 ### Convention Compliance
 
 - **Mandatory**: Always read `docs/wiki/CONVENTIONS.md` during Plan, Engineering, Do, and Analyze phases to ensure strict adherence to project standards.
