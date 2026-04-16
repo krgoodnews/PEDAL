@@ -51,15 +51,15 @@
       "description": "Manual archive status update"
     },
     "notification-fix": {
-      "phase": "learn",
-      "status": "in_progress",
-      "updatedAt": "2026-04-16T10:42:06Z",
+      "phase": "archived",
+      "status": "archived",
+      "updatedAt": "2026-04-16T11:05:00Z",
       "description": "Completed learn phase: Wiki updated, final report written"
     },
     "limit-review-cycles": {
-      "phase": "learn",
-      "status": "in_progress",
-      "updatedAt": "2026-04-16T10:57:12Z",
+      "phase": "archived",
+      "status": "archived",
+      "updatedAt": "2026-04-16T11:05:00Z",
       "description": "Completed learn phase: Wiki updated, completion report written and reviewed"
     }
   },
