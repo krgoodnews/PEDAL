@@ -46,7 +46,7 @@ PEDAL/
 
 1. **Shared State (`.pedal-status.shared.json`)**: Git으로 관리되는 팀 공통의 진행 상황.
 2. **Runtime State (`~/.pedal/<repo-id>/runtime.json`)**: 로컬 머신 전용의 실행 정보(PID, 워크트리 경로 등).
-3. **Automatic Worktree**: `/pedal plan` 시 상위 디렉토리에 `{repo-name}-{feature}` 형태의 전용 작업 폴더를 자동으로 생성한다.
+3. **Automatic Worktree**: `/pedal plan` 시 상위 디렉토리에 `{repo-name}-{feature}` 형태의 전용 작업 폴더를 자동으로 생성한다. (필요 시 `--no-worktree` 옵션으로 수동 관리 가능)
 
 **필수 규칙**:
 - 모든 상태 변경은 반드시 `scripts/pedal-sync.sh`를 통해서 수행한다.
