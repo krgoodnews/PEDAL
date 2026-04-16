@@ -29,6 +29,24 @@ uv run python server.py
 - **상태 파일 참조**: 항상 프로젝트 루트의 `.pedal-status.shared.json`을 Single Source of Truth로 사용하며, 절대 경로(`os.path.abspath`)로 참조합니다.
 - **CORS**: 개발 시에는 모든 오리진을 허용하되, 운영 시 환경 변수로 제한합니다.
 
+## 프론트엔드 서비스 아키텍처
+
+PEDAL 생태계는 사용자 경험과 관리 효율성을 위해 랜딩 페이지와 칸반 대시보드를 분리하여 운영합니다.
+
+### 1. Landing Web (`landing/`)
+- **역할**: PEDAL 워크플로 소개 및 마케팅.
+- **특징**: 정적 콘텐츠 위주의 고성능 Next.js 앱. 백엔드(MCP Server) 의존성을 제거하여 경량화됨.
+
+### 2. Kanban Dashboard (`dashboard/`)
+- **역할**: 실시간 PEDAL 상태 모니터링.
+- **특징**: `mcp-server`의 REST API를 Client-side fetch 방식으로 구독하여 실시간성을 확보함.
+- **경로**: 프로젝트 루트의 `dashboard/` 디렉토리에 위치한 독립된 Next.js 앱.
+
+## 개발 컨벤션 (Frontend)
+- **Shared Types**: PEDAL 상태 스키마는 `dashboard/src/lib/types.ts`를 기준으로 하며, MCP 서버의 응답 포맷과 1:1 대응함.
+- **API Base URL**: `NEXT_PUBLIC_API_BASE_URL` 환경 변수를 사용하여 백엔드 위치를 지정함.
+- **Styling**: Tailwind CSS 4와 GSAP을 사용하여 일관된 디자인 시스템을 유지함.
+
 ## 향후 확장 계획
 - `git worktree` 제어 도구(Tools) 추가
 - LangChain 기반의 과거 PEDAL 리포트 분석 에이전트 탑재
