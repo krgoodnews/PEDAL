@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-10T06:22:46Z",
+  "lastUpdated": "2026-04-16T07:29:21Z",
   "activeFeatures": [],
   "primaryFeature": null,
   "features": {
@@ -15,6 +15,12 @@
       "status": "archived",
       "updatedAt": "2026-04-10T06:22:46Z",
       "description": "PEDAL 소개 랜딩 페이지 (Dark Glassmorphism + 스크롤 애니메이션)"
+    },
+    "state-separation": {
+      "phase": "do",
+      "status": "in_progress",
+      "updatedAt": "2026-04-16T07:29:21Z",
+      "description": "Implemented 2-tier state management with scripts and migration"
     }
   },
   "session": {
@@ -22,24 +28,6 @@
     "lastActivity": "2026-04-10T06:22:46Z"
   },
   "history": [
-    {
-      "timestamp": "2026-04-12T05:31:27Z",
-      "action": "phase_progression",
-      "feature": "conventions",
-      "details": "Archived PEDAL artifacts to docs/archived/conventions/"
-    },
-    {
-      "timestamp": "2026-04-12T05:30:31Z",
-      "action": "phase_progression",
-      "feature": "conventions",
-      "details": "Learn phase completed. PR #4 created."
-    },
-    {
-      "timestamp": "2026-04-12T03:24:09Z",
-      "action": "phase_progression",
-      "feature": "conventions",
-      "details": "Analyze phase completed (100% match). Ready for Learn."
-    },
     {
       "timestamp": "2026-04-10T04:23:53Z",
       "action": "phase_start",
@@ -105,6 +93,30 @@
       "action": "phase_progression",
       "feature": "landing-page",
       "details": "Archived — PEDAL artifacts moved to docs/archived/landing-page/, review files removed"
+    },
+    {
+      "timestamp": "2026-04-12T03:24:09Z",
+      "action": "phase_progression",
+      "feature": "conventions",
+      "details": "Analyze phase completed (100% match). Ready for Learn."
+    },
+    {
+      "timestamp": "2026-04-12T05:30:31Z",
+      "action": "phase_progression",
+      "feature": "conventions",
+      "details": "Learn phase completed. PR #4 created."
+    },
+    {
+      "timestamp": "2026-04-12T05:31:27Z",
+      "action": "phase_progression",
+      "feature": "conventions",
+      "details": "Archived PEDAL artifacts to docs/archived/conventions/"
+    },
+    {
+      "timestamp": "2026-04-16T07:29:21Z",
+      "action": "phase_progression",
+      "feature": "state-separation",
+      "details": "Moved to do: Implemented 2-tier state management with scripts and migration"
     }
   ]
 }
