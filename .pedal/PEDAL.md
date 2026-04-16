@@ -52,13 +52,14 @@ Use natural language or your tool's command style. Conceptually:
 
 ### plan (Plan)
 
-1. Sync main branch and create a feature branch `feature/{feature}` or `fix/{feature}` when appropriate.
-2. **Read wiki**: if `docs/wiki/index.md` exists, read it and any relevant pages (especially `docs/wiki/CONVENTIONS.md` for coding standards) to understand current project state before planning.
-3. **Create prompt log**: write `docs/01-plan/{feature}.prompt.md` with the user's original request (see Prompt Log below).
-4. Ensure `docs/01-plan/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
-5. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
-6. Critically evaluate the review; accept valid points, reject with justification.
-7. Optional task label: `[Plan] {feature}`
+1. **Auto-Worktree**: Execute `scripts/pedal-sync.sh plan --feature {feature}`. This creates a new feature branch and a dedicated git worktree in the parent directory (`../{repo}-{feature}`).
+2. **Move to Worktree**: Move the agent's context to the newly created worktree directory before proceeding.
+3. **Read wiki**: if `docs/wiki/index.md` exists, read it and any relevant pages (especially `docs/wiki/CONVENTIONS.md` for coding standards) to understand current project state before planning.
+4. **Create prompt log**: write `docs/01-plan/{feature}.prompt.md` with the user's original request (see Prompt Log below).
+5. Ensure `docs/01-plan/{feature}.plan.md` exists; create from `templates/plan.template.md` if missing.
+6. **Cross-review**: invoke the reviewer agent to produce `{feature}.plan.review.md` (see [REVIEW.md](REVIEW.md)).
+7. Critically evaluate the review; accept valid points, reject with justification.
+8. Optional task label: `[Plan] {feature}`
 
 > **Important:** Do not enter a special "plan-only" mode that blocks normal work. Write the Plan in normal interaction and report progress to the user.
 
@@ -121,12 +122,13 @@ Not a standalone PEDAL "letter"; it sits between Analyze and Do. See `templates/
 
 ### archive (Archive)
 
-1. Create `docs/archived/{feature}/`.
-2. Move PEDAL artifacts: plan, engineering, analysis, report (and wiki copy if you version it).
-3. **Remove** review files (`*.review.md`) and other non-PEDAL noise.
-4. Set feature to `archived` in `.pedal-status.shared.json`.
-5. Move prompt log together with other artifacts; it becomes part of the historical record.
-6. Example commit message: `chore: 🗃️ Archive {feature} PEDAL documents`
+1. **Cleanup**: Execute `scripts/pedal-sync.sh archive --feature {feature}`. This removes the dedicated git worktree and prunes git metadata.
+2. Create `docs/archived/{feature}/`.
+3. Move PEDAL artifacts: plan, engineering, analysis, report (and wiki copy if you version it).
+4. **Remove** review files (`*.review.md`) and other non-PEDAL noise.
+5. Set feature to `archived` in `.pedal-status.shared.json`.
+6. Move prompt log together with other artifacts; it becomes part of the historical record.
+7. Example commit message: `chore: 🗃️ Archive {feature} PEDAL documents`
 
 ### spec (Plan + Engineering)
 

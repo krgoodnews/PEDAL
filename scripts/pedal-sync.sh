@@ -179,6 +179,143 @@ case "$1" in
     echo "Successfully updated state for ${FEATURE} to ${PHASE}."
     ;;
 
+  plan)
+    shift
+    FEATURE=""
+    while [[ $# -gt 0 ]]; do
+      case $1 in
+        --feature) FEATURE="$2"; shift ;;
+      esac
+      shift
+    done
+
+    if [ -z "${FEATURE}" ]; then
+      echo "Usage: pedal-sync plan --feature {id}"
+      exit 1
+    fi
+
+    acquire_lock
+    trap release_lock EXIT
+
+    WORKSPACE_ROOT=$(get_workspace_root)
+    REPO_NAME=$(get_repo_name)
+    TARGET_PATH="${WORKSPACE_ROOT}/${REPO_NAME}-${FEATURE}"
+    BRANCH="feature/${FEATURE}"
+
+    echo "Planning feature: ${FEATURE}..."
+    echo "Target path: ${TARGET_PATH}"
+
+    if [ -d "${TARGET_PATH}" ]; then
+      echo "Error: Directory ${TARGET_PATH} already exists." >&2
+      exit 1
+    fi
+
+    if git worktree list | grep -q "${TARGET_PATH}"; then
+      echo "Error: Worktree at ${TARGET_PATH} is already registered." >&2
+      exit 1
+    fi
+
+    # Create worktree
+    echo "Creating git worktree..."
+    if git rev-parse --verify "${BRANCH}" >/dev/null 2>&1; then
+      echo "Branch ${BRANCH} already exists. Using existing branch."
+      git worktree add "${TARGET_PATH}" "${BRANCH}"
+    else
+      echo "Creating new branch ${BRANCH}..."
+      git worktree add "${TARGET_PATH}" -b "${BRANCH}"
+    fi
+
+    # Initialize state
+    CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    NEW_SHARED_DATA=$(jq -n \
+      --arg feature "${FEATURE}" \
+      --arg time "${CURRENT_TIME}" \
+      '{
+        "lastUpdated": $time,
+        "features": { ($feature): { "phase": "plan", "status": "in_progress", "updatedAt": $time, "description": "New feature started via auto-worktree" } },
+        "history": [{ "timestamp": $time, "action": "phase_start", "feature": $feature, "details": "Plan phase started (Worktree created)" }]
+      }')
+
+    merge_shared_state "${NEW_SHARED_DATA}"
+    
+    # Update runtime state with the correct path
+    (cd "${TARGET_PATH}" && update_runtime_state "${FEATURE}" "plan")
+
+    echo "--------------------------------------------------------"
+    echo "Feature ${FEATURE} is ready!"
+    echo "Please move to the worktree directory to start working:"
+    echo "cd ${TARGET_PATH}"
+    echo "--------------------------------------------------------"
+    ;;
+
+  archive)
+    shift
+    FEATURE=""
+    FORCE=false
+    while [[ $# -gt 0 ]]; do
+      case $1 in
+        --feature) FEATURE="$2"; shift ;;
+        --force) FORCE=true ;;
+      esac
+      shift
+    done
+
+    if [ -z "${FEATURE}" ]; then
+      echo "Usage: pedal-sync archive --feature {id} [--force]"
+      exit 1
+    fi
+
+    acquire_lock
+    trap release_lock EXIT
+
+    # Get path from runtime.json
+    TARGET_PATH=$(jq -r --arg f "${FEATURE}" '.activeWorktrees[$f] // empty' "${RUNTIME_FILE}")
+
+    if [ -z "${TARGET_PATH}" ]; then
+      # Fallback: check if directory exists in workspace root
+      WORKSPACE_ROOT=$(get_workspace_root)
+      REPO_NAME=$(get_repo_name)
+      TARGET_PATH="${WORKSPACE_ROOT}/${REPO_NAME}-${FEATURE}"
+      if [ ! -d "${TARGET_PATH}" ]; then
+        echo "Error: Could not find worktree for feature ${FEATURE}." >&2
+        exit 1
+      fi
+    fi
+
+    echo "Archiving feature: ${FEATURE}..."
+    echo "Removing worktree at ${TARGET_PATH}..."
+
+    REMOVE_CMD="git worktree remove \"${TARGET_PATH}\""
+    if [ "${FORCE}" = true ]; then
+      REMOVE_CMD="${REMOVE_CMD} --force"
+    fi
+
+    if eval "${REMOVE_CMD}"; then
+      git worktree prune
+      
+      # Update shared state
+      CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+      NEW_SHARED_DATA=$(jq -n \
+        --arg feature "${FEATURE}" \
+        --arg time "${CURRENT_TIME}" \
+        '{
+          "lastUpdated": $time,
+          "features": { ($feature): { "phase": "archived", "status": "archived", "updatedAt": $time } },
+          "history": [{ "timestamp": $time, "action": "archive", "feature": $feature, "details": "Feature archived and worktree removed" }]
+        }')
+      merge_shared_state "${NEW_SHARED_DATA}"
+
+      # Remove from runtime.json
+      jq --arg f "${FEATURE}" 'del(.activeWorktrees[$f]) | del(.agentLocks[$f])' "${RUNTIME_FILE}" > "${RUNTIME_FILE}.tmp" && mv "${RUNTIME_FILE}.tmp" "${RUNTIME_FILE}"
+      
+      echo "Successfully archived ${FEATURE} and cleaned up resources."
+    else
+      echo "Error: Failed to remove worktree. It might have uncommitted changes." >&2
+      echo "Please commit your changes or use --force to delete anyway." >&2
+      exit 1
+    fi
+    ;;
+
   init)
     echo "Initializing 2-tier state..."
     acquire_lock
