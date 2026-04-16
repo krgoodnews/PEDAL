@@ -1,24 +1,24 @@
 ---
 template: plan
-version: 1.0
+version: 1.1
 description: PEDAL Plan phase document template with Architecture and Convention considerations
 variables:
   - feature: state-separation
   - date: 2026-04-16
   - author: Gemini CLI
   - project: pedal
-  - version: 1.0.0
+  - version: 1.1.0
 ---
 
 # state-separation Planning Document
 
-> **Summary**: 상태 데이터를 공유 상태(Git)와 실행 상태(로컬) 2계층으로 분리하여 병렬 작업 시의 충돌을 방지하는 아키텍처 설계
+> **Summary**: 상태 데이터를 공유 상태(Git)와 실행 상태(로컬) 2계층으로 분리하여 병렬 작업 시의 충돌을 방지하는 아키텍처 설계 및 이행
 >
 > **Project**: pedal
-> **Version**: 1.0.0
+> **Version**: 1.1.0
 > **Author**: Gemini CLI
 > **Date**: 2026-04-16
-> **Status**: Draft
+> **Status**: Draft (Revised)
 
 ---
 
@@ -36,6 +36,7 @@ variables:
 
 - Wiki (project SSOT): [docs/wiki/index.md](../wiki/index.md)
 - Requirements: 2계층 상태 분리 (2-Tier State Separation)
+- Review: [docs/01-plan/state-separation.plan.review.md](./state-separation.plan.review.md)
 
 ---
 
@@ -46,7 +47,8 @@ variables:
 - [ ] `.pedal-status.shared.json` (Git 기록용) 및 `~/.pedal/<repo-id>/runtime.json` (로컬 런타임용) 스키마 설계
 - [ ] 상태 읽기 및 쓰기 시 동시성 이슈를 방지할 수 있는 File Lock 기반 셸 스크립트(`pedal-sync.sh` 등) 작성
 - [ ] `GEMINI.md` 및 `.cursor/rules/pedal.mdc`의 지시문을 새로운 상태 관리 구조에 맞게 업데이트
-- [ ] 변경된 구조를 반영하기 위한 `.pedal/PEDAL.md` 문서 업데이트
+- [ ] **SSOT 동기화**: 변경된 구조를 반영하기 위한 [`.pedal/PEDAL.md`](../.pedal/PEDAL.md) 문서 업데이트 포함
+- [ ] **데이터 이행**: 기존 `.pedal-status.json`의 데이터를 새로운 2계층 구조로 안전하게 마이그레이션하는 로직
 
 ### 2.2 Out of Scope
 
@@ -61,16 +63,18 @@ variables:
 
 | ID    | Requirement               | Priority | Status  |
 | ----- | ------------------------- | -------- | ------- |
-| FR-01 | 실행 상태(Runtime)와 공유 상태(Shared) 분리 구조의 JSON 스키마 명세 작성 | High | Pending |
-| FR-02 | `pedal-sync.sh` 스크립트를 통한 안전한 JSON 읽기/쓰기 (File Lock 구현) | High | Pending |
-| FR-03 | 프로젝트 내 AI 지시문 (`GEMINI.md`, `pedal.mdc`) 최신화 반영 | High | Pending |
+| FR-01 | 실행 상태(Runtime)와 공유 상태(Shared, Append-Only 고려) 분리 구조의 JSON 스키마 명세 작성 | High | Pending |
+| FR-02 | `pedal-sync.sh` 스크립트를 통한 안전한 JSON 읽기/쓰기 (Advisory Lock 구현) | High | Pending |
+| FR-03 | 프로젝트 내 AI 지시문 (`GEMINI.md`, `pedal.mdc`, `PEDAL.md`) 최신화 반영 | High | Pending |
+| FR-04 | 기존 `.pedal-status.json` 데이터를 새로운 공유 상태 파일로 자동 이행(Migration) 및 이전 파일 제거/백업 | High | Pending |
 
 ### 3.2 Non-Functional Requirements
 
 | Category      | Criteria                        | Measurement Method    |
 | ------------- | ------------------------------- | --------------------- |
-| Reliability   | 동시 쓰기(Concurrency) 환경에서 데이터 손실이 없어야 함 | 여러 셸에서 동시 상태 갱신 스크립트 실행 스트레스 테스트 |
-| Maintainability | Git 브랜치 Merge 시 충돌 최소화 로직 탑재 | PR Merge 테스트 시나리오 검증 |
+| Reliability   | 동시 쓰기(Concurrency) 환경에서 데이터 손실이 없어야 함 | 10개 병렬 프로세스 x 100회 반복 쓰기 시 JSON 무결성 검증 |
+| Maintainability | Git 브랜치 Merge 시 충돌 최소화 로직 탑재 | main 브랜치 기준 pull-then-merge 전략 또는 Append-only 검증 |
+| Compatibility | 단일 워크트리 환경에서도 정상 작동 보장 | 기존 단일 워크트리 환경에서의 동작 테스트 |
 
 ---
 
@@ -79,9 +83,9 @@ variables:
 ### 4.1 Definition of Done
 
 - [ ] 런타임 및 공유 상태의 JSON 스키마 문서화 완료
-- [ ] 상태 동기화 및 Lock 처리용 셸 스크립트 정상 작동 확인
+- [ ] 상태 동기화 및 Lock 처리용 셸 스크립트 정상 작동 확인 (스트레스 테스트 통과)
 - [ ] `GEMINI.md`, Cursor Rule 및 `PEDAL.md` 업데이트 완료
-- [ ] 동시 상태 변경 테스트를 통과하여 데이터 깨짐이 없음을 확인
+- [ ] 기존 상태 데이터의 이행 완료 및 기존 파일 제거 확인
 
 ---
 
@@ -89,8 +93,8 @@ variables:
 
 | Risk     | Impact | Likelihood | Mitigation |
 | -------- | ------ | ---------- | ---------- |
-| `shared.json` 브랜치 병합 시 Git Conflict | High | High | 상태 업데이트 시 `main` 브랜치 기준 최신 상태를 Pull 후 병합(Merge)하거나, Append-Only 로직을 활용 |
-| File Lock 오작동으로 인한 데드락(Deadlock) 상태 | Medium | Low | Lock 파일이 일정 시간(예: 10초) 초과 시 stale Lock으로 간주하여 강제로 해제하는 로직 추가 |
+| `shared.json` 브랜치 병합 시 Git Conflict | High | High | 상태 업데이트 시 `main` 브랜치 기준 최신 상태를 Pull 후 병합(Merge)하거나, Append-Only 히스토리 구조 활용 |
+| File Lock 오작동으로 인한 데드락(Deadlock) 상태 | Medium | Low | Lock 파일이 일정 시간(예: 10초) 초과 시 stale Lock으로 간주하여 강제로 해제하거나 소유 PID 확인 로직 추가 |
 
 ---
 
@@ -98,19 +102,15 @@ variables:
 
 ### 6.1 Existing Project Conventions
 
-- [x] Project config file has coding conventions section
-- [x] `docs/wiki/CONVENTIONS.md` exists
-- [ ] `CONVENTIONS.md` exists at project root
-- [ ] Linter configuration exists
-- [ ] Formatter configuration exists
-- [ ] Language-specific configuration exists
+- [x] `docs/wiki/CONVENTIONS.md` (Wiki 내 프로젝트 공통 컨벤션 존재)
+- [x] `.pedal/PEDAL.md` (워크플로 SSOT 존재)
 
 ### 6.2 Conventions to Define/Verify
 
 | Category                  | Current State    | To Define         | Priority |
 | ------------------------- | ---------------- | ----------------- | :------: |
-| **Naming**                | exists | 상태 파일명 규칙 (`runtime.json`, `.pedal-status.shared.json` 등) |   High   |
-| **Folder structure**      | exists | `~/.pedal/<repo-id>/` 디렉토리 구조 |   High   |
+| **Naming**                | Proposed | `~/.pedal/<repo-id>/runtime.json`, `.pedal-status.shared.json` |   High   |
+| **Folder structure**      | Proposed | `~/.pedal/<repo-id>/` (다중 저장소 대응을 위해 repo-id 필수 포함) |   High   |
 
 ### 6.3 Environment Variables Needed
 
@@ -128,8 +128,24 @@ variables:
 
 ---
 
+## Review Response
+
+| ID | Review Point | Response | Action |
+| --- | --- | --- | --- |
+| C-01 | Migration requirements | Accepted. Added FR-04 for migration from existing `.pedal-status.json`. | Updated FR table |
+| W-01 | Runtime path mismatch | Accepted. Using `~/.pedal/<repo-id>/runtime.json` to support multiple repos on the same machine. | Updated 6.2 Naming |
+| W-02 | Shared filename | Accepted. Finalized as `.pedal-status.shared.json` for consistency. | Updated 6.2 Naming |
+| W-03 | Append-Only logic | Accepted. Added to FR-01 as a sub-requirement for shared state. | Updated FR-01 |
+| W-04 | Lock mechanism details | Accepted. Will use advisory lock and specify retry/timeout in Engineering. | Updated FR-02 |
+| I-01 | Checklist cleanup | Accepted. Removed irrelevant convention items. | Updated 6.1 |
+| I-02 | Scope expansion | Accepted. Explicitly mentioned `.pedal/PEDAL.md` update in Scope. | Updated 2.1 |
+| I-03 | Stress test quantification| Accepted. Defined 10 concurrent x 100 iterations in NFR. | Updated 3.2 |
+
+---
+
 ## Version History
 
 | Version | Date   | Changes       | Author   |
 | ------- | ------ | ------------- | -------- |
 | 0.1     | 2026-04-16 | Initial draft | Gemini CLI |
+| 1.1     | 2026-04-16 | Revised per review (Migration, Concurrency, Naming) | Gemini CLI |
