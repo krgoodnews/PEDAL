@@ -40,14 +40,17 @@ PEDAL/
 └── .pedal-status.json.bak ← (이전된 경우) 레거시 상태 백업
 ```
 
-## 2계층 상태 관리 (2-Tier State)
+## 2계층 상태 및 자동 워크트리 관리
 
-병렬 작업 및 다중 에이전트 환경을 지원하기 위해 상태를 두 계층으로 관리한다.
+병렬 작업 및 다중 에이전트 환경을 지원하기 위해 상태와 작업 공간을 자동화하여 관리한다.
 
 1. **Shared State (`.pedal-status.shared.json`)**: Git으로 관리되는 팀 공통의 진행 상황.
 2. **Runtime State (`~/.pedal/<repo-id>/runtime.json`)**: 로컬 머신 전용의 실행 정보(PID, 워크트리 경로 등).
+3. **Automatic Worktree**: `/pedal plan` 시 상위 디렉토리에 `{repo-name}-{feature}` 형태의 전용 작업 폴더를 자동으로 생성한다.
 
-**필수 규칙**: 모든 상태 변경은 반드시 `scripts/pedal-sync.sh`를 통해서 수행되어야 하며, 직접 JSON 파일을 수정하지 않는다.
+**필수 규칙**:
+- 모든 상태 변경은 반드시 `scripts/pedal-sync.sh`를 통해서 수행한다.
+- 작업 완료 후 `/pedal archive`를 호출하여 워크트리 리소스를 정리한다.
 
 ## 지원 도구
 
