@@ -1,13 +1,13 @@
 ---
 template: engineering
-version: 1.0
+version: 1.1
 description: 상태 데이터를 공유 상태(Git)와 실행 상태(로컬) 2계층으로 분리하기 위한 상세 기술 설계
 variables:
   - feature: state-separation
   - date: 2026-04-16
   - author: Gemini CLI
   - project: pedal
-  - version: 1.0.0
+  - version: 1.1.0
 ---
 
 # state-separation Engineering Document
@@ -15,10 +15,10 @@ variables:
 > **Summary**: 병렬 작업을 지원하기 위해 PEDAL 상태 관리 아키텍처를 로컬 런타임과 Git 공유 계층으로 분리하고, 동시성 제어를 위한 동기화 스크립트를 구현함.
 >
 > **Project**: pedal
-> **Version**: 1.0.0
+> **Version**: 1.1.0
 > **Author**: Gemini CLI
 > **Date**: 2026-04-16
-> **Status**: Draft
+> **Status**: Draft (Revised)
 > **Planning Doc**: [state-separation.plan.md](../01-plan/state-separation.plan.md)
 
 ### Related Documents
@@ -29,6 +29,7 @@ variables:
 | [Plan](../01-plan/state-separation.plan.md)     | ✅        |
 | [Conventions](../wiki/CONVENTIONS.md) | ✅        |
 | [Prompt](../01-plan/state-separation.prompt.md) | ✅        |
+| [Review](./state-separation.engineering.review.md) | ✅        |
 
 ---
 
@@ -44,8 +45,8 @@ variables:
 ### 1.2 Engineering Principles
 
 - **Single Source of Truth (SSOT)**: 런타임 정보는 로컬 파일, 비즈니스 진행 상황은 Git 파일로 단일화함.
-- **Advisory Locking**: 셸 스크립트 수준에서 파일 시스템 락을 활용해 원자적(Atomic) 연산을 보장함.
-- **Fail-fast**: 데이터 정합성에 문제가 생길 경우 즉시 에러를 발생시켜 전파를 막음.
+- **Advisory Locking**: 셸 스크립트 수준에서 파일 시스템 락을 활용해 로컬 내 원자적(Atomic) 연산을 보장함.
+- **Robust Sync**: Git 브랜치 이름에 의존하지 않고 기본 브랜치를 동적으로 찾아 병합함.
 
 ---
 
@@ -68,12 +69,15 @@ variables:
 ### 2.2 Data Flow (Update State)
 
 1. Agent가 `pedal-sync.sh update --feature auth --phase do` 호출
-2. 스크립트가 `~/.pedal/<repo-id>/runtime.lock` 생성 시도 (Advisory Lock)
+2. 스크립트가 `~/.pedal/<repo-id>/runtime.lock` 생성 시도 (Advisory Lock, 로컬 전용)
 3. **Shared Read**: `.pedal-status.shared.json` 읽기
 4. **Runtime Read**: `runtime.json` 읽기
-5. **Logic**: 데이터 병합 및 업데이트 (Append history, update phase)
-6. **Shared Write**: `git checkout master -- .pedal-status.shared.json` (최신본 병합 시도) 후 쓰기
-7. **Runtime Write**: `runtime.json` 쓰기
+5. **Logic (Merge)**: 
+   - `jq`를 사용하여 `features` 객체는 딥 머지(Deep Merge) 수행.
+   - `history` 배열은 시간 순으로 정렬하여 중복 제거 후 추가(Append).
+6. **Shared Sync (Optional)**: 
+   - 기본 브랜치(예: `main`, `master`)의 최신 상태를 `git show`로 읽어와 로컬 변경분과 `jq`로 병합.
+7. **Write**: `shared.json` 및 `runtime.json` 쓰기
 8. Lock 해제
 
 ---
@@ -128,24 +132,27 @@ variables:
 
 ## 4. Implementation Specification
 
-### 4.1 Repository ID Generation
+### 4.1 Repository ID & Branch Detection
 
-`repo-id`는 저장소 루트의 절대 경로를 SHA-256 해시 처리한 앞 8자리 문자열을 사용함.
-`REPO_ID=$(printf "%s" "$(git rev-parse --show-toplevel)" | shasum -a 256 | cut -c1-8)`
+- **Repo ID**: `printf "%s" "$(git rev-parse --show-toplevel)" | shasum -a 256 | cut -c1-8`
+- **Default Branch**: `git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'` (없을 경우 `master`, `main` 순차 확인)
 
 ### 4.2 Lock Mechanism (`pedal-sync.sh`)
 
 - **Lock Path**: `~/.pedal/${REPO_ID}/runtime.lock`
-- **Acquire**: `mkdir "${LOCK_PATH}"` (원자적 연산 활용)
-- **Retry**: 0.5초 간격으로 최대 20회 시도 (총 10초)
-- **Stale Lock**: 락 파일 내부의 PID가 더 이상 존재하지 않거나, 생성 시간이 1분 이상 경과한 경우 강제 삭제 로직 포함.
+- **Acquire**: `mkdir -p "$(dirname "${LOCK_PATH}")" && mkdir "${LOCK_PATH}"`
+- **Stale Lock**: 1분 이상 경과한 락은 무효화(Timeout 우선). PID 존재 확인은 보조 수단으로 활용.
 
-### 4.3 Migration Logic
+### 4.3 JSON Merge Strategy (`jq`)
 
-1. `.pedal-status.json` 존재 여부 확인.
-2. 존재 시, 해당 내용을 읽어 `.pedal-status.shared.json`으로 복사.
-3. `runtime.json` 초기화 (현재 워크트리를 기본값으로 설정).
-4. 기존 `.pedal-status.json`을 `.pedal-status.json.bak`으로 백업 후 삭제 지시.
+- **Features**: `features = (old_features * new_features)` (딥 머지)
+- **History**: `history = (old_history + new_history) | unique_by(.timestamp, .feature, .action) | sort_by(.timestamp)`
+
+### 4.4 Migration Logic
+
+1. `.pedal-status.json` 존재 시 데이터를 읽어 `.pedal-status.shared.json`으로 변환 저장.
+2. 기존 파일을 `.pedal-status.json.bak`으로 이름 변경.
+3. 에이전트에게 마이그레이션 완료 메시지 출력.
 
 ---
 
@@ -153,13 +160,13 @@ variables:
 
 ### 5.1 GEMINI.md 업데이트
 
-- 모든 상태 변경 명령(`/pedal plan`, `do`, 등)은 내부적으로 `scripts/pedal-sync.sh`를 호출하여 상태를 업데이트해야 함.
-- 직접 JSON 파일을 수정하는 대신 스크립트를 경유하도록 강제함.
+- 모든 상태 변경은 `scripts/pedal-sync.sh`를 통해서만 수행하도록 `GEMINI.md` 본문에 명시.
+- 직접적인 파일 수정 시도 금지 지침 추가.
 
 ### 5.2 PEDAL.md 업데이트
 
-- "2-Tier State Management" 섹션 추가.
-- `shared.json`과 `runtime.json`의 역할을 명시하고, 병렬 작업 시 `git worktree` 사용을 권장함.
+- "2-Tier State Management" 섹션 추가: 로컬 런타임 상태와 협업 공유 상태의 역할을 구분하여 설명.
+- 병렬 작업을 위한 `git worktree` 사용 가이드 추가.
 
 ---
 
@@ -167,53 +174,26 @@ variables:
 
 ### 6.1 스트레스 테스트 (Concurrency)
 
-- **Scenario**: 10개의 백그라운드 프로세스가 동시에 서로 다른 피처의 상태를 100회 업데이트 시도.
-- **Success**: 최종 `shared.json`의 `history` 배열 길이는 1000이어야 하며, JSON 포맷이 유효해야 함.
+- **Scenario**: 10개의 병렬 프로세스가 각기 다른 피처 ID로 동시 업데이트 수행.
+- **Success**: `history` 배열 누락 없음, JSON 스키마 유효성 유지.
 
 ### 6.2 마이그레이션 테스트
 
-- **Scenario**: 기존 프로젝트에서 `pedal-sync.sh init` 실행.
-- **Success**: 데이터 유실 없이 두 개의 파일로 분리 생성됨 확인.
+- **Scenario**: 기존 프로젝트 환경에서 `pedal-sync.sh init` 실행.
+- **Success**: 분리된 두 파일이 생성되고 기존 파일이 백업됨.
 
 ---
 
-## 7. Implementation Guide
+## Review Response
 
-### 7.1 File Structure
-
-```
-{project root}/
-├── .pedal-status.shared.json (새로운 공유 상태)
-├── scripts/
-│   ├── pedal-sync.sh        (통합 동기화 스크립트)
-│   └── pedal-common.sh      (공통 유틸리티 - 해시, 경로 계산)
-└── .pedal/
-    └── PEDAL.md             (문서 업데이트)
-```
-
-### 7.2 Implementation Order
-
-1. [ ] `pedal-common.sh` 작성 (Repo ID 및 경로 계산 로직)
-2. [ ] `pedal-sync.sh` 작성 (Lock 및 CRUD 로직)
-3. [ ] 마이그레이션 로직 테스트 및 실행
-4. [ ] `GEMINI.md`, `PEDAL.md`, Cursor Rule 업데이트
-5. [ ] 스트레스 테스트 수행
-
----
-
-## 8. Self-Review Criteria (Do → Analyze Gate)
-
-### 8.1 Implementation Completeness
-
-- `shared.json`과 `runtime.json`이 의도한 경로에 생성되는가?
-- 병렬 프로세스 실행 시 Lock이 정상적으로 작동하여 충돌을 막는가?
-- 기존 데이터가 유실 없이 마이그레이션되는가?
-
-### 8.2 Ready for Analyze
-
-```bash
-/pedal analyze state-separation
-```
+| ID | Review Point | Response | Action |
+| --- | --- | --- | --- |
+| C-01 | 하드코딩된 브랜치 | 수용. 동적 브랜치 감지 로직으로 대체. | 섹션 4.1 업데이트 |
+| C-02 | Git 충돌/동기화 위험 | 수용. 체크아웃 방식 대신 `git show`와 `jq`를 이용한 메모리 병합 후 쓰기 방식 채택. | 섹션 2.2 업데이트 |
+| W-01 | JSON 병합 로직 미비 | 수용. `jq`를 활용한 딥 머지 및 히스토리 정렬/중복 제거 로직 정의. | 섹션 4.3 업데이트 |
+| W-02 | 락 범위 명시 | 수용. 로컬 전용 락임을 명시. | 섹션 1.2, 2.2 업데이트 |
+| I-01 | 디렉토리 초기화 | 수용. `mkdir -p` 명시. | 섹션 4.2 업데이트 |
+| I-02 | Stale Lock 견고함 | 수용. 1분 타임아웃을 주된 판단 기준으로 상향. | 섹션 4.2 업데이트 |
 
 ---
 
@@ -222,3 +202,4 @@ variables:
 | Version | Date   | Changes       | Author   |
 | ------- | ------ | ------------- | -------- |
 | 0.1     | 2026-04-16 | Initial draft | Gemini CLI |
+| 1.1     | 2026-04-16 | Revised per review (Dynamic branch, JQ merge, Stale lock) | Gemini CLI |
