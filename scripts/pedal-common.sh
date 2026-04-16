@@ -20,21 +20,21 @@ get_runtime_dir() {
   echo "${HOME}/.pedal/${repo_id}"
 }
 
-# 3. Default Branch Detection
+# 3. Default Branch Detection (Prioritize 'develop' for active feature integration)
 get_default_branch() {
   local branch
-  # Try origin/HEAD first
-  branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
   
-  if [ -z "${branch}" ]; then
-    # Fallback: check main or master
-    if git rev-parse --verify main >/dev/null 2>&1; then
-      branch="main"
-    elif git rev-parse --verify master >/dev/null 2>&1; then
-      branch="master"
-    else
-      branch="master" # Last resort
-    fi
+  # 1. Check if 'develop' exists locally or remotely
+  if git rev-parse --verify develop >/dev/null 2>&1 || git rev-parse --verify origin/develop >/dev/null 2>&1; then
+    branch="develop"
+  # 2. Try origin/HEAD
+  elif branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); then
+    : # branch is already set
+  # 3. Fallback to main or master
+  elif git rev-parse --verify main >/dev/null 2>&1; then
+    branch="main"
+  else
+    branch="master"
   fi
   echo "${branch}"
 }
