@@ -111,7 +111,7 @@ update_runtime_state() {
   local my_pid=$$
   local tmp_file="${RUNTIME_FILE}.${my_pid}.tmp"
   local repo_root
-  repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  repo_root=$(_get_main_repo_root)
   local worktree_path=$(pwd)
   local current_time
   current_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
