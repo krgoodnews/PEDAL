@@ -1,14 +1,20 @@
 #!/bin/bash
 
-# 사용법: ./pedal-notification.sh "{feature}" "{action} task completed"
-TITLE=${1:-"PEDAL"}
-MESSAGE=${2:-"{feature} {action} task completed"}
+# pedal-notification.sh: 알림을 생성하고 포커스를 제어합니다.
 
-# 1. 알림 생성
+# 1. 인자 처리
+# 사용법: ./pedal-notification.sh "{feature}" "{action}"
+FEATURE=${1:-"Feature"}
+ACTION=${2:-"Task"}
+TITLE="PEDAL - $FEATURE"
+MESSAGE="$FEATURE $ACTION completed."
+
+# 2. 알림 생성 (osascript)
+# 'with title'로 제목을 넣고, 'display notification'으로 내용을 표시합니다.
+# 인용 부호를 안전하게 처리하기 위해 quoted form of를 사용합니다.
 osascript -e "display notification (quoted form of \"$MESSAGE\") with title (quoted form of \"$TITLE\")"
 
-# 2. 현재 터미널 앱으로 포커스 이동 (Cursor, iTerm2, Terminal 등 대응)
-# 알림 확인 후 즉시 터미널로 돌아오게 하려면 아래 명령이 필요합니다.
-osascript -e 'tell application "System Events" to set frontApp to name of first process whose frontmost is true' \
-          -e 'tell application "Cursor" to activate' # Cursor를 기본 타겟으로 설정 (또는 iTerm2 등)
-
+# 3. 포커스 제어 (Fix 2 & 3)
+# 알림이 발생할 때 Cursor나 특정 앱을 강제로 'activate' 하는 기능을 제거합니다.
+# 사용자가 현재 작업 중인 창(Terminal, Warp 등)을 방해하지 않기 위함입니다.
+# 알림을 클릭했을 때의 포커스 이동은 macOS 시스템 기본 동작에 맡깁니다.
