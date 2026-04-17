@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-17T09:00:00Z",
+  "lastUpdated": "2026-04-17T10:00:00Z",
   "features": {
     "state-separation": {
       "phase": "archived",
@@ -33,10 +33,10 @@
       "description": "Completed learn phase: Wiki updated, completion report written and reviewed"
     },
     "mcp-kanban": {
-      "phase": "iterate",
-      "status": "in_progress",
-      "updatedAt": "2026-04-17T09:00:00Z",
-      "description": "Completed separating dashboard into a standalone web app. Updated documents and cleaned up landing project."
+      "phase": "learn",
+      "status": "completed",
+      "updatedAt": "2026-04-17T10:00:00Z",
+      "description": "Completed learn phase: Wiki updated, completion report written and PR created."
     }
   },
   "history": [
@@ -45,6 +45,12 @@
       "action": "phase_progression",
       "feature": "mcp-kanban",
       "details": "Moved to iterate: Separating dashboard from landing into its own web app"
+    },
+    {
+      "timestamp": "2026-04-17T10:00:00Z",
+      "action": "phase_progression",
+      "feature": "mcp-kanban",
+      "details": "Moved to learn: Finalizing mcp-kanban cycle and created PR #12"
     }
   ]
 }
