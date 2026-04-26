@@ -21,13 +21,27 @@ uv run python server.py
 ```
 
 ### 2. 하이브리드 서버 (`server.py`)
-- **REST API**: `/api/status` 엔드포인트를 통해 `.pedal-status.shared.json` 데이터를 JSON으로 제공합니다.
+- **REST API**:
+    - `GET /api/status`: `.pedal-status.shared.json` 데이터를 반환합니다.
+    - `POST /api/status/update`: 특정 피처의 단계를 업데이트합니다. `X-API-Key` 인증이 필요하며, 내부적으로 `pedal-sync.sh`를 호출합니다.
 - **MCP SSE**: `/mcp/sse` 및 `/mcp/messages`를 통해 AI 에이전트가 도구(Tools)를 호출할 수 있는 인터페이스를 제공합니다.
+
+### 3. 보안 설정
+- **API Key**: `PEDAL_API_KEY` 환경 변수를 통해 REST API 접근을 제어합니다.
+- **CORS**: `PEDAL_CORS_ORIGINS` 환경 변수를 통해 허용 도메인을 제한할 수 있습니다. (기본값: `*`)
+
+## 주요 도구 (MCP Tools)
+
+| Tool Name | Description | Inputs |
+|-----------|-------------|--------|
+| `get_pedal_status` | 현재 프로젝트의 PEDAL 진행 상태를 조회합니다. | N/A |
+| `update_pedal_status` | 특정 피처의 PEDAL 단계를 업데이트합니다. | `feature_id`, `phase`, `description` |
 
 ## 개발 컨벤션 (Python)
 - **Import 경로**: MCP SDK 1.x 이상에서는 `from mcp.server import Server` 형식을 사용합니다.
 - **상태 파일 참조**: 항상 프로젝트 루트의 `.pedal-status.shared.json`을 Single Source of Truth로 사용하며, 절대 경로(`os.path.abspath`)로 참조합니다.
-- **CORS**: 개발 시에는 모든 오리진을 허용하되, 운영 시 환경 변수로 제한합니다.
+- **스크립트 연동**: 모든 상태 변경 로직은 `run_pedal_sync_update` 함수를 통해 `pedal-sync.sh`를 서브프로세스로 실행합니다. (30초 타임아웃 적용)
+- **에러 처리**: 락 경합 시 `429 Too Many Requests`를 반환하도록 설계되어 있습니다.
 
 ## 프론트엔드 서비스 아키텍처
 
