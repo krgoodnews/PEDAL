@@ -1,10 +1,10 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-16T10:57:12Z",
+  "lastUpdated": "2026-04-17T10:00:00Z",
   "features": {
     "state-separation": {
       "phase": "archived",
-      "status": "in_progress",
+      "status": "archived",
       "updatedAt": "2026-04-16T08:12:58Z",
       "description": "Archiving state-separation feature"
     },
@@ -31,7 +31,26 @@
       "status": "archived",
       "updatedAt": "2026-04-16T11:05:00Z",
       "description": "Completed learn phase: Wiki updated, completion report written and reviewed"
+    },
+    "mcp-kanban": {
+      "phase": "learn",
+      "status": "completed",
+      "updatedAt": "2026-04-17T10:00:00Z",
+      "description": "Completed learn phase: Wiki updated, completion report written and PR created."
     }
   },
-  "history": []
+  "history": [
+    {
+      "timestamp": "2026-04-17T09:00:00Z",
+      "action": "phase_progression",
+      "feature": "mcp-kanban",
+      "details": "Moved to iterate: Separating dashboard from landing into its own web app"
+    },
+    {
+      "timestamp": "2026-04-17T10:00:00Z",
+      "action": "phase_progression",
+      "feature": "mcp-kanban",
+      "details": "Moved to learn: Finalizing mcp-kanban cycle and created PR #12"
+    }
+  ]
 }
