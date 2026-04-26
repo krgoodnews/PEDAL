@@ -65,17 +65,17 @@ Engineering 문서(`mcp-action-api.engineering.md`)에 정의된 API 명세, MCP
 | Engineering Component | Implementation File | Status             |
 | --------------------- | ------------------- | ------------------ |
 | MCP Tool (`update_pedal_status`) | `mcp-server/server.py` | ✅ Match |
-| Error Handling (401, 422, 429, 504, 500) | `mcp-server/server.py` | ❌ Not fully implemented | 429 예외 처리 로직은 있으나 단위 테스트 누락됨 |
+| Error Handling (401, 422, 429, 504, 500) | `mcp-server/server.py` | ✅ Match | 429 예외 처리 및 단위 테스트 구현 완료 (Iteration 1) |
 
 ### 2.4 Match Rate Summary
 
 ```
 ┌─────────────────────────────────────────────┐
-│  Overall Match Rate: 83%                     │
+│  Overall Match Rate: 100%                    │
 ├─────────────────────────────────────────────┤
-│  ✅ Match:          5 items (83%)            │
+│  ✅ Match:          6 items (100%)           │
 │  ⚠️ Missing engineering: 0 items (0%)        │
-│  ❌ Not implemented:  1 items (17%)          │
+│  ❌ Not implemented:  0 items (0%)           │
 └─────────────────────────────────────────────┘
 ```
 
@@ -95,8 +95,7 @@ Engineering 문서(`mcp-action-api.engineering.md`)에 정의된 API 명세, MCP
 
 | Severity    | File    | Location | Issue                    | Root Cause              | Recommendation  |
 | ----------- | ------- | -------- | ------------------------ | ----------------------- | --------------- |
-| 🔴 Critical | test_server.py | L64-76   | 429 Lock Contention 에러 경로 테스트 누락 | 기존의 스크립트 에러 테스트(`test_update_status_script_failure`)는 `"Lock error"` 문자열을 반환하도록 Mocking하여 500 에러만 검증하고 있습니다. 구현된 429 분기(`"Failed to acquire lock"`)를 검증하는 테스트가 없습니다. | 429 반환을 검증하는 별도의 단위 테스트 추가 필요 |
-| 🟢 Info  | server.py | L36      | CORS allow_origins=["*"] (Out of Scope) | 개발 편의를 위한 전체 허용 설정   | 핵심 요구사항은 아니나, 향후 운영 보안 강화를 위해 환경변수를 통한 특정 도메인 허용 설정 검토 권장 |
+| 🟢 Info  | server.py | L36      | CORS allow_origins (Configurable) | Iteration 1에서 환경변수(`PEDAL_CORS_ORIGINS`) 연동 완료   | - |
 
 ---
 
@@ -116,13 +115,11 @@ Engineering 문서(`mcp-action-api.engineering.md`)에 정의된 API 명세, MCP
 
 | Area       | Current | Target | Status |
 | ---------- | ------- | ------ | ------ |
-| Tests Passed | 6/6 | 7/7 | ❌ |
-
-*Note: 6/6은 현재 작성된 테스트가 모두 통과함을 의미합니다. Target 7은 Engineering 명세의 주요 5개 예외(401, 422, 429, 504, 500)와 정상 케이스 2개(REST, Tool)를 포함하여 최소 7개의 테스트 케이스가 요구됨을 의미합니다.*
+| Tests Passed | 7/7 | 7/7 | ✅ |
 
 ### 5.2 Uncovered Areas
 
-- `test_update_status_lock_contention` (429 Lock Contention 에러 테스트 케이스) 누락
+- N/A (429 테스트 추가 완료)
 
 ### 5.3 Test Execution Log
 
@@ -133,10 +130,10 @@ platform darwin -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0
 rootdir: /Users/yunsu/DEV/PEDAL-mcp-action-api/mcp-server
 configfile: pyproject.toml
 plugins: anyio-4.13.0
-collected 6 items
+collected 7 items
 
-test_server.py ......                                                    [100%]
-============================== 6 passed in 0.40s ===============================
+test_server.py .......                                                   [100%]
+============================== 7 passed in 0.35s ===============================
 ```
 
 ---
@@ -192,12 +189,12 @@ test_server.py ......                                                    [100%]
 
 ```
 ┌─────────────────────────────────────────────┐
-│  Overall Score: 80/100                       │
+│  Overall Score: 100/100                      │
 ├─────────────────────────────────────────────┤
-│  Engineering Match:   83 points          │
+│  Engineering Match:   100 points         │
 │  Code Quality:        100 points         │
-│  Security:            80 points          │
-│  Testing:             80 points          │
+│  Security:            100 points         │
+│  Testing:             100 points         │
 │  Architecture:        100 points         │
 │  Convention:          100 points         │
 └─────────────────────────────────────────────┘
@@ -211,29 +208,29 @@ test_server.py ......                                                    [100%]
 
 | Severity    | Count | Weight | Weighted Score |
 | ----------- | :---: | :----: | :------------: |
-| 🔴 Critical |  1  |   x3   |    3     |
+| 🔴 Critical |  0  |   x3   |    0     |
 | 🟡 Warning  |  0  |   x2   |    0     |
-| 🟢 Info     |  1  |   x1   |    1     |
-| **Total**   |  2  |        |    4     |
+| 🟢 Info     |  0  |   x1   |    0     |
+| **Total**   |  0  |        |    0     |
 
 ### 9.2 Weighted Match Rate
 
 ```
 Total checked items:    6 (API, 3 Data Models, Tool, Error Handling)
 Max possible score:     18
-Weighted issue score:   4 (Critical 1 + Info 1)
-Weighted Match Rate:    78%
+Weighted issue score:   0
+Weighted Match Rate:    100%
 ```
 
 ### 9.3 Iterate Decision
 
 ```
 ┌──────────────────────────────────────────────────┐
-│  Weighted Match Rate: 78%                         │
-│  🔴 Critical Issues:  1                           │
+│  Weighted Match Rate: 100%                        │
+│  🔴 Critical Issues:  0                           │
 │                                                   │
-│  Decision: ❌ ITERATE REQUIRED                    │
-│  Reason:   Match rate < 90% OR critical > 0       │
+│  Decision: ✅ PASS                                │
+│  Reason:   Match rate >= 90% AND 0 critical       │
 └──────────────────────────────────────────────────┘
 ```
 
@@ -241,11 +238,7 @@ Weighted Match Rate:    78%
 
 ## 10. Recommended Actions
 
-### 10.1 Immediate (within 24 hours)
-
-| Priority | Item                    | File       | Assignee |
-| -------- | ----------------------- | ---------- | -------- |
-| 🔴 1     | 429 Lock Contention 예외 테스트 케이스 추가 | test_server.py | Gemini |
+N/A
 
 ---
 
@@ -257,9 +250,7 @@ None.
 
 ## 12. Next Steps
 
-- [x] Fix Critical issues (Iterate phase 진입)
-- [ ] Update engineering document
-- [ ] Write completion report (`mcp-action-api.report.md`)
+- [x] Write completion report (`mcp-action-api.report.md`)
 
 ---
 
@@ -270,3 +261,4 @@ None.
 | 0.1     | 2026-04-26 | Initial analysis | Gemini   |
 | 0.2     | 2026-04-26 | Reviewer 피드백 반영 (테스트 누락분 Critical 지정 및 점수 재산정) | Gemini |
 | 0.3     | 2026-04-26 | Reviewer v2 피드백 반영 (의도 추적성 명확화, 429 테스트 원인 기술 보강) | Gemini |
+| 1.0     | 2026-04-26 | Iteration 1 완료: Critical 이슈 해결 및 PASS 판정 | Gemini |

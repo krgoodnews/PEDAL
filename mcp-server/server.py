@@ -39,9 +39,12 @@ class StatusUpdateResponse(BaseModel):
 
 app = FastAPI(title="PEDAL Manager Backend")
 
+# Read CORS origins from environment variable, default to "*"
+cors_origins = os.getenv("PEDAL_CORS_ORIGINS", "*").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )

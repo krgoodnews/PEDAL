@@ -85,6 +85,20 @@ def test_update_status_script_failure():
         assert response.status_code == 500
         assert "Lock error" in response.json()["detail"]
 
+def test_update_status_lock_contention():
+    """Test handling of lock contention (429 Too Many Requests)."""
+    payload = {"feature_id": "test", "phase": "engineering"}
+    headers = {"X-API-Key": "test-api-key"}
+    
+    with patch("subprocess.run") as mock_run:
+        # Simulate lock failure message that triggers 429
+        mock_run.return_value = MagicMock(returncode=1, stdout="", stderr="Failed to acquire lock")
+        
+        response = client.post("/api/status/update", json=payload, headers=headers)
+        
+        assert response.status_code == 429
+        assert "Failed to acquire lock" in response.json()["detail"]
+
 def test_update_status_timeout():
     """Test handling of script execution timeout."""
     payload = {"feature_id": "test", "phase": "engineering"}
