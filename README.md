@@ -138,6 +138,32 @@ PEDAL은 **도구에 무관(tool-agnostic)** 하게 설계되었습니다.
 
 ## 빠른 시작
 
+### 원격 설치
+
+PEDAL 저장소를 클론하지 않아도 빈 워크스페이스에서 바로 설치할 수 있습니다.
+
+```bash
+mkdir my-workspace
+cd my-workspace
+curl -fsSL https://raw.githubusercontent.com/krgoodnews/PEDAL/master/scripts/install-pedal.sh | sh
+```
+
+다른 위치에 설치하려면:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/krgoodnews/PEDAL/master/scripts/install-pedal.sh | sh -s -- --dir ./my-workspace
+```
+
+기존 PEDAL 파일을 갱신하려면 `--force`를 함께 사용합니다.
+
+설치되는 항목:
+
+- `.pedal/` 공통 워크플로 스펙과 템플릿
+- `scripts/pedal-common.sh`, `scripts/pedal-notification.sh`
+- `AGENTS.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `.cursor/rules/pedal.mdc`
+
+### 수동 설치
+
 1. **`.pedal/` 디렉토리를 프로젝트에 복사합니다.**
 
 2. **도구별 설정을 추가합니다.**
